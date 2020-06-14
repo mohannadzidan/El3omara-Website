@@ -1,1 +1,1 @@
-A website that manages the costs of el3omara
+A website that manages the costs of el3omara.
