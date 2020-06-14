@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
+<html lang="en"><head>
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,9 +10,7 @@
 
   <!-- Custom fonts for this template -->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link
-    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template -->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -23,9 +18,42 @@
   <!-- Custom styles for this page -->
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
-  <script type="text/javascript" src='js/owners.js'> </script>
+  <script type="text/javascript" src="js/owners.js"> </script>
+
+
+
+
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="/__/firebase/7.15.1/firebase-app.js"></script>
+
+
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="/__/firebase/7.15.1/firebase-analytics.js"></script>
+  <script src="/__/firebase/7.15.1/firebase-auth.js"></script>
+  <script src="/__/firebase/7.15.1/firebase-database.js"></script>
+  <!-- Initialize Firebase -->
+  <script src="/__/firebase/init.js"></script>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="js/demo/datatables-demo.js"></script>
   <title>abc</title>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
 </head>
 
 <body id="page-top">
@@ -63,86 +91,44 @@
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-          aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Components</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="cards.html">Cards</a>
-          </div>
-        </div>
-      </li>
+      
 
       <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-          aria-expanded="true" aria-controls="collapseUtilities">
+      <li class="nav-item active">
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
           <i class="fas fa-fw fa-wrench"></i>
           <span>Utilities</span>
         </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+        <div id="collapseUtilities" class="collapse show" aria-labelledby="headingUtilities" data-parent="#accordionSidebar" style="">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="utilities-color.html">Colors</a>
-            <a class="collapse-item" href="utilities-border.html">Borders</a>
-            <a class="collapse-item" href="utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="utilities-other.html">Other</a>
+            <a class="collapse-item active" href="owners.html">Owners</a>
+            
+            
+            
           </div>
         </div>
       </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
+      
+      
 
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Addons
-      </div>
+      
+      
 
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-          aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Pages</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
-          </div>
-        </div>
-      </li>
+      
+      
 
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span></a>
-      </li>
+      
+      
 
-      <!-- Nav Item - Tables -->
-      <li class="nav-item active">
-        <a class="nav-link" href="tables.html">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span></a>
-      </li>
+      
+      
 
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
+      
+      
 
-      <!-- Sidebar Toggler (Sidebar) -->
+      
       <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
       </div>
@@ -167,8 +153,7 @@
           <!-- Topbar Search -->
           <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                aria-label="Search" aria-describedby="basic-addon2">
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
               <div class="input-group-append">
                 <button class="btn btn-primary" type="button">
                   <i class="fas fa-search fa-sm"></i>
@@ -182,17 +167,14 @@
 
             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
             <li class="nav-item dropdown no-arrow d-sm-none">
-              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-search fa-fw"></i>
               </a>
               <!-- Dropdown - Messages -->
-              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                aria-labelledby="searchDropdown">
+              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
                 <form class="form-inline mr-auto w-100 navbar-search">
                   <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                      aria-label="Search" aria-describedby="basic-addon2">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                     <div class="input-group-append">
                       <button class="btn btn-primary" type="button">
                         <i class="fas fa-search fa-sm"></i>
@@ -205,15 +187,13 @@
 
             <!-- Nav Item - Alerts -->
             <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
                 <span class="badge badge-danger badge-counter">3+</span>
               </a>
               <!-- Dropdown - Alerts -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="alertsDropdown">
+              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
                   Alerts Center
                 </h6>
@@ -256,15 +236,13 @@
 
             <!-- Nav Item - Messages -->
             <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-envelope fa-fw"></i>
                 <!-- Counter - Messages -->
                 <span class="badge badge-danger badge-counter">7</span>
               </a>
               <!-- Dropdown - Messages -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="messagesDropdown">
+              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
                 <h6 class="dropdown-header">
                   Message Center
                 </h6>
@@ -320,8 +298,7 @@
 
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a>
@@ -356,14 +333,19 @@
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+          <h1 class="h3 mb-2 text-gray-800">Owners</h1>
 
           <p class="mb-4">Here you can moderate all the owners.</p>
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">Owners</h6>
-              
+              <a class="btn btn-primary btn-icon-split" style="color:white" onclick="showAddOwnerForm()">
+                <span class="icon text-white-50">
+                  <i class="fas fa-user"></i>
+                </span>
+                <span class="text">Add Owner</span>
+              </a>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -374,20 +356,16 @@
                       <th>Flat Number</th>
                       <th>Phone Number</th>
                       <th></th>
-
                     </tr>
                   </thead>
-                  
+
                   <tbody>
                     <script>
                       tabulatedOwners();
-
-
                     </script>
-
                   </tbody>
                 </table>
-                <button class="add-owner-btn" onclick="openForm()">Add Owner</button>
+
               </div>
             </div>
           </div>
@@ -402,7 +380,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019</span>
+            <span>Copyright © Your Website 2019</span>
           </div>
         </div>
       </footer>
@@ -415,13 +393,12 @@
   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
+  <a class="scroll-to-top rounded" href="#page-top" style="display: none;">
     <i class="fas fa-angle-up"></i>
   </a>
 
   <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -447,24 +424,21 @@
       box-sizing: border-box;
     }
 
-    /* Button used to open the contact form - fixed at the bottom of the page */
-    .add-owner-btn {
-      background-color: #ddd;
-      padding: 12px 10px;
-      border: none;
-      cursor: pointer;
-      width: 100%;
+    .btn-wh {
+      min-width: 100;
+      min-height: 80;
     }
 
     /* The popup form - hidden by default */
     .form-popup {
       display: none;
       position: fixed;
+      min-width: 30%;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: #ffffff;
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      background-color: white;
+      box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
       z-index: 9;
     }
 
@@ -472,103 +446,29 @@
     .form-container {
       max-width: 100%;
       padding: 10px;
-      background-color: white;
     }
 
     /* Full-width input fields */
     .form-container input[type=text] {
       width: 100%;
-      padding: 15px;
       margin: 5px 0 22px 0;
-      border: none;
-      background: #f1f1f1;
-    }
-
-    /* When the inputs get focus, do something */
-    .form-container input[type=text]:focus,
-    .form-container input[type=password]:focus {
-      background-color: #ddd;
-      outline: none;
-    }
-
-    /* Set a style for the submit/login button */
-    .form-container .btn {
-      background-color: #4CAF50;
-      color: white;
-      padding: 16px 20px;
-      border: none;
-      cursor: pointer;
-      width: 100%;
-      margin-bottom: 10px;
-      opacity: 0.8;
-    }
-
-    /* Add a red background color to the cancel button */
-    .form-container .cancel {
-      background-color: red;
-    }
-
-    /* Add some hover effects to buttons */
-    .form-container .btn:hover,
-    .open-button:hover {
-      opacity: 1;
     }
   </style>
-  </head>
+  
+  <div class="form-popup" id="ownerForm">
+    <form class="form-container">
+      <h1 class="h3 mb-2 text-gray-800" id="ownerFormHeader">Any</h1>
+      <input type="text" class="form-control form-control-user" id="ownerFormName" placeholder="Name" required="">
+      <input type="text" class="form-control form-control-user" id="ownerFormFlatNumber" placeholder="Flat Number" required="">
+      <input type="text" class="form-control form-control-user" id="ownerFormPhoneNumber" placeholder="Phone Number" required="">
+      <input class="btn btn-secondary" type="button" onclick="closeForm('ownerForm')" value="Cancel">
+      <input class="btn btn-primary" type="submit" value="Done">
+    </form>
+  </div>
+  
+  <!-- Bootstrap core JavaScript-->
 
-  <body>
-
-    <h2>Popup Form</h2>
-    <p>Click on the button at the bottom of this page to open the login form.</p>
-    <p>Note that the button and the form is fixed - they will always be positioned to the bottom of the browser window.
-    </p>
 
 
 
-    <div class="form-popup" id="myForm">
-      <form action="/action_page.php" class="form-container">
-        <h1>Add Owner</h1>
-
-        <label for="name"><b>Name</b></label>
-        <input type="text" placeholder="Enter name..." name="name" required>
-
-        <label for="flatno"><b>Flat Number</b></label>
-        <input type="text" placeholder="Enter flat number..." name="flatno" required>
-
-        <label for="phoneno"><b>Phone Number</b></label>
-        <input type="text" placeholder="Enter phone number..." name="phoneno" required>
-
-        <button type="submit" class="btn">Add</button>
-        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-      </form>
-    </div>
-
-    <script>
-      function openForm() {
-        document.getElementById("myForm").style.display = "block";
-      }
-
-      function closeForm() {
-        document.getElementById("myForm").style.display = "none";
-      }
-    </script>
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
-
-  </body>
-
-</html>
+</body></html>
