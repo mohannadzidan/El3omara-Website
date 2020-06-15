@@ -18,8 +18,7 @@ function tabulatedOwners() {
                     "mData": 'id',
                     "bSortable": false,
                     "mRender": function (data, type, full) {
-                        return iconButton('primary', "showEditOwnerForm(" + data + ")", 'pen') +
-                            iconButton('danger', "removeOwner(" + data + ")", 'trash');
+                        return generateRowButtons(data);
                     }
                 }
             ]
@@ -40,6 +39,12 @@ function addOwner(formData) {
     var id = date.getTime();
     var database = firebase.database();
     var isSafe = true;
+    if (formData.name == null || formData.name == "" ||
+        formData.flatNumber == null || formData.flatNumber == "" ||
+        formData.phoneNumber == null || formData.phoneNumber == "") {
+        alert(getLocaleString("embty_fields"));
+        return;
+    }
     for (const o of owners) {
         if (formData.name == o.name) {
             alert("An owner of same name exists!");
@@ -67,29 +72,20 @@ function addOwner(formData) {
         });
 }
 function showAddOwnerForm() {
-    var form = document.getElementById("ownerForm");
     // load the form
-    document.getElementById("ownerFormHeader").innerHTML = "Add Owner";
-    // display
-    form.style.display = "block";
-    // set events
-    form.onsubmit = () => {
-        var formData = fetchOwnerFormData();
-        addOwner(formData);
-        closeForm('ownerForm');
-    }
+    document.getElementById("ownerModalLabel").innerHTML = "Add Owner";
+    //clear fields
+    fillOwnerFormData({
+        name: "", flatNumber:"", phoneNumber:""
+    });
+    document.getElementById("ownerModalDoneBtn").onclick = () => addOwner(fetchOwnerFormData());
 }
 
 function showEditOwnerForm(id) {
-    currentOwnerData = owners.find((o)=>o.id == id);
+    currentOwnerData = owners.find((o) => o.id == id);
     fillOwnerFormData(currentOwnerData);
-    var form = document.getElementById("ownerForm");
-    // load the form
-    document.getElementById("ownerFormHeader").innerHTML = "Edit Owner";
-    // display
-    form.style.display = "block";
-    // set 
-    form.onsubmit = () => {
+    document.getElementById("ownerModalLabel").innerHTML = "Edit Owner";
+    document.getElementById("ownerModalDoneBtn").onclick = () => {
         var formData = fetchOwnerFormData();
         var database = firebase.database();
         database.ref('owners/' + id).set({
@@ -98,27 +94,25 @@ function showEditOwnerForm(id) {
             phoneNumber: formData.phoneNumber,
             id: id
         });
-        closeForm('ownerForm');
     }
+
 }
 
 function fetchOwnerFormData() {
     return {
-        name: document.getElementById("ownerFormName").value,
-        flatNumber: document.getElementById("ownerFormFlatNumber").value,
-        phoneNumber: document.getElementById("ownerFormPhoneNumber").value
+        name: document.getElementById("ownerModalName").value,
+        flatNumber: document.getElementById("ownerModalFlatNumber").value,
+        phoneNumber: document.getElementById("ownerModalPhoneNumber").value
     }
 }
 function fillOwnerFormData(ownerData) {
-    document.getElementById("ownerFormName").value = ownerData.name;
-    document.getElementById("ownerFormFlatNumber").value = ownerData.flatNumber;
-    document.getElementById("ownerFormPhoneNumber").value = ownerData.phoneNumber;
+    document.getElementById("ownerModalName").value = ownerData.name;
+    document.getElementById("ownerModalFlatNumber").value = ownerData.flatNumber;
+    document.getElementById("ownerModalPhoneNumber").value = ownerData.phoneNumber;
 }
 
-function closeForm(formName) {
-    document.getElementById(formName).style.display = "none";
-}
-
-function iconButton(type, onclick, icon) {
-    return "<a style=\"color:white\" class=\"white btn-" + type + " btn-circle btn-sm\" onclick=\"" + onclick + "\"><i class=\"fas fa-" + icon + "\"></i></a>"
+function generateRowButtons(id){
+    var editBtn = "<a style=\"color:white\" class=\"white btn-primary btn-circle btn-sm m-1\" onclick=\"showEditOwnerForm(" + id + ")\" data-toggle=\"modal\" data-target=\"#ownerModal\"><i class=\"fas fa-pen\"></i></a>"
+    var removeBtn = "<a style=\"color:white\" class=\"white btn-danger btn-circle btn-sm m-1\" onclick=\"removeOwner(" + id + ")\"><i class=\"fas fa-trash\"></i></a>"
+    return editBtn+removeBtn;
 }
