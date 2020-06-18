@@ -51,10 +51,25 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-
-          <!-- Page Heading -->
-          <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
-
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">All Users</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table dataTable no-footer" id="rolesTable">
+                  <thead>
+                    <tr role="row">
+                      <th>Email</th>
+                      <th>UID</th>
+                      <th>Role</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
         <!-- /.container-fluid -->
 
@@ -108,10 +123,16 @@
       $("#logoutModal").load("sharedhtml/logoutmodal.html");
     });
   </script>
-  
+
   <!-- role & authentication based content -->
   <script src="js/pagecontent-auth-role.js"></script>
 
+  <!-- Page level plugins -->
+  <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="js/admin-roles-panel.js"></script>
 
 </body>
 

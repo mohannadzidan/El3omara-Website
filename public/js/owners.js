@@ -1,31 +1,35 @@
 var owners = [];
-function tabulatedOwners() {
-    var ownersRef = firebase.database().ref('owners');
-    ownersRef.on('value', function (snapshot) {
-        owners = [];
-        snapshot.forEach(function (childSnapshot) {
-            var e = childSnapshot.val();
-            owners.push(e);
-        });
-        table = $('#ownersTable').DataTable({
-            destroy: true,
-            data: owners,
-            columns: [
-                { data: 'name' },
-                { data: 'flatNumber' },
-                { data: 'phoneNumber' },
-                {
-                    "mData": 'id',
-                    "bSortable": false,
-                    "mRender": function (data, type, full) {
-                        return generateRowButtons(data);
-                    }
-                }
-            ]
+// load owners table 
+roleFetchCallback.push(function (role) {
+    if (role != "admin" && role != "editor") {
+        window.location = "permission_denied.html";
+    }
+});
 
-        });
+
+firebase.database().ref('owners').on('value', function (snapshot) {
+    owners = [];
+    snapshot.forEach(function (childSnapshot) {
+        var e = childSnapshot.val();
+        owners.push(e);
     });
-}
+    table = $('#ownersTable').DataTable({
+        destroy: true,
+        data: owners,
+        columns: [
+            { data: 'name' },
+            { data: 'flatNumber' },
+            { data: 'phoneNumber' },
+            {
+                "mData": 'id',
+                "bSortable": false,
+                "mRender": function (data, type, full) {
+                    return generateRowButtons(data);
+                }
+            }
+        ]
+    });
+});
 
 function removeOwner(id) {
     owner = owners.find((o) => o.id == id);
@@ -76,7 +80,7 @@ function showAddOwnerForm() {
     document.getElementById("ownerModalLabel").innerHTML = "Add Owner";
     //clear fields
     fillOwnerFormData({
-        name: "", flatNumber:"", phoneNumber:""
+        name: "", flatNumber: "", phoneNumber: ""
     });
     document.getElementById("ownerModalDoneBtn").onclick = () => addOwner(fetchOwnerFormData());
 }
@@ -111,8 +115,8 @@ function fillOwnerFormData(ownerData) {
     document.getElementById("ownerModalPhoneNumber").value = ownerData.phoneNumber;
 }
 
-function generateRowButtons(id){
+function generateRowButtons(id) {
     var editBtn = "<a style=\"color:white\" class=\"white btn-primary btn-circle btn-sm m-1\" onclick=\"showEditOwnerForm(" + id + ")\" data-toggle=\"modal\" data-target=\"#ownerModal\"><i class=\"fas fa-pen\"></i></a>"
     var removeBtn = "<a style=\"color:white\" class=\"white btn-danger btn-circle btn-sm m-1\" onclick=\"removeOwner(" + id + ")\"><i class=\"fas fa-trash\"></i></a>"
-    return editBtn+removeBtn;
+    return editBtn + removeBtn;
 }

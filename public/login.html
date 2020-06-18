@@ -23,7 +23,7 @@
 
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-primary" style="display: none">
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="locale/multilang.js"></script>
   <div class="container">
@@ -58,7 +58,6 @@
                         placeholder="Password">
                     </div>
 
-                    <!-- remeber me isn't implemented yet -->
                     <div class="form-group">
                       <div class="custom-control custom-checkbox small">
                         <input type="checkbox" class="custom-control-input" id="customCheck">
@@ -66,14 +65,14 @@
                       </div>
                     </div>
 
-                    <a class="btn btn-primary btn-user btn-block" style="color: white;" onclick="emailPasswordLogin()" id="loginBtn"></a>
+                    <a class="btn btn-primary btn-user btn-block" style="color: white;" onclick="emailPasswordLogin()"
+                      id="loginBtn">Login</a>
                     <hr>
-                    <script>
-                      document.getElementById('loginBtn').innerHTML = getLocaleString('login');
-                    </script>
-                    <a href="index.html" class="btn btn-google btn-user btn-block">
+                    <a class="btn btn-google btn-user btn-block" style="color: white;" id="signInWithGoogleBtn"
+                      onclick="signInWithGoogle()">
                       <i class="fab fa-google fa-fw"></i> Login with Google
                     </a>
+
                   </form>
                   <hr>
                   <div class="text-center">
@@ -119,7 +118,21 @@
   <script>
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        window.location = "index.html";
+        var uid = user.uid;
+        firebase.database().ref("users/" + uid).once('value', (snapshot) => {
+          if (!snapshot.exists()) {
+            firebase.database().ref("users/" + uid).set({
+              email: user.email,
+              displayName: user.displayName,
+            }).then((res) => {
+              window.location = "index.html";
+            });
+          }else{
+            window.location = "index.html";
+          }
+        });
+      } else {
+        document.body.style.display = "block";
       }
     });
   </script>

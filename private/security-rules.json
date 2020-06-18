@@ -1,0 +1,32 @@
+{
+  "rules": {
+    "owners": {
+      ".read": "auth.uid != null",
+      "$ownerid": {
+        ".write": "(newData.parent().parent().child('roles').child(auth.uid).val() == 'editor' || newData.parent().parent().child('roles').child(auth.uid).val() == 'admin')"
+      }
+    },
+    "users": {
+      ".read": "auth.uid != null",
+      "$uid": {
+        ".validate": "newData.hasChildren(['email', 'displayName'])",
+        "email": {
+          ".validate": "newData.isString()"
+        },
+        "displayName": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".write": "(auth.uid == $uid || newData.parent().parent().child('roles').child(auth.uid).val() == 'admin')"
+      }
+    },
+    "roles": {
+      "$uid": {
+        ".read": "auth.uid != null",
+        ".write": "newData.parent().parent().child('roles').child(auth.uid).val() == 'admin'"
+      }
+    }
+  }
+}

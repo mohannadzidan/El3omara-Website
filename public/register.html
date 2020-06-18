@@ -22,7 +22,7 @@
 
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-primary" style="display: none;">
   <script src="locale/multilang.js"></script>
 
   <div class="container">
@@ -42,16 +42,10 @@
                     <div class="card-body" id="errorMessageCard"></div>
                   </div>
                 </div>
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" class="form-control form-control-user" id="registerFirstName"
-                      placeholder="First Name">
+                  <div class="form-group">
+                    <input type="text" class="form-control form-control-user" id="registerDisplayName"
+                      placeholder="Display Name">
                   </div>
-                  <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" id="registerLastName"
-                      placeholder="Last Name">
-                  </div>
-                </div>
                 <div class="form-group">
                   <input type="email" class="form-control form-control-user" id="registerEmail"
                     placeholder="Email Address">
@@ -66,15 +60,9 @@
                       placeholder="Repeat Password">
                   </div>
                 </div>
-                <a class="btn btn-primary btn-user btn-block" style="color: white;" onclick="validateAndRegisterAccount()">
+                <a class="btn btn-primary btn-user btn-block" style="color: white;"
+                  onclick="validateAndRegisterAccount()">
                   Register Account
-                </a>
-                <hr>
-                <a href="index.html" class="btn btn-google btn-user btn-block">
-                  <i class="fab fa-google fa-fw"></i> Register with Google
-                </a>
-                <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                  <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
                 </a>
               </form>
               <hr>
@@ -116,8 +104,10 @@
 
   <script>
     firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
+      if (user && !justRegistered) {
         window.location = "index.html";
+      } else {
+        document.body.style.display = "block";
       }
     });
   </script>

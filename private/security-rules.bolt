@@ -1,0 +1,36 @@
+function roleCheck (auth, role) {
+    return root.child('roles').child(auth.uid).val() == role;
+}
+
+function isOwnAccess(auth, userKey) {
+    return auth.uid == userKey;
+}
+
+function isAuthenticatedAccess (auth){
+    return auth.uid !== null;
+}
+
+path /owners {
+    read() { isAuthenticatedAccess(auth) }
+}
+
+path /owners/{ownerid} {
+    write() { roleCheck(auth, "editor") || roleCheck(auth, "admin") }
+}
+
+path /users {
+    read() { isAuthenticatedAccess(auth) }
+}
+
+path /users/{uid} is User{
+    write() { isOwnAccess(auth, uid) || roleCheck(auth, "admin") }
+}
+
+path /roles/{uid} {
+    read() { isAuthenticatedAccess(auth) }
+    write() { roleCheck(auth, "admin") }
+}
+type User {
+  email: String,
+  displayName: String,
+}

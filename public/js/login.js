@@ -1,4 +1,6 @@
+var googleSignIn = false;
 function emailPasswordLogin() {
+
     var email = document.getElementById("emailField").value;
     var password = document.getElementById("passwordField").value;
     firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
@@ -18,9 +20,15 @@ function emailPasswordLogin() {
                 document.getElementById("errorMessageCard").innerHTML = getLocaleString("auth_wrong_password");
                 break;
             default:
-                console.log('unkown error code -> {'+ error.code + '} : msg=' + error.message);
+                console.log('unkown error code -> {' + error.code + '} : msg=' + error.message);
                 break;
         }
     });
-
+}
+function signInWithGoogle() {
+    console.log("signInWithGoogle");
+    var provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithRedirect(provider).catch(function (error) {
+        console.error(error);
+    });
 }

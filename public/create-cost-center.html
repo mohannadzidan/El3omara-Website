@@ -1,0 +1,553 @@
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Blank</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+  <link href="css/sk-chase-loader.css" rel="stylesheet">
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+</head>
+
+<body id="page-top" style="display: none">
+  <script src="js/cost-center-generators.js"></script>
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"></ul>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" id="topbar">
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <h1 class="h3 mb-4 text-gray-800">Add Cost-Center</h1>
+          <div class="row">
+
+            <div class="col-xl-9 col-lg-7">
+
+              <!-- Details Card -->
+              <style>
+                .circular-border {
+                  border-radius: 100px;
+                  padding: 5px;
+                  padding-left: 15px;
+                  padding-right: 15px;
+                  outline: none;
+                  background-color: transparent;
+                }
+
+                .primary-border {
+                  border: 2px solid #4e73df;
+                }
+
+                .secondary-border {
+                  border: 2px solid #858796;
+                }
+
+                .border-button {
+                  font-weight: bold;
+                  border: 2px solid #858796;
+                  color: #858796;
+                }
+
+                .border-button:hover {
+                  border: 2px solid #4e73df;
+                  color: #4e73df;
+
+                }
+
+                .circular-left {
+                  width: 100%;
+                  border-bottom-left-radius: 100px;
+                  border-top-left-radius: 100px;
+                  padding: 5px;
+                  padding-left: 15px;
+                  padding-right: 15px;
+                  outline: none;
+                  border: 0.5px solid #cfcfcf;
+
+                }
+
+                .circular-right {
+                  width: 100%;
+                  height: 100%;
+                  border-bottom-right-radius: 100px;
+                  border-top-right-radius: 100px;
+                  padding: 5px;
+                  padding-left: 15px;
+                  padding-right: 15px;
+                  outline: none;
+                  border: 0;
+                  border: 1px solid transparent;
+                }
+
+                .box-center {
+                  margin: auto;
+                  width: 50%;
+                  padding: 10px;
+                }
+              </style>
+              <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
+                  <h6 class="m-0 font-weight-bold">Details</h6>
+                  <i class="fas fa-pen"></i>
+                </div>
+                <div class="card-body">
+                  <!-- Parent Cost-Center -->
+                  <div class="form-group row">
+                    <div class="col-sm-3 p-1">
+                      <h6>Parent Cost-Center:</h6>
+                    </div>
+                    <div class="col p-1">
+                      <!-- data-toggle="modal" data-target="#searchCostCenterModal" -->
+                      <input type="button" value="Independent" class="circular-border border-button" data-toggle="modal"
+                        data-target="#searchCostCenterModal" id="selectParentCCBtn">
+                    </div>
+                  </div>
+                  <!-- Title -->
+                  <div class="form-group row">
+                    <div class="col-sm-3 p-1">
+                      <h6>Title:</h6>
+                    </div>
+                    <div class="col p-1">
+                      <input class="form-control" placeholder="Enter title..">
+                    </div>
+                  </div>
+                  <!-- Description -->
+                  <div class="form-group row">
+                    <div class="col-sm-3 p-1">
+                      <h6>Description:</h6>
+                    </div>
+                    <div class="col p-1">
+                      <textarea class="form-control" placeholder="Enter description.."></textarea>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-x1-3 col-lg-3">
+              <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
+                  <h6 class="m-0 font-weight-bold">Owners</h6>
+                  <i class="fas fa-user"></i>
+                </div>
+                <style>
+                  div.ownerslist ul {
+                    list-style-type: none;
+                    padding: 0px;
+                    max-height: 150px;
+                    overflow: auto;
+                    scrollbar-width: 5px;
+                  }
+
+                  div.ownerslist li {
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    min-width: 0;
+                    word-wrap: break-word;
+                    background-clip: border-box;
+                    animation: fadeIn 1s;
+                  }
+
+                  .li-separator {
+                    border-bottom: 1px solid #cfcfcf;
+                  }
+
+                  li:last-child {
+                    border-bottom: 0;
+                  }
+
+                  li:only-child {
+                    border-bottom: 0;
+                  }
+
+                  div.ownerslist input {
+                    width: 100%;
+                    border-radius: 1000px;
+                    border: 1px solid #858796;
+                    padding: 5px;
+                    padding-left: 15px;
+                    padding-right: 15px;
+
+                  }
+
+                  div.ownerslist input:focus {
+                    width: 100%;
+                    border-radius: 1000px;
+                    border: 1px solid #4e73df;
+                    padding: 5px;
+                    outline: none;
+                    padding-left: 15px;
+                    padding-right: 15px;
+                  }
+
+                  .matchcard {
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    min-width: 0;
+                    word-wrap: break-word;
+                    background-color: #fff;
+                    background-clip: border-box;
+                    margin-bottom: 5px;
+                    margin-top: 5px;
+                    border-radius: 0.35rem;
+                    border: 1px solid #4e73df;
+                    /* box-shadow: 0px 0px 10px -2px rgba(0, 0, 0, 0.48);
+                    animation: fadeIn 0.3s; */
+                  }
+
+                  div.search-match {
+                    opacity: 1;
+                  }
+
+                  div.search-match:hover {
+                    opacity: 0.8;
+                    transform: scale(0.95, 0.95);
+                    animation: popOut 0.3s;
+                  }
+
+                  .matches-container {
+                    margin-left: -10px;
+                    margin-right: -10px;
+                    margin-bottom: 10px;
+                    padding: 5px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    box-shadow: 0px 0px 10px -2px rgba(0, 0, 0, 0.48);
+                    animation: fadeIn 0.3s;
+                  }
+
+                  @keyframes fadeIn {
+                    from {
+                      opacity: 0;
+                      transform: translateY(-5px);
+                    }
+
+                    to {
+                      opacity: 1;
+                      transform: translateX(0);
+                    }
+                  }
+
+                  @keyframes fadeOut {
+                    from {
+                      opacity: 1;
+                    }
+
+                    to {
+                      opacity: 0;
+                    }
+                  }
+                </style>
+                <!-- Owners List-->
+                <div class="ownerslist p-4">
+                  <ul>
+                    <div id="ownersListElements"></div>
+                  </ul>
+                  <div class="text-center" id="ownersIcon" style="opacity: 0.25; color: black;">
+                    <img src="vendor/fontawesome-free/svgs/solid/users.svg" style="width:50%;">
+                    <div>No owners added</div>
+                  </div>
+                  <!-- Card Footer -->
+                  <hr class="m-1">
+                  <div class="mt-1 mb-1">
+                    <div class="text-center">
+                      <a class="small text-gray-500" id="ownerMatchMessage"></a>
+                    </div>
+
+
+                  </div>
+                  <div class="matches-container" id="ownerMatchContainer">
+
+                  </div>
+                  <input type="text" class="ownerslist" placeholder="Search owners..." id="ownersListSearchBox"
+                    oninput="queryOwner()">
+                  <script type="text/javascript">
+                    function addOwner(id) {
+                      var newOwner = allOwners.find((o) => o.id == id);
+                      costCenter.owners.push(newOwner);
+                      var elementsContainer = document.getElementById('ownersListElements');
+                      var element = document.createElement('li');
+                      element.id = 'ownersListElement' + id;
+                      element.innerHTML = generateOwnerListElement(newOwner.name, "removeOwner(" + newOwner.id + ")");
+                      elementsContainer.appendChild(element);
+                      queryOwner();
+                      document.getElementById('ownersIcon').style.display = 'none';
+                    }
+                    function removeOwner(id) {
+                      var owner = costCenter.owners.find((o) => o.id == id);
+                      var index = costCenter.owners.indexOf(owner);
+                      var elementsContainer = document.getElementById('ownersListElements');
+                      if (index > -1) {
+                        costCenter.owners.splice(index, 1);
+                        document.getElementById('ownersListElement' + id).remove();
+                      }
+                      if (costCenter.owners.length == 0) {
+                        document.getElementById('ownersIcon').style.display = 'block';
+                      } else {
+                        document.getElementById('ownersIcon').style.display = 'none';
+                      }
+                    }
+                    function queryOwner() {
+                      var searchBox = document.getElementById('ownersListSearchBox');
+                      var matchContainer = document.getElementById('ownerMatchContainer');
+
+                      matchContainer.innerHTML = '';
+                      if (searchBox.value == '') {
+                        matchContainer.style.display = 'none';
+                        return;
+                      }
+                      var query = searchBox.value.toLowerCase();
+                      var availableCards = 3;
+                      for (let i = 0; i < allOwners.length && availableCards > 0; i++) {
+                        const o = allOwners[i];
+
+                        if ((o.name.toLowerCase().includes(query) ||
+                          o.phoneNumber.startsWith(query) ||
+                          o.flatNumber.startsWith(query)) &&
+                          !costCenter.owners.find((owner) => o.id == owner.id)) {
+                          var listElement = document.createElement('li');
+                          listElement.classList.add("li-separator");
+                          listElement.innerHTML = generateOwnerMatchCard(o, "addOwner(" + o.id + ")");
+                          matchContainer.appendChild(listElement);
+                          availableCards--;
+                        };
+                      }
+                      matchContainer.style.display = availableCards == 3 ? 'none' : 'block';
+
+                      document.getElementById("ownerMatchMessage").innerHTML = availableCards == 3 ? "No matches!" : '';
+                    }
+
+                  </script>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright © Your Website 2019</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top" style="display: none;">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true"></div>
+
+  <!-- Search Cost-Center Modal-->
+  <div class="modal fade" id="searchCostCenterModal" tabindex="-1" role="dialog"
+    aria-labelledby="searchCostCenterModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="height: 50%;">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h5 class="modal-title" id="searchCostCenterModalLabel">Cost-Center Search</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <!-- Modal Body -->
+        <div class="pl-4 pr-4">
+          <!-- Search Message -->
+          <div class="mt-1 mb-1">
+            <div class="text-center">
+              <a class="small text-gray-500" id="ownerMatchMessage"></a>
+            </div>
+          </div>
+          <!-- Search Bar -->
+          <div class="row">
+            <div class="col m-0 p-0">
+              <input type="text" class="circular-left" placeholder="Search cost-centers...">
+            </div>
+            <div class="col-auto m-0 p-0">
+              <div class="circular-right btn btn-primary">
+                <span class="icon text-white-50 box-center">
+                  <i class="fas fa-search"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <hr class="mt-2">
+          <!-- <div class="sk-chase" style="width: 100%; padding: 10%;">
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+          </div> -->
+          <script type="text/javascript">
+            function queryCostCenter() {
+              var searchBox = document.getElementById('ownersListSearchBox');
+              var matchContainer = document.getElementById('costCentersSearchResults');
+
+              matchContainer.innerHTML = '';
+              if (searchBox.value == '') {
+                matchContainer.style.display = 'none';
+                return;
+              }
+              var query = searchBox.value.toLowerCase();
+              var availableCards = 3;
+              for (let i = 0; i < allOwners.length && availableCards > 0; i++) {
+                const o = allOwners[i];
+
+                if ((o.name.toLowerCase().includes(query) ||
+                  o.phoneNumber.startsWith(query) ||
+                  o.flatNumber.startsWith(query)) &&
+                  !costCenter.owners.find((owner) => o.id == owner.id)) {
+                  var listElement = document.createElement('li');
+                  listElement.classList.add("li-separator");
+                  listElement.innerHTML = generateCCMatchCard(o, "addOwner(" + o.id + ")");
+                  matchContainer.appendChild(listElement);
+                  availableCards--;
+                };
+              }
+              matchContainer.style.display = availableCards == 3 ? 'none' : 'block';
+
+              document.getElementById("ownerMatchMessage").innerHTML = availableCards == 3 ? "No matches!" : '';
+            }
+
+            function selectParentCC(uuid, matchElementId){
+              var selectedCC = allCostCenters.find(uuid);
+              costCenter.parentUUID = uuid;
+              document.getElementById("selectParentCCBtn").value = selectedCC.name;
+            }
+
+            function fillMatchesList(){
+
+            }
+          </script>
+          <!-- Results -->
+          <ul>
+            <div class="matches-container" id="costCentersSearchResults"></div>
+          </ul>
+          <div class="text-center" id="ownersIcon" style="opacity: 0.25; color: black;">
+            <img src="vendor/fontawesome-free/svgs/solid/cash-register.svg" style="width: 35%;">
+            <div>Find a cost-center</div>
+          </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="/__/firebase/7.15.1/firebase-app.js"></script>
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="/__/firebase/7.15.1/firebase-analytics.js"></script>
+  <script src="/__/firebase/7.15.1/firebase-auth.js"></script>
+  <script src="/__/firebase/7.15.1/firebase-database.js"></script>
+  <!-- Initialize Firebase -->
+  <script src="/__/firebase/init.js"></script>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+
+  <!-- Load Shared Content -->
+  <script>
+    $(function () {
+      $("#topbar").load("sharedhtml/topbar.html");
+      $("#accordionSidebar").load("sharedhtml/sidebar.html");
+      $("#logoutModal").load("sharedhtml/logoutmodal.html");
+    });
+  </script>
+
+
+  <!-- role & authentication based content -->
+  <script src="js/pagecontent-auth-role.js"></script>
+  <script src="js/uuid-generator.js"></script>
+
+
+  <script>
+    var allOwners = [];
+    var allCostCenters = [];
+    var db = firebase.database();
+    db.ref('owners').once('value', (snapshot) => {
+      if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+          allOwners.push(childSnapshot.val());
+        });
+      }
+    });
+    firebase.database().ref('costCenters').once('value', (snapshot) => {
+      if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+          allCostCenters.push(childSnapshot.val());
+        });
+      }
+    });
+    var costCenter = {
+      name: 'untitled',
+      description: 'no description',
+      owners: [],
+      creationTimestamp: '',
+      lastEditTimestamp: '',
+      parentUUID: ''
+    };
+  </script>
+</body>
+
+</html>
