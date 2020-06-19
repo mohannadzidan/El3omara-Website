@@ -21,10 +21,20 @@ function generateCard(title, cost) {
 
 function generateOwnerListElement(name, onRemoveCallback) {
   return `
-    <div class=" d-flex flex-row align-items-center justify-content-between">
+    <div class="d-flex flex-row align-items-center justify-content-between">
       <span>${name}</span>
       <a class="btn-sm btn-clear btn-circle" onclick="${onRemoveCallback}">
         <i class="fas fa-ban"></i>
+      </a>
+    </div>
+  `;
+}
+function generateOwnerListElement(name, icon, onRemoveCallback) {
+  return `
+    <div class="d-flex flex-row align-items-center justify-content-between">
+      <span>${name}</span>
+      <a class="btn-sm btn-clear btn-circle" onclick="${onRemoveCallback}">
+        <i class="fas fa-${icon}"></i>
       </a>
     </div>
   `;
@@ -44,7 +54,7 @@ function generateCCMatchCard(costCenter, onClickCallback) {
   return `
   <div class="search-match" onclick="${onClickCallback}">
       <div>${costCenter.name}</div>
-      <div class="small text-gray-500 ml-3">Desription - ${costCenter.desription}</div>
+      <div class="small text-gray-500 ml-3">${costCenter.description}</div> 
   </div>
   `
 }

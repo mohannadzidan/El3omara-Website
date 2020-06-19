@@ -30,6 +30,29 @@ path /roles/{uid} {
     read() { isAuthenticatedAccess(auth) }
     write() { roleCheck(auth, "admin") }
 }
+path /costCenters/{uid}{
+    read() { isAuthenticatedAccess(auth) }
+    write() { roleCheck(auth, "admin") || roleCheck(auth, "editor")}
+}
+path /costCenters {
+    read() { isAuthenticatedAccess(auth) }
+}
+path /expenses {
+    read() { isAuthenticatedAccess(auth) }
+}
+path /expenses/{uid} {
+    read() { isAuthenticatedAccess(auth) }
+    write() { roleCheck(auth, "admin") || roleCheck(auth, "editor")}
+}
+
+path /payments {
+    read() { isAuthenticatedAccess(auth) }
+}
+
+path /payments/{uid} {
+    read() { isAuthenticatedAccess(auth) }
+    write() { roleCheck(auth, "admin") || roleCheck(auth, "editor")}
+}
 type User {
   email: String,
   displayName: String,

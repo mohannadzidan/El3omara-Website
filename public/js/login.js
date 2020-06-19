@@ -31,4 +31,6 @@ function signInWithGoogle() {
     firebase.auth().signInWithRedirect(provider).catch(function (error) {
         console.error(error);
     });
+
+
 }

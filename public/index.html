@@ -50,8 +50,8 @@
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid" id="postsFluidContainer">
-         
+        <div class="container-fluid" id="costCentersContainer">
+
 
         </div>
         <!-- /.container-fluid -->
@@ -83,24 +83,57 @@
   <!-- Logout Modal-->
   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
+  </div>
+
+  <!-- Add Expense Modal -->
+  <div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog" aria-labelledby="addExpenseModalTitle"
+    aria-modal="true" style="display: none;">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <h5 class="modal-title" id="addExpenseModalTitle"></h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="p-4">
+          <!-- Title -->
+          <div class="form-group row">
+            <div class="col-sm-3 p-1">
+              <h6>Title:</h6>
+            </div>
+            <div class="col p-1">
+              <input class="form-control" placeholder="Enter title.." id="expenseTitle">
+            </div>
+          </div>
+          <!-- Description -->
+          <div class="form-group row mb-0">
+            <div class="col-sm-3 p-1">
+              <h6>Description:</h6>
+            </div>
+            <div class="col p-1">
+              <textarea class="form-control" placeholder="Enter description.." id="expenseDescription"></textarea>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group row mb-0">
+            <div class="col-sm-3 p-1">
+              <h6>Total Cost:</h6>
+            </div>
+            <div class="col p-1">
+              <input class="form-control" type="number" min="1" placeholder="Enter total cost.." id="expenseTotalCost"></textarea>
+            </div>
+          </div>
+        </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html" onclick="firebase.auth().signOut()">Logout</a>
+          <a class="btn btn-primary" id="expenseModalAddBtn">Add</a>
         </div>
+        
       </div>
     </div>
   </div>
-
-
 
   <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
   <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -120,11 +153,18 @@
     $(function () {
       $("#topbar").load("sharedhtml/topbar.html");
       $("#accordionSidebar").load("sharedhtml/sidebar.html");
+      $("#logoutModal").load("sharedhtml/logoutmodal.html");
     });
   </script>
 
   <!-- role & authentication based content -->
   <script src="js/pagecontent-auth-role.js"></script>
+
+  <!-- Page Level Scripts -->
+  <script src="js/dashboard.js"></script>
+  <script src="js/uuid-generator.js"></script>
+
+
 
 
 </body>

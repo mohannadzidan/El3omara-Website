@@ -56,498 +56,520 @@
 
           <!-- Page Heading -->
           <h1 class="h3 mb-4 text-gray-800">Add Cost-Center</h1>
-          <div class="row">
 
-            <div class="col-xl-9 col-lg-7">
+          <style>
+            .circular-border {
+              border-radius: 100px;
+              padding: 5px;
+              padding-left: 15px;
+              padding-right: 15px;
+              outline: none;
+              background-color: transparent;
+            }
 
-              <!-- Details Card -->
-              <style>
-                .circular-border {
-                  border-radius: 100px;
-                  padding: 5px;
-                  padding-left: 15px;
-                  padding-right: 15px;
-                  outline: none;
-                  background-color: transparent;
-                }
+            .primary-border {
+              border: 2px solid #4e73df;
+            }
 
-                .primary-border {
-                  border: 2px solid #4e73df;
-                }
+            .secondary-border {
+              border: 2px solid #858796;
+            }
 
-                .secondary-border {
-                  border: 2px solid #858796;
-                }
+            .border-button {
+              font-weight: bold;
+              border: 2px solid #858796;
+              color: #858796;
+            }
 
-                .border-button {
-                  font-weight: bold;
-                  border: 2px solid #858796;
-                  color: #858796;
-                }
+            .border-button:hover {
+              border: 2px solid #4e73df;
+              color: #4e73df;
 
-                .border-button:hover {
-                  border: 2px solid #4e73df;
-                  color: #4e73df;
+            }
 
-                }
+            .circular-left {
+              width: 100%;
+              border-bottom-left-radius: 100px;
+              border-top-left-radius: 100px;
+              padding: 5px;
+              padding-left: 15px;
+              padding-right: 15px;
+              outline: none;
+              border: 0.5px solid #cfcfcf;
 
-                .circular-left {
-                  width: 100%;
-                  border-bottom-left-radius: 100px;
-                  border-top-left-radius: 100px;
-                  padding: 5px;
-                  padding-left: 15px;
-                  padding-right: 15px;
-                  outline: none;
-                  border: 0.5px solid #cfcfcf;
+            }
 
-                }
+            .circular-right {
+              width: 100%;
+              height: 100%;
+              border-bottom-right-radius: 100px;
+              border-top-right-radius: 100px;
+              padding: 5px;
+              padding-left: 15px;
+              padding-right: 15px;
+              outline: none;
+              border: 0;
+              border: 1px solid transparent;
+            }
 
-                .circular-right {
-                  width: 100%;
-                  height: 100%;
-                  border-bottom-right-radius: 100px;
-                  border-top-right-radius: 100px;
-                  padding: 5px;
-                  padding-left: 15px;
-                  padding-right: 15px;
-                  outline: none;
-                  border: 0;
-                  border: 1px solid transparent;
-                }
+            .box-center {
+              margin: auto;
+              width: 50%;
+              padding: 10px;
+            }
+          </style>
+          <style>
+            ul.simple-list {
+              list-style-type: none;
+              padding: 0px;
+              max-height: inherit;
+              overflow: auto;
+            }
 
-                .box-center {
-                  margin: auto;
-                  width: 50%;
-                  padding: 10px;
-                }
-              </style>
-              <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
-                  <h6 class="m-0 font-weight-bold">Details</h6>
-                  <i class="fas fa-pen"></i>
+            li.owner-list-item {
+              position: relative;
+              display: flex;
+              flex-direction: column;
+              min-width: 0;
+              word-wrap: break-word;
+              background-clip: border-box;
+              animation: fadeIn 1s;
+
+            }
+
+            li.li-separator {
+              border-bottom: 1px solid #cfcfcf;
+            }
+
+            li.li-separator:last-child {
+              border-bottom: 0;
+            }
+
+            li.li-separator:only-child {
+              border-bottom: 0;
+            }
+
+            input.circular-border-input {
+              width: 100%;
+              border-radius: 1000px;
+              border: 1px solid #858796;
+              padding: 5px;
+              padding-left: 15px;
+              padding-right: 15px;
+              outline: none;
+
+            }
+
+            input.circular-border-input:focus {
+              border: 1px solid #4e73df;
+            }
+
+            div.search-match {
+              opacity: 1;
+            }
+
+            div.search-match:hover {
+              opacity: 0.8;
+              transform: scale(0.95, 0.95);
+            }
+
+            .matches-container {
+              padding: 5px;
+              padding-left: 10px;
+              padding-right: 10px;
+              animation: fadeIn 0.3s;
+            }
+
+            .nm-lr-10 {
+              margin-left: -10px;
+              margin-right: -10px;
+            }
+
+            .m-tb-10 {
+              margin-bottom: 10px;
+              margin-top: 10px;
+            }
+
+            .container-shadow {
+              box-shadow: 0px 0px 10px -2px rgba(0, 0, 0, 0.48);
+            }
+
+            @keyframes fadeIn {
+              from {
+                opacity: 0;
+                transform: translateY(-5px);
+              }
+
+              to {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+
+            @keyframes fadeOut {
+              from {
+                opacity: 1;
+              }
+
+              to {
+                opacity: 0;
+              }
+            }
+          </style>
+          <!-- Details Card -->
+          <div class="card shadow">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
+              <h6 class="m-0 font-weight-bold">Details</h6>
+              <i class="fas fa-pen"></i>
+            </div>
+            <div class="card-body">
+              <!-- Title -->
+              <div class="form-group row">
+                <div class="col-sm-3 p-1">
+                  <h6>Title:</h6>
                 </div>
-                <div class="card-body">
-                  <!-- Parent Cost-Center -->
-                  <div class="form-group row">
-                    <div class="col-sm-3 p-1">
-                      <h6>Parent Cost-Center:</h6>
-                    </div>
-                    <div class="col p-1">
-                      <!-- data-toggle="modal" data-target="#searchCostCenterModal" -->
-                      <input type="button" value="Independent" class="circular-border border-button" data-toggle="modal"
-                        data-target="#searchCostCenterModal" id="selectParentCCBtn">
-                    </div>
-                  </div>
-                  <!-- Title -->
-                  <div class="form-group row">
-                    <div class="col-sm-3 p-1">
-                      <h6>Title:</h6>
-                    </div>
-                    <div class="col p-1">
-                      <input class="form-control" placeholder="Enter title..">
-                    </div>
-                  </div>
-                  <!-- Description -->
-                  <div class="form-group row">
-                    <div class="col-sm-3 p-1">
-                      <h6>Description:</h6>
-                    </div>
-                    <div class="col p-1">
-                      <textarea class="form-control" placeholder="Enter description.."></textarea>
-                    </div>
-                  </div>
-
+                <div class="col p-1">
+                  <input class="form-control" placeholder="Enter title.." id="ccTitle" oninput="onTitleChange()">
                 </div>
               </div>
-            </div>
-            <div class="col-x1-3 col-lg-3">
-              <div class="card shadow">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
-                  <h6 class="m-0 font-weight-bold">Owners</h6>
-                  <i class="fas fa-user"></i>
+              <!-- Description -->
+              <div class="form-group row mb-0">
+                <div class="col-sm-3 p-1">
+                  <h6>Description:</h6>
                 </div>
-                <style>
-                  div.ownerslist ul {
-                    list-style-type: none;
-                    padding: 0px;
-                    max-height: 150px;
-                    overflow: auto;
-                    scrollbar-width: 5px;
-                  }
-
-                  div.ownerslist li {
-                    position: relative;
-                    display: flex;
-                    flex-direction: column;
-                    min-width: 0;
-                    word-wrap: break-word;
-                    background-clip: border-box;
-                    animation: fadeIn 1s;
-                  }
-
-                  .li-separator {
-                    border-bottom: 1px solid #cfcfcf;
-                  }
-
-                  li:last-child {
-                    border-bottom: 0;
-                  }
-
-                  li:only-child {
-                    border-bottom: 0;
-                  }
-
-                  div.ownerslist input {
-                    width: 100%;
-                    border-radius: 1000px;
-                    border: 1px solid #858796;
-                    padding: 5px;
-                    padding-left: 15px;
-                    padding-right: 15px;
-
-                  }
-
-                  div.ownerslist input:focus {
-                    width: 100%;
-                    border-radius: 1000px;
-                    border: 1px solid #4e73df;
-                    padding: 5px;
-                    outline: none;
-                    padding-left: 15px;
-                    padding-right: 15px;
-                  }
-
-                  .matchcard {
-                    position: relative;
-                    display: flex;
-                    flex-direction: column;
-                    min-width: 0;
-                    word-wrap: break-word;
-                    background-color: #fff;
-                    background-clip: border-box;
-                    margin-bottom: 5px;
-                    margin-top: 5px;
-                    border-radius: 0.35rem;
-                    border: 1px solid #4e73df;
-                    /* box-shadow: 0px 0px 10px -2px rgba(0, 0, 0, 0.48);
-                    animation: fadeIn 0.3s; */
-                  }
-
-                  div.search-match {
-                    opacity: 1;
-                  }
-
-                  div.search-match:hover {
-                    opacity: 0.8;
-                    transform: scale(0.95, 0.95);
-                    animation: popOut 0.3s;
-                  }
-
-                  .matches-container {
-                    margin-left: -10px;
-                    margin-right: -10px;
-                    margin-bottom: 10px;
-                    padding: 5px;
-                    padding-left: 10px;
-                    padding-right: 10px;
-                    box-shadow: 0px 0px 10px -2px rgba(0, 0, 0, 0.48);
-                    animation: fadeIn 0.3s;
-                  }
-
-                  @keyframes fadeIn {
-                    from {
-                      opacity: 0;
-                      transform: translateY(-5px);
-                    }
-
-                    to {
-                      opacity: 1;
-                      transform: translateX(0);
-                    }
-                  }
-
-                  @keyframes fadeOut {
-                    from {
-                      opacity: 1;
-                    }
-
-                    to {
-                      opacity: 0;
-                    }
-                  }
-                </style>
-                <!-- Owners List-->
-                <div class="ownerslist p-4">
-                  <ul>
-                    <div id="ownersListElements"></div>
-                  </ul>
-                  <div class="text-center" id="ownersIcon" style="opacity: 0.25; color: black;">
-                    <img src="vendor/fontawesome-free/svgs/solid/users.svg" style="width:50%;">
-                    <div>No owners added</div>
-                  </div>
-                  <!-- Card Footer -->
-                  <hr class="m-1">
-                  <div class="mt-1 mb-1">
-                    <div class="text-center">
-                      <a class="small text-gray-500" id="ownerMatchMessage"></a>
-                    </div>
-
-
-                  </div>
-                  <div class="matches-container" id="ownerMatchContainer">
-
-                  </div>
-                  <input type="text" class="ownerslist" placeholder="Search owners..." id="ownersListSearchBox"
-                    oninput="queryOwner()">
-                  <script type="text/javascript">
-                    function addOwner(id) {
-                      var newOwner = allOwners.find((o) => o.id == id);
-                      costCenter.owners.push(newOwner);
-                      var elementsContainer = document.getElementById('ownersListElements');
-                      var element = document.createElement('li');
-                      element.id = 'ownersListElement' + id;
-                      element.innerHTML = generateOwnerListElement(newOwner.name, "removeOwner(" + newOwner.id + ")");
-                      elementsContainer.appendChild(element);
-                      queryOwner();
-                      document.getElementById('ownersIcon').style.display = 'none';
-                    }
-                    function removeOwner(id) {
-                      var owner = costCenter.owners.find((o) => o.id == id);
-                      var index = costCenter.owners.indexOf(owner);
-                      var elementsContainer = document.getElementById('ownersListElements');
-                      if (index > -1) {
-                        costCenter.owners.splice(index, 1);
-                        document.getElementById('ownersListElement' + id).remove();
-                      }
-                      if (costCenter.owners.length == 0) {
-                        document.getElementById('ownersIcon').style.display = 'block';
-                      } else {
-                        document.getElementById('ownersIcon').style.display = 'none';
-                      }
-                    }
-                    function queryOwner() {
-                      var searchBox = document.getElementById('ownersListSearchBox');
-                      var matchContainer = document.getElementById('ownerMatchContainer');
-
-                      matchContainer.innerHTML = '';
-                      if (searchBox.value == '') {
-                        matchContainer.style.display = 'none';
-                        return;
-                      }
-                      var query = searchBox.value.toLowerCase();
-                      var availableCards = 3;
-                      for (let i = 0; i < allOwners.length && availableCards > 0; i++) {
-                        const o = allOwners[i];
-
-                        if ((o.name.toLowerCase().includes(query) ||
-                          o.phoneNumber.startsWith(query) ||
-                          o.flatNumber.startsWith(query)) &&
-                          !costCenter.owners.find((owner) => o.id == owner.id)) {
-                          var listElement = document.createElement('li');
-                          listElement.classList.add("li-separator");
-                          listElement.innerHTML = generateOwnerMatchCard(o, "addOwner(" + o.id + ")");
-                          matchContainer.appendChild(listElement);
-                          availableCards--;
-                        };
-                      }
-                      matchContainer.style.display = availableCards == 3 ? 'none' : 'block';
-
-                      document.getElementById("ownerMatchMessage").innerHTML = availableCards == 3 ? "No matches!" : '';
-                    }
-
-                  </script>
+                <div class="col p-1">
+                  <textarea class="form-control" placeholder="Enter description.." id="ccDescription"
+                    oninput="onDescriptionChange()"></textarea>
                 </div>
-
               </div>
+              <script type="text/javascript">
+                function onTitleChange() {
+                  costCenter.title = document.getElementById("ccTitle").value;
+                }
+                function onDescriptionChange() {
+                  costCenter.description = document.getElementById("ccDescription").value;
+                }
+              </script>
+            </div>
+          </div>
+
+          <br>
+
+          <!-- Parent CC Card -->
+          <div class="card shadow">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
+              <h6 class="m-0 font-weight-bold">Parent</h6>
+              <i class="fas fa-user"></i>
             </div>
 
+            <!-- Card Body-->
+            <div class="p-4">
+              <div style="max-height: 5cm;">
+                <div class="align-items-center p-2" style="background-color: #858796; color: white; border-radius: 5px;"
+                  id="ccUnlinkedCard">
+                  <span>( Independent )</span>
+                </div>
+                <div class="row align-items-center p-2 m-0"
+                  style="background-color: #4e73df; color: white; border-radius: 5px; display: none;">
+                  <div class="col mr-2">
+                    <span id="ccLinkedCardTitle"> dsa da da</span>
+                  </div>
+                  <div class="col-auto">
+                    <a href="#" class=" btn btn-danger btn-circle btn-sm" onclick="unLinkCC()">
+                      <i class="fas fa-unlink"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="text-center" style="display: none;">
+                <hr class="m-1">
+                <a class="small text-gray-500" id="ccSearchMessage"></a>
+              </div>
+              <div class="matches-container nm-lr-10 m-tb-10 shadow">
+                <ul class="simple-list" id="ccMatchesList" style="display: none;"></ul>
+              </div>
+              <input type="text" class="circular-border-input" placeholder="Search const-centers..." id="ccSearchBox"
+                oninput="queryCostCenters()">
+              <script type="text/javascript">
+                var parentCC;
+                function linkCC(uid) {
+                  console.log(uid);
+                  parentCC = allCostCenters.find((cc) => cc.uid == uid);
+                  costCenter.parentUID = uid;
+                  var unlinkedCard = document.getElementById("ccUnlinkedCard");
+                  var linkedCardTitle = document.getElementById("ccLinkedCardTitle");
+                  var linkedCard = linkedCardTitle.parentElement.parentElement;
+                  linkedCardTitle.value = '( ' + parentCC.name + ' )';
+                  $(unlinkedCard).hide(300);
+                  $(linkedCard).show(300);
+                }
+
+                function unLinkCC() {
+                  parentCC = null;
+                  costCenter.parentUID = '';
+                  var unlinkedCard = document.getElementById("ccUnlinkedCard");
+                  var linkedCardTitle = document.getElementById("ccLinkedCardTitle");
+                  var linkedCard = linkedCardTitle.parentElement.parentElement;
+                  $(unlinkedCard).show(300);
+                  $(linkedCard).hide(300);
+                }
+
+                function queryCostCenters() {
+                  var searchBox = document.getElementById('ccSearchBox');
+                  var matchContainer = document.getElementById('ccMatchesList');
+                  var searchMessage = document.getElementById("ccSearchMessage");
+
+                  matchContainer.innerHTML = '';
+                  if (searchBox.value == '') {
+                    matchContainer.style.display = 'none';
+                    searchMessage.parentElement.style.display = 'none';
+                    return;
+                  }
+                  var query = searchBox.value.toLowerCase();
+                  var availableCards = 3;
+                  for (let i = 0; i < allCostCenters.length && availableCards > 0; i++) {
+                    const o = allCostCenters[i];
+                    if ((o.name.toLowerCase().includes(query) ||
+                      o.description.toLowerCase().includes(query)) &&
+                      o.uid != costCenter.parentUID) {
+                      var listElement = document.createElement('li');
+                      listElement.classList.add("li-separator");
+                      console.log(o.uid);
+                      listElement.innerHTML = generateCCMatchCard(o, "linkCC('" + o.uid + "')");
+                      matchContainer.appendChild(listElement);
+                      availableCards--;
+                    };
+                  }
+                  matchContainer.style.display = availableCards == 3 ? 'none' : 'block';
+                  searchMessage.parentElement.style.display = 'block';
+                  searchMessage.innerHTML = availableCards == 3 ? "No matches!" : 'Search Results';
+                }
+              </script>
+            </div>
+          </div>
+
+          <br>
+
+          <!-- Owners Card -->
+          <div class="card shadow">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
+              <h6 class="m-0 font-weight-bold">Owners</h6>
+              <i class="fas fa-user"></i>
+            </div>
+
+            <!-- Card Body-->
+            <div class="p-4">
+              <div style="max-height: 5cm;">
+                <div class="box-center text-center" id="ownersIcon"
+                  style="opacity: 0.25; color: black; max-width: 5cm;">
+                  <img src="vendor/fontawesome-free/svgs/solid/users.svg" style="max-height: 5cm; max-width: 5cm;">
+                  <div>No owners added</div>
+                </div>
+                <ul class="simple-list">
+                  <div id="ownersListElements"></div>
+                </ul>
+              </div>
+              <div class="text-center" style="display: none;">
+                <hr class="m-1">
+                <a class="small text-gray-500" id="ownersSearchMessage"></a>
+              </div>
+              <div class="matches-container nm-lr-10 m-tb-10 shadow">
+                <ul class="simple-list" id="ownerMatchesList" style="display: none;"></ul>
+              </div>
+              <input type="text" class="circular-border-input" placeholder="Search owners..." id="ownersListSearchBox"
+                oninput="queryOwner()">
+              <script type="text/javascript">
+                function addOwner(id) {
+                  var newOwner = allOwners.find((o) => o.id == id);
+                  costCenter.owners.push(newOwner);
+                  var elementsContainer = document.getElementById('ownersListElements');
+                  var element = document.createElement('li');
+                  element.classList.add('owner-list-item', 'li-separator');
+                  element.id = 'ole' + id;
+                  element.innerHTML = generateOwnerListElement(newOwner.name, "removeOwner(" + newOwner.id + ")");
+                  elementsContainer.appendChild(element);
+                  queryOwner();
+                  document.getElementById('ownersIcon').style.display = 'none';
+                }
+                function removeOwner(id) {
+                  var owner = costCenter.owners.find((o) => o.id == id);
+                  var index = costCenter.owners.indexOf(owner);
+                  var elementsContainer = document.getElementById('ownersListElements');
+                  if (index > -1) {
+                    costCenter.owners.splice(index, 1);
+                    document.getElementById('ole' + id).remove();
+                  }
+                  if (costCenter.owners.length == 0) {
+                    document.getElementById('ownersIcon').style.display = 'block';
+                  } else {
+                    document.getElementById('ownersIcon').style.display = 'none';
+                  }
+                }
+                function queryOwner() {
+                  var searchBox = document.getElementById('ownersListSearchBox');
+                  var matchContainer = document.getElementById('ownerMatchesList');
+                  var searchMessage = document.getElementById("ownersSearchMessage");
+                  matchContainer.innerHTML = '';
+                  if (searchBox.value == '') {
+                    matchContainer.style.display = 'none';
+                    searchMessage.parentElement.style.display = 'none';
+                    return;
+                  }
+                  var query = searchBox.value.toLowerCase();
+                  var availableCards = 3;
+                  for (let i = 0; i < allOwners.length && availableCards > 0; i++) {
+                    const o = allOwners[i];
+
+                    if ((o.name.toLowerCase().includes(query) ||
+                      o.phoneNumber.startsWith(query) ||
+                      o.flatNumber.startsWith(query)) &&
+                      !costCenter.owners.find((owner) => o.id == owner.id)) {
+                      var listElement = document.createElement('li');
+                      listElement.classList.add("li-separator");
+                      listElement.innerHTML = generateOwnerMatchCard(o, "addOwner(" + o.id + ")");
+                      matchContainer.appendChild(listElement);
+                      availableCards--;
+                    };
+                  }
+                  matchContainer.style.display = availableCards == 3 ? 'none' : 'block';
+                  searchMessage.parentElement.style.display = 'block';
+
+                  searchMessage.innerHTML = availableCards == 3 ? "No matches!" : 'Search Results';
+                }
+
+              </script>
+            </div>
+          </div>
+
+          <br>
+
+          <div class="card shadow">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-white"
+              style="background-color: #4e73df;">
+              <h6 class="m-0 font-weight-bold">Finish</h6>
+              <i class="fas fa-check"></i>
+            </div>
+            <div class="p-4">
+              <div class="text">Here you will recive error messages</div>
+              <a class="btn btn-primary text-white mt-4" style="width: 100%;" onclick="saveToDatabase()">
+                <span class="text">Submit</span>
+              </a>
+            </div>
           </div>
         </div>
-        <!-- /.container-fluid -->
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright © Your Website 2019</span>
+            </div>
+          </div>
+        </footer>
+        <!-- End of Footer -->
 
       </div>
-      <!-- End of Main Content -->
-
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright © Your Website 2019</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
 
     </div>
+    <!-- End of Page Wrapper -->
 
-  </div>
-  <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top" style="display: none;">
+      <i class="fas fa-angle-up"></i>
+    </a>
 
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top" style="display: none;">
-    <i class="fas fa-angle-up"></i>
-  </a>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true"></div>
 
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true"></div>
 
-  <!-- Search Cost-Center Modal-->
-  <div class="modal fade" id="searchCostCenterModal" tabindex="-1" role="dialog"
-    aria-labelledby="searchCostCenterModalLabel" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog" role="document" style="height: 50%;">
-      <div class="modal-content">
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h5 class="modal-title" id="searchCostCenterModalLabel">Cost-Center Search</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <!-- Modal Body -->
-        <div class="pl-4 pr-4">
-          <!-- Search Message -->
-          <div class="mt-1 mb-1">
-            <div class="text-center">
-              <a class="small text-gray-500" id="ownerMatchMessage"></a>
-            </div>
-          </div>
-          <!-- Search Bar -->
-          <div class="row">
-            <div class="col m-0 p-0">
-              <input type="text" class="circular-left" placeholder="Search cost-centers...">
-            </div>
-            <div class="col-auto m-0 p-0">
-              <div class="circular-right btn btn-primary">
-                <span class="icon text-white-50 box-center">
-                  <i class="fas fa-search"></i>
-                </span>
-              </div>
-            </div>
-          </div>
-          <hr class="mt-2">
-          <!-- <div class="sk-chase" style="width: 100%; padding: 10%;">
-            <div class="sk-chase-dot"></div>
-            <div class="sk-chase-dot"></div>
-            <div class="sk-chase-dot"></div>
-            <div class="sk-chase-dot"></div>
-            <div class="sk-chase-dot"></div>
-            <div class="sk-chase-dot"></div>
-          </div> -->
-          <script type="text/javascript">
-            function queryCostCenter() {
-              var searchBox = document.getElementById('ownersListSearchBox');
-              var matchContainer = document.getElementById('costCentersSearchResults');
-
-              matchContainer.innerHTML = '';
-              if (searchBox.value == '') {
-                matchContainer.style.display = 'none';
-                return;
-              }
-              var query = searchBox.value.toLowerCase();
-              var availableCards = 3;
-              for (let i = 0; i < allOwners.length && availableCards > 0; i++) {
-                const o = allOwners[i];
-
-                if ((o.name.toLowerCase().includes(query) ||
-                  o.phoneNumber.startsWith(query) ||
-                  o.flatNumber.startsWith(query)) &&
-                  !costCenter.owners.find((owner) => o.id == owner.id)) {
-                  var listElement = document.createElement('li');
-                  listElement.classList.add("li-separator");
-                  listElement.innerHTML = generateCCMatchCard(o, "addOwner(" + o.id + ")");
-                  matchContainer.appendChild(listElement);
-                  availableCards--;
-                };
-              }
-              matchContainer.style.display = availableCards == 3 ? 'none' : 'block';
-
-              document.getElementById("ownerMatchMessage").innerHTML = availableCards == 3 ? "No matches!" : '';
-            }
-
-            function selectParentCC(uuid, matchElementId){
-              var selectedCC = allCostCenters.find(uuid);
-              costCenter.parentUUID = uuid;
-              document.getElementById("selectParentCCBtn").value = selectedCC.name;
-            }
-
-            function fillMatchesList(){
-
-            }
-          </script>
-          <!-- Results -->
-          <ul>
-            <div class="matches-container" id="costCentersSearchResults"></div>
-          </ul>
-          <div class="text-center" id="ownersIcon" style="opacity: 0.25; color: black;">
-            <img src="vendor/fontawesome-free/svgs/solid/cash-register.svg" style="width: 35%;">
-            <div>Find a cost-center</div>
-          </div>
-        </div>
-        <!-- Modal Footer -->
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
-  <script src="/__/firebase/7.15.1/firebase-app.js"></script>
-  <!-- TODO: Add SDKs for Firebase products that you want to use
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="/__/firebase/7.15.1/firebase-app.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="/__/firebase/7.15.1/firebase-analytics.js"></script>
-  <script src="/__/firebase/7.15.1/firebase-auth.js"></script>
-  <script src="/__/firebase/7.15.1/firebase-database.js"></script>
-  <!-- Initialize Firebase -->
-  <script src="/__/firebase/init.js"></script>
+    <script src="/__/firebase/7.15.1/firebase-analytics.js"></script>
+    <script src="/__/firebase/7.15.1/firebase-auth.js"></script>
+    <script src="/__/firebase/7.15.1/firebase-database.js"></script>
+    <!-- Initialize Firebase -->
+    <script src="/__/firebase/init.js"></script>
 
-  <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
 
-  <!-- Load Shared Content -->
-  <script>
-    $(function () {
-      $("#topbar").load("sharedhtml/topbar.html");
-      $("#accordionSidebar").load("sharedhtml/sidebar.html");
-      $("#logoutModal").load("sharedhtml/logoutmodal.html");
-    });
-  </script>
-
-
-  <!-- role & authentication based content -->
-  <script src="js/pagecontent-auth-role.js"></script>
-  <script src="js/uuid-generator.js"></script>
+    <!-- Load Shared Content -->
+    <script>
+      $(function () {
+        $("#topbar").load("sharedhtml/topbar.html");
+        $("#accordionSidebar").load("sharedhtml/sidebar.html");
+        $("#logoutModal").load("sharedhtml/logoutmodal.html");
+      });
+    </script>
 
 
-  <script>
-    var allOwners = [];
-    var allCostCenters = [];
-    var db = firebase.database();
-    db.ref('owners').once('value', (snapshot) => {
-      if (snapshot.exists()) {
-        snapshot.forEach((childSnapshot) => {
-          allOwners.push(childSnapshot.val());
+    <!-- role & authentication based content -->
+    <script src="js/pagecontent-auth-role.js"></script>
+    <script src="js/uuid-generator.js"></script>
+
+
+    <script>
+      var allOwners = [];
+      var allCostCenters = [];
+      var db = firebase.database();
+      db.ref('owners').once('value', (snapshot) => {
+        if (snapshot.exists()) {
+          snapshot.forEach((childSnapshot) => {
+            allOwners.push(childSnapshot.val());
+          });
+        }
+      });
+      firebase.database().ref('costCenters').once('value', (snapshot) => {
+        if (snapshot.exists()) {
+          snapshot.forEach((childSnapshot) => {
+            var fullDataCC = childSnapshot.val();
+            fullDataCC.uid = childSnapshot.key;
+            allCostCenters.push(fullDataCC);
+            allCostCenters
+          });
+        }
+      });
+      var costCenter = {
+        title: 'untitled',
+        description: 'no description',
+        owners: [],
+        parentUID: '',
+        uid : ''
+      };
+      function saveToDatabase() {
+
+        // generate meta data
+        var timestamp = new Date().getTime();
+        // generate owners ids array
+        var ownerIDs = [];
+        costCenter.owners.forEach(o => {
+          ownerIDs.push(o.id);
+        });
+        // db-ready object
+        var readyCC = {
+          title: costCenter.title,
+          description: costCenter.description,
+          owners: ownerIDs,
+          creationTimestamp: timestamp,
+          lastEditTimestamp: timestamp,
+          parentUID: costCenter.parentUID
+        };
+        // generate id
+        var uid = generateUUID();
+        // push to database
+        console.log('costCenters/' + uid);
+        console.log(readyCC);
+        firebase.database().ref('costCenters/' + uid).set(readyCC).then((result) => {
+          window.location = "index.html";
+        }).catch((e) => {
+          console.error(e);
         });
       }
-    });
-    firebase.database().ref('costCenters').once('value', (snapshot) => {
-      if (snapshot.exists()) {
-        snapshot.forEach((childSnapshot) => {
-          allCostCenters.push(childSnapshot.val());
-        });
-      }
-    });
-    var costCenter = {
-      name: 'untitled',
-      description: 'no description',
-      owners: [],
-      creationTimestamp: '',
-      lastEditTimestamp: '',
-      parentUUID: ''
-    };
-  </script>
+    </script>
 </body>
 
 </html>

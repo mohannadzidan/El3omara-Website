@@ -27,6 +27,27 @@
         ".read": "auth.uid != null",
         ".write": "newData.parent().parent().child('roles').child(auth.uid).val() == 'admin'"
       }
+    },
+    "costCenters": {
+      "$uid": {
+        ".read": "auth.uid != null",
+        ".write": "(newData.parent().parent().child('roles').child(auth.uid).val() == 'admin' || newData.parent().parent().child('roles').child(auth.uid).val() == 'editor')"
+      },
+      ".read": "auth.uid != null"
+    },
+    "expenses": {
+      ".read": "auth.uid != null",
+      "$uid": {
+        ".read": "auth.uid != null",
+        ".write": "(newData.parent().parent().child('roles').child(auth.uid).val() == 'admin' || newData.parent().parent().child('roles').child(auth.uid).val() == 'editor')"
+      }
+    },
+    "payments": {
+      ".read": "auth.uid != null",
+      "$uid": {
+        ".read": "auth.uid != null",
+        ".write": "(newData.parent().parent().child('roles').child(auth.uid).val() == 'admin' || newData.parent().parent().child('roles').child(auth.uid).val() == 'editor')"
+      }
     }
   }
 }
