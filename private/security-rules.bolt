@@ -53,6 +53,15 @@ path /payments/{uid} {
     read() { isAuthenticatedAccess(auth) }
     write() { roleCheck(auth, "admin") || roleCheck(auth, "editor")}
 }
+
+path /announcements {
+    read() { isAuthenticatedAccess(auth) }
+}
+
+path /announcements/{uid} {
+    read() { isAuthenticatedAccess(auth) }
+    write() { roleCheck(auth, "admin") || roleCheck(auth, "editor")}
+}
 type User {
   email: String,
   displayName: String,

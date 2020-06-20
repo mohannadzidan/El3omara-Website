@@ -48,6 +48,13 @@
         ".read": "auth.uid != null",
         ".write": "(newData.parent().parent().child('roles').child(auth.uid).val() == 'admin' || newData.parent().parent().child('roles').child(auth.uid).val() == 'editor')"
       }
+    },
+    "announcements": {
+      ".read": "auth.uid != null",
+      "$uid": {
+        ".read": "auth.uid != null",
+        ".write": "(newData.parent().parent().child('roles').child(auth.uid).val() == 'admin' || newData.parent().parent().child('roles').child(auth.uid).val() == 'editor')"
+      }
     }
   }
 }

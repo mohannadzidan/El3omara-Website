@@ -1,50 +1,57 @@
+function roundPaymentAmount(n) {
+    var decimalPlaces = Math.round((n % 1) * 100);
+    return Math.floor(n) + '.' + (decimalPlaces == 0 ? '00' : decimalPlaces);
+}
 class DashboardHTML {
-    static generateExpenseCard(expenseId, title, totalCost, totalPayments, pendingPayments, onPaymentCallback) {
+    static generateAnnouncementCard(announcementId, title, totalCost, totalPayments, pendingPayments) {
         var htmlTemplate = `
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">${title}</h6>
+            <h6 class="m-0 font-weight-bold text-primary">
+            <i class="fas fa-flag text-primary mr-3">
+            </i>
+            ${title}
+            </h6>
             <div class="dropdown no-arrow">
-                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
+                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                    aria-labelledby="dropdownMenuLink" x-placement="bottom-end"
-                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-142px, 19px, 0px);">
-                    <div class="dropdown-header">Payments</div>
-                    <a class="dropdown-item" href="#" onclick="${onPaymentCallback}">Add Payment(s)</a>
+                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-142px, 18px, 0px);">
                     <div class="dropdown-header">Edit</div>
-                    <a class="dropdown-item" href="#">Schedule</a><a class="dropdown-item" onclick="Dashboard.dropExpense('${expenseId}')">Drop</a>
+                    <a class="dropdown-item" disabled>Schedule</a>
+                    <a class="dropdown-item text-danger" onclick="Dashboard.dropAnnouncement('${announcementId}')">Drop</a>
                 </div>
             </div>
         </div>
         <div class="card-body">
             <div class="row no-gutters align-items-center">
-                <div class="col mr-4">
+                <div class="col mr-5 mb-1">
                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Cost</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">${totalCost}LE</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <a>${roundPaymentAmount(totalCost)}</a>
+                        <a class="small">EGP</a>
+                    </div>
                 </div>
-    
-                <div class="col mr-4">
+                <div class="col mr-5 mb-1">
                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Payments</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">${totalPayments}LE</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <a>${roundPaymentAmount(totalPayments)}</a>
+                        <a class="small">EGP</a>
+                    </div>
                 </div>
-                <div class="col mr-4">
-                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Pending Payments</div>
+                <div class="col mr-5 mb-1">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Pending</div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">${pendingPayments}</div>
                 </div>
-                <div class="col-auto">
-                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                </div>
+                
             </div>
         </div>
-        `;
+            `
         var htmlElement = document.createElement('div');
-        htmlElement.classList.add('card', 'shadow', 'h-100', 'my-1', pendingPayments>0?'border-left-danger' : 'border-left-success');
+        htmlElement.classList.add('card', 'shadow', 'h-100', 'my-1', 'border-primary');
         htmlElement.innerHTML = htmlTemplate;
         return htmlElement;
     }
-    static generateCostCenterCard(title, description, containerId, costCenterId) {
+    static generateCostCenterCard(title, description, costCenterId) {
         var htmlTemplate = `
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -57,18 +64,49 @@ class DashboardHTML {
                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink"
                     x-placement="bottom-end"
                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(17px, 19px, 0px);">
-                    <div class="dropdown-header">Expenses</div>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addExpenseModal" onclick="DashboardHTML.onDropDownAddExpense('${costCenterId}')">Add Expense</a>
-                    <div class="dropdown-header">Owner</div>
-                    <a class="dropdown-item" href="#">Add Multi-Payment</a>
+                    <div class="dropdown-header">Announcements</div>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addAnnouncementModal" onclick="DashboardHTML.onAnnouncementDropdown_Add('${costCenterId}')">Announcement</a>
+                    <div class="dropdown-header">Payments</div>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addPaymentModal" onclick="DashboardHTML.onCostCenterDropdown_Payment('${costCenterId}')">Payment</a>
                     <div class="dropdown-header">Edit</div><a class="dropdown-item" href="#">Edit Details</a><a
-                        class="dropdown-item" href="#">Delete</a>
+                        class="dropdown-item text-danger" href="#">Delete</a>
                 </div>
             </div>
         </div>
         <!-- Card Body -->
-        <div class="card-body" id="${containerId}">
+        <div class="card-body" id="${costCenterId}">
+            <div class="card shadow-lg h-100 my-2">
+            <div class="card-body">
             <div type="text" class="mb-3">${description}</div>
+            <div class="row no-gutters align-items-center">
+                    <div class="col-auto mr-2">
+                        <div class="icon-circle bg-primary">
+                            <i class="fas fa-money-check-alt text-white"></i>
+                        </div>
+                    </div>
+                    <div class="col-auto mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Payments</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <a id="${costCenterId}_totalPayments">0.00</a>
+                            <a class="small">EGP</a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                </div>
+            <div id="${costCenterId}_announcementsContainer">
+                <div class="row px-2 align-items-center">
+                    <div class="sk-chase col-auto">
+                        <div class="sk-chase-dot"></div>
+                        <div class="sk-chase-dot"></div>
+                        <div class="sk-chase-dot"></div>
+                        <div class="sk-chase-dot"></div>
+                        <div class="sk-chase-dot"></div>
+                        <div class="sk-chase-dot"></div>
+                    </div>
+                    <h6 class="col">Loading Announcements...</h6>
+                </div>
+            </div>
         </div>
         `;
         var htmlElement = document.createElement('div');
@@ -76,108 +114,295 @@ class DashboardHTML {
         htmlElement.innerHTML = htmlTemplate;
         return htmlElement;
     }
-    static onDropDownAddExpense(costCenterId) {
-        var costCenter = Dashboard.allCostCenters.find((c) => c.uid == costCenterId);
-        document.getElementById('addExpenseModalTitle').innerHTML = 'Add Expense ( ' + costCenter.title + ' )';
-        document.getElementById('expenseModalAddBtn').onclick = () => DashboardHTML.onExpenseModalAdd(costCenterId);
+    static generateWarningListItem(msg) {
+        var htmlTemplate = `
+            <i class="fas fa-exclamation-circle text-warning"></i>
+            <a class="ml-1 font-weight-bold small">${msg}</a>
+        `;
+        var htmlElement = document.createElement('li');
+        htmlElement.classList.add('li-separator', 'm-1');
+        htmlElement.innerHTML = htmlTemplate;
+        return htmlElement;
     }
-    static onExpenseModalAdd(costCenterId) {
-        var expenseTitle = document.getElementById('expenseTitle').value;
-        var expenseDescription = document.getElementById('expenseDescription').value;
-        var expenseTotalCost = document.getElementById('expenseTotalCost').value;
-        Dashboard.addExpense(expenseTitle, expenseDescription, expenseTotalCost, costCenterId);
+    /**
+     * @returns {HTMLElement}
+     */
+    static generateCheckbox(continerType, label, id) {
+        var htmlTemplate = `
+            <input id="${id}" type="checkbox" name="checkbox"/>
+            <label for="${id}">${label}</label>
+        `;
+        var htmlElement = document.createElement(continerType);
+        htmlElement.classList.add('inputGroup');
+        htmlElement.innerHTML = htmlTemplate;
+        return htmlElement;
     }
+    static onAnnouncementDropdown_Add(costCenterId) {
+        var costCenter = Dashboard.allCostCenters.find((c) => c.id == costCenterId);
+        document.getElementById('addAnnouncementModalTitle').innerHTML = 'Announcement - ' + costCenter.title;
+        document.getElementById('announcementModalAddBtn').onclick = () => DashboardHTML.onAnnouncementModal_Add(costCenterId);
+    }
+    static onAnnouncementModal_Add(costCenterId) {
+        var announcementTitle = document.getElementById('announcementTitle').value;
+        var announcementTotalCost = document.getElementById('announcementTotalCost').value;
+        Dashboard.addAnnouncement(announcementTitle, announcementTotalCost, costCenterId);
+    }
+    static onCostCenterDropdown_Payment(costCenterId, checkedOwners = [], checkedAnnouncments = []) {
+        var costCenter = Dashboard.allCostCenters.find((cc) => cc.id == costCenterId);
+        document.getElementById('addPaymentModalTitle').innerHTML = 'Payment - ' + costCenter.title;
+        document.getElementById('paymentModalSubmitBtn').onclick = () => Dashboard.submitPayments(costCenter, checkedOwners, checkedAnnouncments);
+        var ownersList = document.getElementById('ownersList');
+        var announcementsList = document.getElementById('announcementsList');
+        var paymentDetailsList = document.getElementById('paymentDetailsList');
+        var paymentModal_totalPayment = document.getElementById('paymentModal_totalPayment');
+        ownersList.innerHTML = '';
+        announcementsList.innerHTML = '';
+        var costCenterOwners = Dashboard.allOwners.filter((o) => costCenter.owners.find((oId) => o.id == oId));
+        costCenterOwners.forEach((o) => {
+            var listElement = DashboardHTML.generateCheckbox('li', o.name, o.id + '_checkbox');
+            listElement.classList.add('li-separator');
+            var checkbox = listElement.children['checkbox'];
+            checkbox.oninput = () => {
+                if (checkbox.checked) {
+                    checkedOwners.push(o);
+                } else {
+                    checkedOwners = checkedOwners.filter((fo) => fo.id != o.id);
+                }
+                var res = Dashboard.calculateExpectedPayments(checkedOwners, checkedAnnouncments, costCenter.owners.length);
+                var res = Dashboard.calculateExpectedPayments(checkedOwners, checkedAnnouncments, costCenter.owners.length);
+                paymentDetailsList.innerHTML = '';
+                res.warningMessages.forEach((msg) => {
+                    paymentDetailsList.appendChild(DashboardHTML.generateWarningListItem(msg));
+                });
+                paymentModal_totalPayment.innerHTML = roundPaymentAmount(res.value);
+            };
+            ownersList.appendChild(listElement);
+        });
+        costCenter.announcements.forEach((a) => {
+            var listElement = DashboardHTML.generateCheckbox('li', a.title, a.id + '_checkbox');
+            listElement.classList.add('li-separator');
+            var checkbox = listElement.children['checkbox'];
+            checkbox.oninput = () => {
+                if (checkbox.checked) {
+                    checkedAnnouncments.push(a);
+                } else {
+                    checkedAnnouncments = checkedAnnouncments.filter((fa) => fa.id != a.id);
+                }
+                var res = Dashboard.calculateExpectedPayments(checkedOwners, checkedAnnouncments, costCenter.owners.length);
+                paymentDetailsList.innerHTML = '';
+                res.warningMessages.forEach((msg) => {
+                    paymentDetailsList.appendChild(DashboardHTML.generateWarningListItem(msg));
+                });
+
+                paymentModal_totalPayment.innerHTML = roundPaymentAmount(res.value);
+            };
+            announcementsList.appendChild(listElement);
+        });
+
+    }
+
+
+
 }
 
 class Dashboard {
-    static allExpenses = [];
     static allCostCenters = [];
-    /**
-     * Repeats some text a given number of times.
-     *
-     * @param {string} costCenterId
-     * @param {HTMLElement} container
-     */
-    static loadExpenses(costCenterId, container, ownersCount) {
-        var expenses = [];
-        firebase.database().ref('expenses')
-            .orderByChild('costCenterId')
-            .equalTo(costCenterId)
-            .once('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    snapshot.forEach((snapshotChild) => {
-                        var expense = snapshotChild.val();
-                        expense.uid = snapshotChild.key; // append additional data
-                        expenses.push(expense);
-                    });
-                }
-            }).then((res) => {
-                expenses.forEach((e) => {
-                    
-                    firebase.database().ref('payments/' + e.uid).once('value', (snapshot) => {
-                        var payments = [];
-                        var totalPayments = 0;
-                        if (snapshot.exists()) {
-                            snapshot.forEach((snapshotChild) => {
-                                var payment = snapshotChild.val();
-                                payments.push(payment);
-                                totalPayments += payment.amount;
-                            });
-                            
-                            e.payments = payments; // append additional data
-                        }
-                        container.appendChild(
-                            DashboardHTML.generateExpenseCard(e.uid, e.title, e.totalCost, totalPayments, ownersCount - payments.length, '')
-                        );
-                    });
-                });
-            });
-    }
-    static loadCostCenters(containerId) {
+    static allOwners = [];
+
+    static loadCostCenters() {
         Dashboard.allCostCenters = [];
-        var container = document.getElementById(containerId);
-        firebase.database().ref('costCenters')
+        return firebase.database().ref('costCenters')
             .once('value', (snapshot) => {
                 if (snapshot.exists()) {
                     snapshot.forEach((snapshotChild) => {
                         var costCenter = snapshotChild.val();
                         var costCenterId = snapshotChild.key;
-                        costCenter.uid = costCenterId;
+                        costCenter.id = costCenterId;
+                        costCenter.announcements = [];
+                        costCenter.payments = [];
                         Dashboard.allCostCenters.push(costCenter);
-                        var htmlCC = DashboardHTML.generateCostCenterCard(costCenter.title, costCenter.description, costCenterId, costCenterId);
-                        container.appendChild(htmlCC);
-                        var cardBody = document.getElementById(costCenterId);
-                        Dashboard.loadExpenses(costCenterId, cardBody, costCenter.owners.length);
+                        console.log('loaded costCenter:' + costCenter.id);
+                        Dashboard.loadAnnouncements(costCenter)
                     });
+                }
+            }).then((r) => {
+                Dashboard.allCostCenters.forEach((costCenter) => {
+                    costCenter.payments = [];
+                    firebase.database().ref('payments')
+                        .orderByChild('costCenterId')
+                        .equalTo(costCenter.id)
+                        .on('value', (snapshot) => {
+                            var totalPaymentsAmount = 0;
+                            costCenter.payments = [];
+                            snapshot.forEach((snapshotChild) => {
+                                var payment = snapshotChild.val();
+                                costCenter.payments.push(payment);
+                                totalPaymentsAmount += payment.amount;
+                            });
+                            // give each announcmenet its payments
+                            Dashboard.refreshAnnouncements(costCenter);
+                            document.getElementById(costCenter.id +'_totalPayments').innerHTML=roundPaymentAmount(totalPaymentsAmount);
+
+                        });
+                });
+            });
+    }
+    static loadAnnouncements(costCenter) {
+        firebase.database().ref('announcements')
+            .orderByChild('costCenterId')
+            .equalTo(costCenter.id)
+            .on('value', (snapshot) => {
+                costCenter.announcements = [];
+                if (snapshot.exists()) {
+                    snapshot.forEach((snapshotChild) => {
+                        var announcement = snapshotChild.val();
+                        announcement.id = snapshotChild.key; // append additional data
+                        costCenter.announcements.push(announcement);
+                    });
+                    console.log('loaded announcements:' + costCenter.id);
+                    Dashboard.refreshAnnouncements(costCenter);
                 }
             });
     }
-
-    static addExpense(title, description, totalCost, costCenterId) {
+    /**
+     * 
+     * @param {string} title 
+     * @param {string} description 
+     * @param {numner} totalCost 
+     * @param {string} costCenterId 
+     */
+    static addAnnouncement(title, totalCost, costCenterId) {
         var timestamp = new Date().getTime();
-        var expenseId = generateUUID();
-        var expense = {
+        var announcementId = generateUUID();
+        var announcement = {
             title: title,
-            description: description,
             totalCost: totalCost,
             costCenterId: costCenterId,
             creationTimestamp: timestamp,
         }
-        console.log(expense);
-        var promise = firebase.database().ref('expenses/' + expenseId).set(expense).then((r) =>{
-            return firebase.database().ref('costCenters/' + costCenterId).update({creationTimestamp: timestamp});
+        console.log(announcement);
+        return firebase.database().ref('announcements/' + announcementId).set(announcement).then((r) => {
+            return firebase.database().ref('costCenters/' + costCenterId).update({ creationTimestamp: timestamp });
         });
-        return promise;
+    }
+    static dropAnnouncement(announcementId) {
+        return firebase.database().ref('announcements/' + announcementId).remove().catch((err) => console.error(err));
     }
 
-    static dropExpense(expenseId){
-        firebase.database().ref('expenses/' + expenseId).remove();
+    static refreshAnnouncements(costCenter) {
+        costCenter.announcements.forEach((announcment) => {
+            announcment.payments = costCenter.payments.filter((payment) => payment.announcementId == announcment.id);
+            announcment.totalPayments = 0;
+            announcment.payments.forEach((payment) => announcment.totalPayments += payment.amount);
+            console.log('announcment.totalPayments:'+announcment.totalPayments);
+            console.log('announcment.payments.length:'+announcment.payments.length);
+        });
+        Dashboard.renderAnnouncements(costCenter);
+    }
+    /**
+     * 
+     * @param {HTMLElement} container 
+     */
+    static renderCostCenters(container) {
+        container.innerHTML = '';
+        Dashboard.allCostCenters.forEach((cc) => {
+            var htmlCC = DashboardHTML.generateCostCenterCard(cc.title, cc.description, cc.id);
+            container.appendChild(htmlCC);
+        });
+    }
+
+
+    static renderAnnouncements(costCenter) {
+        var cardBody = document.getElementById(costCenter.id + '_announcementsContainer');
+        cardBody.innerHTML = '';
+        Dashboard.sortAnnouncements(costCenter);
+        costCenter.announcements.forEach((e) => {
+            var announcementCard = DashboardHTML.generateAnnouncementCard(e.id, e.title, e.totalCost, e.totalPayments, costCenter.owners.length - e.payments.length);
+            console.log('generated announcement card:' + announcementCard);
+            cardBody.appendChild(announcementCard);
+        });
+    }
+    static sortAnnouncements(costCenter) {
         /**
-         * should also remove all payments
-         * will be implemented after payments
+         * @type array
          */
-        //firebase.database().ref('payments/' + expenseId).remove();
+        var announcements = costCenter.announcements;
+        // find announcement
+        announcements.sort((a, b) => {
+            var aLastPaymentTimestamp = Dashboard.getLastPaymentTimestamp(a);
+            var bLastPaymentTimestamp = Dashboard.getLastPaymentTimestamp(b);
+            var aTimestamp = Math.max(a.creationTimestamp, aLastPaymentTimestamp);
+            var bTimestamp = Math.max(b.creationTimestamp, bLastPaymentTimestamp);
+            return aTimestamp > bTimestamp ? -1 : aTimestamp == bTimestamp ? 0 : 1;
+        });
+        var completeAnnouncements = announcements.filter((e) => e.payments.length == costCenter.owners.length);
+        var dueAnnouncements = announcements.filter((e) => e.payments.length != costCenter.owners.length);
+        costCenter.announcements = dueAnnouncements.concat(completeAnnouncements);
+    }
+    /**
+     * @returns {number}
+     */
+    static getLastPaymentTimestamp(announcement) {
+        /**
+         * @type array
+         */
+        var payments = announcement.payments;
+        if (payments == null || payments.length == 0) return -1;
+        var lastPayment = payments[0];
+        payments.forEach((payment) => {
+            if (payment.creationTimestamp > lastPayment.creationTimestamp) {
+                lastPayment = payment;
+            }
+        });
+        return lastPayment.creationTimestamp;
+    }
+    static calculateExpectedPayments(owners, announcements, targetedOwnersCount) {
+        var result = {
+            warningMessages: [],
+            errorMessages: [],
+            value: 0,
+            validPayments: []
+        };
+        announcements.forEach((announcement) => {
+            const paymentPerOwner = announcement.totalCost / targetedOwnersCount;
+            owners.forEach((owner) => {
+                var paidAlready = announcement.payments.find((p) => p.ownerId == owner.id) != null;
+                if (paidAlready) {
+                    var msg = 'A payment form \'' + owner.name + '\' has been ignored, since this owner already paid for -' + announcement.title + '-';
+                    result.warningMessages.push(msg);
+                } else {
+                    result.value += paymentPerOwner;
+                    result.validPayments.push({
+                        amount: paymentPerOwner,
+                        reason: announcement.title,
+                        costCenterId: announcement.costCenterId,
+                        ownerId: owner.id,
+                        announcementId: announcement.id
+                    });
+                }
+            });
+        });
+        return result;
+    }
+
+    static submitPayments(costCenter, owners, announcments) {
+        var result = Dashboard.calculateExpectedPayments(owners, announcments, costCenter.owners.length);
+        if (result.errorMessages.length > 0) {
+            alert('this payment has critical errors and cannot be submitted!');
+            return;
+        }
+        result.validPayments.forEach((payment) => {
+            var uid = generateUUID();
+            firebase.database().ref('payments/' + uid).set(payment);
+        });
+
     }
 }
-
-Dashboard.loadCostCenters('costCentersContainer');
+firebase.database().ref('owners').once('value', (snapshot) => {
+    snapshot.forEach(child => {
+        var owner = child.val();
+        owner.id = child.key; // apend owner id
+        Dashboard.allOwners.push(owner);
+    });
+});
+Dashboard.loadCostCenters().then((r) => Dashboard.renderCostCenters(document.getElementById("costCentersContainer")));

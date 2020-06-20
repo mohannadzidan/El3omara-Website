@@ -19,7 +19,6 @@
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
-  <link href="css/sk-chase-loader.css" rel="stylesheet">
 
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
@@ -386,7 +385,7 @@
                   var element = document.createElement('li');
                   element.classList.add('owner-list-item', 'li-separator');
                   element.id = 'ole' + id;
-                  element.innerHTML = generateOwnerListElement(newOwner.name, "removeOwner(" + newOwner.id + ")");
+                  element.innerHTML = generateOwnerListElement(newOwner.name, 'ban',"removeOwner(" + newOwner.id + ")");
                   elementsContainer.appendChild(element);
                   queryOwner();
                   document.getElementById('ownersIcon').style.display = 'none';
