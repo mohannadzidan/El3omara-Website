@@ -1,0 +1,17 @@
+ul.simple-list {
+    list-style-type: none;
+    max-height: inherit;
+    overflow: auto;
+  }
+ 
+li.li-separator {
+border-bottom: 1px solid #cfcfcf;
+}
+
+li.li-separator:last-child {
+border-bottom: 0;
+}
+
+li.li-separator:only-child {
+border-bottom: 0;
+}

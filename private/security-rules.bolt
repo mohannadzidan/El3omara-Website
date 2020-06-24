@@ -39,6 +39,7 @@ path /costCenters {
 }
 path /expenses {
     read() { isAuthenticatedAccess(auth) }
+    index() {["costCenterId"]}
 }
 path /expenses/{uid} {
     read() { isAuthenticatedAccess(auth) }
@@ -47,6 +48,7 @@ path /expenses/{uid} {
 
 path /payments {
     read() { isAuthenticatedAccess(auth) }
+    index() {["costCenterId"]}
 }
 
 path /payments/{uid} {
@@ -56,6 +58,7 @@ path /payments/{uid} {
 
 path /announcements {
     read() { isAuthenticatedAccess(auth) }
+    index() {["costCenterId"]}
 }
 
 path /announcements/{uid} {

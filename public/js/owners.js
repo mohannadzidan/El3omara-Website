@@ -39,8 +39,7 @@ function removeOwner(id) {
 }
 
 function addOwner(formData) {
-    var date = new Date();
-    var id = date.getTime();
+    var id = generateUUID();
     var database = firebase.database();
     var isSafe = true;
     if (formData.name == null || formData.name == "" ||
@@ -72,7 +71,6 @@ function addOwner(formData) {
             name: formData.name,
             flatNumber: formData.flatNumber,
             phoneNumber: formData.phoneNumber,
-            id: id
         });
 }
 function showAddOwnerForm() {
@@ -96,7 +94,6 @@ function showEditOwnerForm(id) {
             name: formData.name,
             flatNumber: formData.flatNumber,
             phoneNumber: formData.phoneNumber,
-            id: id
         });
     }
 

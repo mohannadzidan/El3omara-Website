@@ -20,6 +20,9 @@
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
   <link href="css/sk-chase-loader.css" rel="stylesheet">
   <link href="css/custom-checkbox.css" rel="stylesheet">
+  <link href="css/simple-lists.css" rel="stylesheet">
+  <link href="css/max-dim.css" rel="stylesheet">
+  <link href="css/floating-button.css" rel="stylesheet">
 
 
   <!-- Bootstrap core JavaScript-->
@@ -35,11 +38,31 @@
 
 <body id="page-top" style="display: none">
 
+  <style>
+    .auto-hide {
+      display: block;
+    }
+
+    .auto-hide:empty {
+      display: none;
+    }
+
+    .show-if-only-child {
+      display: none;
+    }
+
+    .show-if-only-child:only-child {
+      display: block;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
   <!-- Page Wrapper -->
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"></ul>
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar"></ul>
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -53,7 +76,14 @@
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid" id="costCentersContainer">
+        <div class="container-fluid" style="max-width: 20cm;" id="costCentersContainer">
+          <a href="#" class="btn btn-primary btn-icon-split my-2" data-toggle="modal" data-target="#expenseModal"
+            onclick="Dashboard.onButton_AddExpense()">
+            <span class="icon text-white-50">
+              <i class="fas fa-file-invoice-dollar text-white-50"></i>
+            </span>
+            <span class="text">Add Expense</span>
+          </a>
         </div>
         <!-- /.container-fluid -->
 
@@ -81,6 +111,7 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
+
   <!-- Logout Modal-->
   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -88,12 +119,12 @@
 
 
   <!-- Add Announcement Modal -->
-  <div class="modal fade" id="addAnnouncementModal" tabindex="-1" role="dialog"
-    aria-labelledby="addAnnouncementModalTitle" aria-modal="true" style="display: none;">
+  <div class="modal fade" id="announcementModal" tabindex="-1" role="dialog" aria-labelledby="announcementModalTitle"
+    aria-modal="true" style="display: none;">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addAnnouncementModalTitle"></h5>
+          <h5 class="modal-title" id="announcementModalTitle"></h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
@@ -105,10 +136,9 @@
               <h6>Title:</h6>
             </div>
             <div class="col p-1">
-              <input class="form-control" placeholder="Enter title.." id="announcementTitle">
+              <input class="form-control" placeholder="Enter title.." id="announcementModal_Title">
             </div>
           </div>
-
           <!-- Description -->
           <div class="form-group row mb-0">
             <div class="col-sm-3 p-1">
@@ -116,54 +146,79 @@
             </div>
             <div class="col p-1">
               <input class="form-control" type="number" min="0" placeholder="Enter total cost.."
-                id="announcementTotalCost"></textarea>
+                id="announcementModal_TotalCost"></textarea>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <button class="btn btn-primary" id="announcementModalAddBtn" data-dismiss="modal">Add</button>
+          <button class="btn btn-primary" id="announcementModal_SubmitBtn" data-dismiss="modal">Submit</button>
         </div>
       </div>
     </div>
   </div>
 
-  <style>
-    ul.simple-list {
-      list-style-type: none;
-      max-height: inherit;
-      overflow: auto;
-    }
-
-    .auto-hide {
-      display: block;
-    }
-
-    .auto-hide:empty {
-      display: none;
-    }
-
-    li.li-separator {
-      border-bottom: 1px solid #cfcfcf;
-    }
-
-    li.li-separator:last-child {
-      border-bottom: 0;
-    }
-
-    li.li-separator:only-child {
-      border-bottom: 0;
-    }
-
-    li.li-slidedown-anim{}
-  </style>
-  <!-- Add Payment Modal -->
-  <div class="modal fade" id="addPaymentModal" tabindex="-1" role="dialog" aria-labelledby="addPaymentModalTitle"
+  <!-- Expense Modal -->
+  <div class="modal fade" id="expenseModal" tabindex="-1" role="dialog" aria-labelledby="expenseModalTitle"
     aria-modal="true" style="display: none;">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addPaymentModalTitle"></h5>
+          <h5 class="modal-title" id="expenseModalTitle">Expense</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="p-4">
+          <div class="form-group row">
+            <div class="col-sm-3 p-1">
+              <h6>Title:</h6>
+            </div>
+            <div class="col p-1">
+              <input class="form-control" placeholder="Enter title.." id="expenseModal_Title">
+            </div>
+          </div>
+          <div class="form-group row mb-0">
+            <div class="col-sm-3 p-1">
+              <h6>Total Expense:</h6>
+            </div>
+            <div class="col p-1">
+              <input class="form-control" type="number" min="0" placeholder="Enter total expesnse.."
+                id="expenseModal_TotalExpense">
+            </div>
+          </div>
+          <div class="p-1 d-flex flex-row align-items-center justify-content-between text-primary">
+            <h6 class="m-0 font-weight-bold">Cost-Centers</h6>
+            <i class="fas fa-pen"></i>
+          </div>
+          <hr class="m-1">
+          <div class="card border-primary px-0">
+            <ul class="simple-list my-1 py-1 px-2" id="expenseModal_CostCentersList" style="height: 3cm;"></ul>
+          </div>
+          <hr class="m-1">
+          <div class="px-1" id="expenseModal_PercentagesContainer">
+          </div>
+          <hr class="m-1">
+          <ul class="simple-list card p-1 auto-hide" id="expenseModal_DetailsList"></ul>
+          </ul>
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary" id="expenseModal_SubmitBtn" data-dismiss="modal">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Add Payment Modal -->
+  <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalTitle"
+    aria-modal="true" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="paymentModalTitle"></h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
@@ -175,7 +230,7 @@
           </div>
           <hr class="m-1">
           <div class="card border-primary px-0">
-            <ul class="simple-list my-1 py-1 px-2" id="ownersList" style="height: 3cm;"></ul>
+            <ul class="simple-list my-1 py-1 px-2" id="paymentModalOwnersList" style="height: 3cm;"></ul>
           </div>
           <br>
           <div class="p-1 d-flex flex-row align-items-center justify-content-between text-primary">
@@ -184,15 +239,15 @@
           </div>
           <hr class="m-1">
           <div class="card border-primary px-0">
-            <ul class="simple-list my-1 py-1 px-2" id="announcementsList" style="height: 3cm;"></ul>
+            <ul class="simple-list my-1 py-1 px-2" id="paymentModalAnnouncementsList" style="height: 3cm;"></ul>
           </div>
           <hr class="m-1">
-          <ul class="simple-list card border-left-warning p-1 auto-hide" id="paymentDetailsList"></ul>
+          <ul class="simple-list card border-left-warning p-1 auto-hide" id="paymentModalDetailsList"></ul>
           </ul>
           <div class="text-center my-2">
             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Payments</div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
-              <a id="paymentModal_totalPayment">0.00</a>
+              <a id="paymentModalTotalPayments">0.00</a>
               <a class="small">EGP</a>
             </div>
           </div>
@@ -203,35 +258,111 @@
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="/__/firebase/7.15.1/firebase-app.js"></script>
-    <!-- TODO: Add SDKs for Firebase products that you want to use
+  <!-- Edit Cost-Center Details Modal -->
+  <div class="modal fade" id="editCostCenterDetailsModal" tabindex="-1" role="dialog"
+    aria-labelledby="editCostCenterDetailsModalTitle" aria-modal="true" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editCostCenterDetailsModalTitle">Edit Details</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="p-4">
+          <!-- Details -->
+          <div class="card">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
+              <h6 class="m-0 font-weight-bold">Details</h6>
+              <i class="fas fa-pen"></i>
+            </div>
+            <div class="card-body">
+              <!-- Title -->
+              <div class="form-group row">
+                <div class="col-sm-3 p-1">
+                  <h6>Title:</h6>
+                </div>
+                <div class="col p-1">
+                  <input class="form-control" placeholder="Enter title.." id="editCostCenterDetailsModal_Title"
+                    oninput="onTitleChange()">
+                </div>
+              </div>
+              <!-- Description -->
+              <div class="form-group row mb-0">
+                <div class="col-sm-3 p-1">
+                  <h6>Description:</h6>
+                </div>
+                <div class="col p-1">
+                  <textarea class="form-control" placeholder="Enter description.."
+                    id="editCostCenterDetailsModal_Description"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <!-- Parent -->
+          <div class="card">
+
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
+              <h6 class="m-0 font-weight-bold">Parent</h6>
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="max-h-5">
+              <ul class="simple-list m-0 py-2 px-0" id="editCostCenterDetailsModal_CostCentersList"></ul>
+            </div>
+          </div>
+          <br>
+          <!-- Owners -->
+          <div class="card">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
+              <h6 class="m-0 font-weight-bold">Owners</h6>
+              <i class="fas fa-user"></i>
+            </div>
+            <!-- Card Body-->
+            <div class="max-h-5">
+              <ul class="simple-list m-0 py-2 px-0" id="editCostCenterDetailsModal_OwnersList"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger" style="position: absolute; left: 12px;"
+            id="editCostCenterDetailsModalDeleteBtn">
+            <i class="fas fa-trash-alt mr-1"></i>
+            <a>Delete</a>
+          </button> <button class="btn btn-secondary" type="button" data-dismiss="modal">Discard</button>
+          <button class="btn btn-primary" id="editCostCenterDetailsModalSaveBtn" data-dismiss="modal">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="/__/firebase/7.15.1/firebase-app.js"></script>
+  <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="/__/firebase/7.15.1/firebase-analytics.js"></script>
-    <script src="/__/firebase/7.15.1/firebase-auth.js"></script>
-    <script src="/__/firebase/7.15.1/firebase-database.js"></script>
-    <!-- Initialize Firebase -->
-    <script src="/__/firebase/init.js"></script>
+  <script src="/__/firebase/7.15.1/firebase-analytics.js"></script>
+  <script src="/__/firebase/7.15.1/firebase-auth.js"></script>
+  <script src="/__/firebase/7.15.1/firebase-database.js"></script>
+  <!-- Initialize Firebase -->
+  <script src="/__/firebase/init.js"></script>
 
-    <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/jquery/jquery.min.js"></script>
 
-    <!-- Load Shared Content -->
-    <script>
-      $(function () {
-        $("#topbar").load("sharedhtml/topbar.html");
-        $("#accordionSidebar").load("sharedhtml/sidebar.html");
-        $("#logoutModal").load("sharedhtml/logoutmodal.html");
-      });
-    </script>
+  <!-- Load Shared Content -->
+  <script src="js/shared-content.js"></script>
 
-    <!-- role & authentication based content -->
-    <script src="js/pagecontent-auth-role.js"></script>
 
-    <!-- Page Level Scripts -->
-    <script src="js/uuid-generator.js"></script>
-    <script src="js/dashboard.js"></script>
+  <!-- role & authentication based content -->
+  <script src="js/pagecontent-auth-role.js"></script>
+
+  <!-- Page Level Scripts -->
+  <script src="js/uuid-generator.js"></script>
+  <script src="js/dashboard.js"></script>
 
 
 

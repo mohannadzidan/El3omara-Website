@@ -1,0 +1,79 @@
+<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <div>
+        <a class="m-0 font-weight-bold text-primary" id="${this.id}_title"></a>
+        <a class="text-secondary small" id="${this.id}_parentTitle"></a>
+    </div>
+    <div class="dropdown no-arrow">
+        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink"
+            x-placement="bottom-end"
+            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(17px, 19px, 0px);">
+            <div class="dropdown-header">View</div>
+            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logsModal"
+                id="${this.id}_dropdownViewLogs">Logs</a>
+            <div class="dropdown-header">Add</div>
+            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#announcementModal"
+                id="${this.id}_dropdownAddAnnouncement">Announcement</a>
+            <a class="dropdown-item" href="#costCenterId" data-toggle="modal" data-target="#paymentModal"
+                id="${this.id}_dropdownAddPayment">Payment</a>
+            <div class="dropdown-header">Edit</div>
+            <a class="dropdown-item" href="#costCenterId" data-toggle="modal" data-target="#editCostCenterDetailsModal"
+                id="${this.id}_dropdownEditDetails">Edit Details</a>
+        </div>
+    </div>
+</div>
+<!-- Card Body -->
+<div class="card-body">
+    <div class="card shadow-lg h-100 my-2">
+        <div class="card-body">
+            <div type="text" class="mb-3" id="${this.id}_description"></div>
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="row no-gutters align-items-center">
+                    <div class="col-auto mr-2">
+                        <div class="icon-circle bg-primary">
+                            <i class="fas fa-money-check-alt text-white"></i>
+                        </div>
+                    </div>
+                    <div class="col-auto mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Payments</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <a id="${this.id_totalPayments"></a>
+                            <a class="small">EGP</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row no-gutters align-items-center">
+                    <div class="col-auto mr-2">
+                        <div class="icon-circle bg-warning">
+                            <i class="fas fa-money-check-alt text-white"></i>
+                        </div>
+                    </div>
+                    <div class="col-auto mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Children Payments</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <a id="${this.id}_totalChildrenPayments"></a>
+                            <a class="small">EGP</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div id="${this.id}_announcementsContainer">
+        <div class="row px-2 align-items-center show-if-only-child">
+            <div class="sk-chase col-auto">
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+            </div>
+            <h6 class="col">Loading Announcements...</h6>
+        </div>
+    </div>
+</div>

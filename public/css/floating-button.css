@@ -1,0 +1,10 @@
+.floating-button{
+    position: fixed;
+    left: 1rem;
+    bottom: 1rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 100%;
+    background-color: #4e73df;
+    box-shadow: 7px 6px 10px -4px rgba(0,0,0,0.75);
+}

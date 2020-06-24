@@ -37,6 +37,9 @@
     },
     "expenses": {
       ".read": "auth.uid != null",
+      ".indexOn": [
+        "costCenterId"
+      ],
       "$uid": {
         ".read": "auth.uid != null",
         ".write": "(newData.parent().parent().child('roles').child(auth.uid).val() == 'admin' || newData.parent().parent().child('roles').child(auth.uid).val() == 'editor')"
@@ -44,6 +47,9 @@
     },
     "payments": {
       ".read": "auth.uid != null",
+      ".indexOn": [
+        "costCenterId"
+      ],
       "$uid": {
         ".read": "auth.uid != null",
         ".write": "(newData.parent().parent().child('roles').child(auth.uid).val() == 'admin' || newData.parent().parent().child('roles').child(auth.uid).val() == 'editor')"
@@ -51,6 +57,9 @@
     },
     "announcements": {
       ".read": "auth.uid != null",
+      ".indexOn": [
+        "costCenterId"
+      ],
       "$uid": {
         ".read": "auth.uid != null",
         ".write": "(newData.parent().parent().child('roles').child(auth.uid).val() == 'admin' || newData.parent().parent().child('roles').child(auth.uid).val() == 'editor')"
