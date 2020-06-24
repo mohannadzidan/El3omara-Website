@@ -355,7 +355,8 @@ class CostCenter {
             dropdownAddPayment: null,
             dropdownAddExpense: null,
             dropdownAddAnnouncement: null,
-            dropdownEditDetails: null
+            dropdownEditDetails: null,
+            dropdownViewLogs: null
         };
         /**
          * @type {Announcement[]}
@@ -542,6 +543,7 @@ class CostCenter {
         this.htmlElements.dropdownAddAnnouncement.onclick = () => this.onDropdown_AddAnnouncement();
         this.htmlElements.dropdownAddPayment.onclick = () => this.onDropdown_AddPayment();
         this.htmlElements.dropdownEditDetails.onclick = () => this.onDropdown_EditDetails();
+        this.htmlElements.dropdownViewLogs.onclick = () => this.onDropdown_ViewLogs();
 
     }
     removeFromContainer() {
@@ -647,7 +649,7 @@ class CostCenter {
             costCenterId: this.id,
             ownerId: ownerId,
             amount: amount,
-            reson: announcement.title,
+            reason: announcement.title,
             timestamp: timestamp
         }).then(() => {
             firebase.database().ref('announcements/' + announcementId + '/payments/').push().set(paymentId);
@@ -844,6 +846,29 @@ class CostCenter {
 
     }
 
+    onDropdown_ViewLogs(){
+        var logs = [];
+        
+        this.payments.forEach(p => {
+            logs.push({
+                amount: roundCurrency(p.amount),
+                reason: p.reason,
+                timestamp: Dashboard.formatDate(p.timestamp),
+                owner: Dashboard.findOwnerById(p.ownerId).name
+            });
+        });
+        var table = $('#logsTable').DataTable({
+            destroy: true,
+            data: logs,
+            columns: [
+                { data: 'amount' },
+                { data: 'reason' },
+                { data: 'owner' },
+                { data: 'timestamp'},
+                { data: 'amount' }
+            ]
+        });
+    }
     onSubmit_Annouuncement() {
         var title = document.getElementById('announcementModal_Title').value;
         var totalCost = document.getElementById('announcementModal_TotalCost').value;
@@ -971,10 +996,10 @@ class Dashboard {
             var totalExpense = modalTotalExpense.value;
             if (title.length == 0 || title.length > 30 || isWhiteSpace(title)) {
                 isOk = false;
-                modalDetailsList.appendChild(Generator.generateErrorListItem('expense title is invalid!'));
+                modalDetailsList.appendChild(Generator.generateErrorListItem('expense title is invalid'));
             }
             if (totalExpense <= 0) {
-                modalDetailsList.appendChild(Generator.generateErrorListItem('total expense is very small!'));
+                modalDetailsList.appendChild(Generator.generateErrorListItem('total expense is very small'));
             }
             var checkedCostCenters = [];
             var checkboxes = document.getElementsByName('ExpenseCostCenterCheckbox');
@@ -1015,7 +1040,7 @@ class Dashboard {
                 var lastPercentageValue = 100 - sumArray(percentages, percentages.length - 1);
                 if (lastPercentageValue < 0) {
                     isOk = false;
-                    modalDetailsList.appendChild(Generator.generateErrorListItem('percentages is incorrect!'));
+                    modalDetailsList.appendChild(Generator.generateErrorListItem('incorrect percentages'));
                 }
                 percentages[percentages.length - 1].input.value = lastPercentageValue;
                 checkedCostCenters.forEach(costCenter => {
@@ -1023,7 +1048,7 @@ class Dashboard {
                     var costCenterExpense = modalTotalExpense.value * percentage / 100;
                     if (costCenterExpense > costCenter.calculateTotalSavings()) {
                         isOk = false;
-                        modalDetailsList.appendChild(Generator.generateErrorListItem(costCenter.title + ': savings do not cover the expense!'));
+                        modalDetailsList.appendChild(Generator.generateErrorListItem(costCenter.title + ': savings do not cover the expense'));
                     }
                 });
             }
@@ -1073,7 +1098,7 @@ Dashboard.loadOwners();
             return;
         }
         if (ownersLoadWaitTimes++ >= 100) {
-            console.error('owners load timeout!');
+            console.error('owners load timeout');
             clearInterval(ownersLoadWaitInterval);
         }
     }, 100);

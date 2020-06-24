@@ -1,0 +1,13 @@
+.small-table, th, td {
+    border: 1px solid silver;
+    font-weight: 100;
+    font-size: 12;
+    padding:3px;
+    text-align: center;
+    overflow: auto;
+
+}
+.small-table{
+    width: 100%;
+    overflow: hidden;
+}

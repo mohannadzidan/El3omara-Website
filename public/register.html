@@ -22,8 +22,16 @@
 
 </head>
 
-<body class="bg-gradient-primary" style="display: none;">
+<body class="bg-gradient-primary">
   <script src="locale/multilang.js"></script>
+
+  <link href="css/splash-screen.css" rel="stylesheet">
+  <div class="splash-screen" id="splashScreen">
+    <div class="splash-screen-content">
+      <div class="splash-spinner"></div>
+      <div class="splash-text">El3OMARA</div>
+    </div>
+  </div>
 
   <div class="container">
 
@@ -42,10 +50,10 @@
                     <div class="card-body" id="errorMessageCard"></div>
                   </div>
                 </div>
-                  <div class="form-group">
-                    <input type="text" class="form-control form-control-user" id="registerDisplayName"
-                      placeholder="Display Name">
-                  </div>
+                <div class="form-group">
+                  <input type="text" class="form-control form-control-user" id="registerDisplayName"
+                    placeholder="Display Name">
+                </div>
                 <div class="form-group">
                   <input type="email" class="form-control form-control-user" id="registerEmail"
                     placeholder="Email Address">

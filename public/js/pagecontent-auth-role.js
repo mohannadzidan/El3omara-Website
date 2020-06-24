@@ -34,7 +34,8 @@ firebase.auth().onAuthStateChanged(function (user) {
         }).catch(function (error) {
             console.error(error.code + ": " + error.message);
         });
-        document.body.style.display = "block"; // show loaded page
+
+        document.getElementById("splashScreen").style.display = "none"; // show loaded page
     }
     else {
         window.location = '/login.html';
