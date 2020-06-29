@@ -2,7 +2,13 @@ function roundCurrency(n) {
     var decimalPlaces = Math.round((n % 1) * 100);
     return Math.floor(n) + '.' + (decimalPlaces == 0 ? '00' : decimalPlaces);
 }
-
+function isArrayIdentical(a, b) {
+    if (a.length != b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true;
+}
 function isWhiteSpace(str) {
     var matches = str.match(/\s+/gi);
     if (matches == null || matches.length != 1) return false;
@@ -65,7 +71,7 @@ class Generator {
         return htmlElement;
     }
 
-    static generatePercentageField(title, value = 0) {
+    static generateField(title, value = 0, tail) {
         var firstCol = document.createElement('div');
         firstCol.classList.add('col');
         var secondCol = document.createElement('div');
@@ -79,7 +85,7 @@ class Generator {
         label.innerHTML = title;
         var percentage = document.createElement('a');
         percentage.classList.add('ml-1', 'small');
-        percentage.innerHTML = '%';
+        percentage.innerHTML = tail;
         firstCol.appendChild(label);
         secondCol.appendChild(input);
         secondCol.appendChild(percentage);
@@ -150,9 +156,25 @@ class Announcement {
         this.htmlElements.dropdownDrop.onclick = () => {
             if (this.payments.length >= Dashboard.findCostCenterById(this.costCenterId).owners.length) {
                 firebase.database().ref('announcements/' + this.id).remove().then(() => this.removeFromContainer());
-                this.removeFromContainer();
+                logAction(ActionCode.DROP_ANNOUNCEMENT, {
+                    id: this.id,
+                    draft: {
+                        title: this.title,
+                        totalCost: this.totalCost
+                    }
+                });
             } else if (confirm("this announcment has pending payments, are you sure to delete it?")) {
-                firebase.database().ref('announcements/' + this.id).remove().then(() => this.removeFromContainer());
+                firebase.database().ref('announcements/' + this.id).remove().then(() => this.removeFromContainer()).then(() => {
+                    logAction(ActionCode.DROP_ANNOUNCEMENT, {
+                        id: this.id,
+                        archivedVersion: {
+                            payments: this.plainPayments,
+                            title: this.title,
+                            costCenterId: this.costCenterId,
+                            totalCost: this.totalCost,
+                        }
+                    });
+                });
             }
         };
 
@@ -196,7 +218,7 @@ class Announcement {
                 <a class="text-secondary small">-</a>
                 <a class="text-secondary small" id="${this.id}_date"></a>
             </h6>
-            <div class="dropdown no-arrow">
+            <div class="dropdown no-arrow ${currentUserRole != 'admin' && currentUserRole != 'editor' ? 'hidden' : ''}">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                 </a>
@@ -325,13 +347,8 @@ class Announcement {
             costCenterId: costCenterId,
             title: title,
             totalCost: totalCost
-        });
-        return new Announcement({
-            id: id,
-            timestamp: timestamp,
-            costCenterId: costCenterId,
-            title: title,
-            totalCost: totalCost
+        }).then(() => {
+            logAction(ActionCode.ADD_ANNOUNCEMENT, { id: id });
         });
     }
 }
@@ -356,7 +373,6 @@ class CostCenter {
             dropdownAddExpense: null,
             dropdownAddAnnouncement: null,
             dropdownEditDetails: null,
-            dropdownViewLogs: null
         };
         /**
          * @type {Announcement[]}
@@ -460,7 +476,7 @@ class CostCenter {
         <a class="m-0 font-weight-bold text-primary" id="${this.id}_title"></a>
         <a class="text-secondary small" id="${this.id}_parentTitle"></a>
     </div>
-    <div class="dropdown no-arrow">
+    <div class="dropdown no-arrow" ${currentUserRole != 'admin' && currentUserRole != 'editor' ? 'hidden' : ''}>
         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -468,9 +484,6 @@ class CostCenter {
         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink"
             x-placement="bottom-end"
             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(17px, 19px, 0px);">
-            <div class="dropdown-header">View</div>
-            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logsModal"
-                id="${this.id}_dropdownViewLogs">Logs</a>
             <div class="dropdown-header">Add</div>
             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#announcementModal"
                 id="${this.id}_dropdownAddAnnouncement">Announcement</a>
@@ -543,7 +556,6 @@ class CostCenter {
         this.htmlElements.dropdownAddAnnouncement.onclick = () => this.onDropdown_AddAnnouncement();
         this.htmlElements.dropdownAddPayment.onclick = () => this.onDropdown_AddPayment();
         this.htmlElements.dropdownEditDetails.onclick = () => this.onDropdown_EditDetails();
-        this.htmlElements.dropdownViewLogs.onclick = () => this.onDropdown_ViewLogs();
 
     }
     removeFromContainer() {
@@ -653,19 +665,24 @@ class CostCenter {
             timestamp: timestamp
         }).then(() => {
             firebase.database().ref('announcements/' + announcementId + '/payments/').push().set(paymentId);
+            logAction(ActionCode.SUBMIT_PAYMENT, {
+                id: paymentId
+            });
         });
     }
 
-    submitExpense(reason, amount) {
+    submitExpense(reason, amount, attachmentId = '') {
         var timestamp = new Date().getTime();
         var expenseId = generateUUID();
-        console.log("expense:" + expenseId + ' costcenter:' + this.id + " amount" + amount);
         firebase.database().ref('expenses/' + expenseId).set({
             reason: reason,
             amount: amount,
             costCenterId: this.id,
+            attachmentId: attachmentId,
             timestamp: timestamp
-        });
+        }).then(() => logAction(ActionCode.SUBMIT_EXPENSE, {
+            id: expenseId
+        }));
     }
 
     onDropdown_AddPayment() {
@@ -759,13 +776,11 @@ class CostCenter {
         var modalTitle = document.getElementById('editCostCenterDetailsModal_Title');
         var modalDescription = document.getElementById('editCostCenterDetailsModal_Description');
         var modalDeleteBtn = document.getElementById('editCostCenterDetailsModalDeleteBtn');
-
         modalHeader.innerHTML = 'Edit - ' + this.title;
         modalTitle.value = this.title;
         modalDescription.value = this.description;
         modalCostCentersList.innerHTML = '';
         modalSaveBtn.disabled = true;
-
         var independentRadiobutton = Generator.generateRadiobutton('li', 'Independent', 'independent_editDetailsModalRadiobutton', 'EditDetailsModalOwnerRadiobutton');
         independentRadiobutton.classList.add('li-separator');
         independentRadiobutton.getElementsByTagName('input')[0].checked = this.parentId == '' ? true : false;
@@ -785,7 +800,7 @@ class CostCenter {
             isOk = isOk && atleastOnwOwner;
             modalSaveBtn.disabled = !isOk;
         };
-        var onSubmitFunction = () => {
+        var submitFunction = () => {
             var ownerIds = [];
             var parentId = '';
             var ownersCheckboxes = document.getElementsByName("EditDetailsModalOwnerCheckbox");
@@ -801,27 +816,49 @@ class CostCenter {
             });
             var title = modalTitle.value;
             var description = modalDescription.value;
-            console.log(ownerIds);
-            console.log(parentId);
+            //collect edits
+            let edits = {};
+            let currentOwnerIds = this.owners.map(o => o.id);
+            if (title != this.title) edits.title = { old: this.title, new: title };
+            if (description != this.description) edits.description = { old: this.description, new: description };
+            if (parentId != this.parentId) edits.parentId = { old: this.parentId, new: parentId };
+            if (!isArrayIdentical(currentOwnerIds, ownerIds)) edits.owners = { old: currentOwnerIds, new: ownerIds };
+            // log action
             firebase.database().ref('costCenters/' + this.id).update({
                 owners: ownerIds,
                 title: title,
                 description: description,
                 parentId: parentId
             }).then(() => {
-                window.location = 'index.html';
+                logAction(ActionCode.EDIT_COST_CENTER, {
+                    id: this.id,
+                    edits: edits
+                }).then(() => window.location = 'index.html'); // then refresh page
             });
         };
         modalDeleteBtn.onclick = () => {
             if (confirm("Are you sure to delete -" + this.title + "- ? this cannot be undone!")) {
-                firebase.database().ref('costCenters/' + this.id).remove().then(() => window.location = 'index.html');
+
+                firebase.database().ref('costCenters/' + this.id).remove().then(() => {
+                    logAction(ActionCode.DELETE_COST_CENTER, {
+                        id: this.id,
+                        archivedVersion: {
+                            title: this.title,
+                            description: this.description,
+                            announcemets: this.announcements.map(a => a.id),
+                            owners: this.owners.map(o => o.id),
+                            parentId: this.parentId
+                        }
+                    }).then(() => window.location = 'index.html');
+
+                });
             }
         };
         independentRadiobutton.oninput = inputValidatuionFunction;
         modalTitle.oninput = inputValidatuionFunction;
         modalDescription.oninput = inputValidatuionFunction;
         modalOwnersList.innerHTML = '';
-        modalSaveBtn.onclick = onSubmitFunction;
+        modalSaveBtn.onclick = submitFunction;
         Dashboard.allOwners.forEach(owner => {
             var checkbox = Generator.generateCheckbox('li', owner.name + ' - ' + owner.flatNumber, owner.id + '_editDetailsModalCheckbox', 'EditDetailsModalOwnerCheckbox');
             checkbox.classList.add('li-separator');
@@ -846,29 +883,6 @@ class CostCenter {
 
     }
 
-    onDropdown_ViewLogs(){
-        var logs = [];
-        
-        this.payments.forEach(p => {
-            logs.push({
-                amount: roundCurrency(p.amount),
-                reason: p.reason,
-                timestamp: Dashboard.formatDate(p.timestamp),
-                owner: Dashboard.findOwnerById(p.ownerId).name
-            });
-        });
-        var table = $('#logsTable').DataTable({
-            destroy: true,
-            data: logs,
-            columns: [
-                { data: 'amount' },
-                { data: 'reason' },
-                { data: 'owner' },
-                { data: 'timestamp'},
-                { data: 'amount' }
-            ]
-        });
-    }
     onSubmit_Annouuncement() {
         var title = document.getElementById('announcementModal_Title').value;
         var totalCost = document.getElementById('announcementModal_TotalCost').value;
@@ -940,6 +954,9 @@ class Dashboard {
                     }
                     return true;
                 });
+                if (currentUserRole == 'admin' || currentUserRole == 'editor')
+                    document.getElementById('addExpenseButton').classList.remove('hidden')
+
             });
     }
 
@@ -981,13 +998,16 @@ class Dashboard {
         var modalTotalExpense = document.getElementById('expenseModal_TotalExpense');
         var modalTitle = document.getElementById('expenseModal_Title');
         var modalSubmitBtn = document.getElementById('expenseModal_SubmitBtn');
-        var modalPercentagesContainer = document.getElementById('expenseModal_PercentagesContainer');
+        var modalAttachmentInput = document.getElementById('expenseModal_AttachmentInput');
+        var modalAttachmentPreview = document.getElementById('expenseModal_AttachmentPreview');
+        var modalShareValuesContainer = document.getElementById('expenseModal_ShareValuesContainer');
         modalDetailsList.innerHTML = '';
         modalTotalExpense.value = '';
         modalTitle.value = '';
-        var percentages = [];
+        modalAttachmentInput.value = null;
+        modalAttachmentPreview.src = "img/no_image_available.jpg";
+        var shares = [];
         // load cost-centers list
-
         const inputFunction = () => {
             var isOk = true;
             modalDetailsList.innerHTML = '';
@@ -1018,46 +1038,46 @@ class Dashboard {
                 }
                 return s;
             }
-
-            if (percentages.length != checkedCostCenters.length) {
-                while (percentages.length < checkedCostCenters.length) {
-                    let e = Generator.generatePercentageField("awe", 0, true);
+            if (shares.length != checkedCostCenters.length) {
+                while (shares.length < checkedCostCenters.length) {
+                    let e = Generator.generateField("", 0, 'EGP');
                     e.input.oninput = inputFunction;
-                    percentages.push(e);
+                    shares.push(e);
                 }
-                while (percentages.length > checkedCostCenters.length) percentages.pop();
-                modalPercentagesContainer.innerHTML = '';
-                percentages.forEach((e, i) => {
+                while (shares.length > checkedCostCenters.length) shares.pop();
+                modalShareValuesContainer.innerHTML = '';
+                shares.forEach((e, i) => {
                     e.label.innerHTML = checkedCostCenters[i].title;
-                    percentages[i].input.disabled = false;
-                    percentages[i].setAttribute('cost-center-id', checkedCostCenters[i].id);
-                    modalPercentagesContainer.appendChild(e);
+                    shares[i].input.disabled = false;
+                    shares[i].setAttribute('cost-center-id', checkedCostCenters[i].id);
+                    modalShareValuesContainer.appendChild(e);
                 });
-                percentages[percentages.length - 1].input.disabled = true;
-                percentages[percentages.length - 1].input.value = 100 - sumArray(percentages, percentages.length - 1);
+                shares[shares.length - 1].input.disabled = true;
+                shares[shares.length - 1].input.value = 100 - sumArray(shares, shares.length - 1);
             }
-            if (percentages.length > 0) {
-                var lastPercentageValue = 100 - sumArray(percentages, percentages.length - 1);
+            if (shares.length > 0) {
+                var lastPercentageValue = totalExpense - sumArray(shares, shares.length - 1);
                 if (lastPercentageValue < 0) {
                     isOk = false;
-                    modalDetailsList.appendChild(Generator.generateErrorListItem('incorrect percentages'));
+                    modalDetailsList.appendChild(Generator.generateErrorListItem('incorrect shares'));
                 }
-                percentages[percentages.length - 1].input.value = lastPercentageValue;
-                checkedCostCenters.forEach(costCenter => {
-                    var percentage = Number(percentages.find(p => p.getAttribute('cost-center-id') == costCenter.id).input.value);
-                    var costCenterExpense = modalTotalExpense.value * percentage / 100;
+                shares[shares.length - 1].input.value = lastPercentageValue;
+                checkedCostCenters.forEach((costCenter, i) => {
+                    var share = Number(shares.find(p => p.getAttribute('cost-center-id') == costCenter.id).input.value);
+                    var costCenterExpense = share[i];
                     if (costCenterExpense > costCenter.calculateTotalSavings()) {
                         isOk = false;
                         modalDetailsList.appendChild(Generator.generateErrorListItem(costCenter.title + ': savings do not cover the expense'));
                     }
                 });
             }
-
             modalSubmitBtn.disabled = !isOk;
         }
 
         const submitFuntion = () => {
             var checkboxes = document.getElementsByName('ExpenseCostCenterCheckbox');
+            var attachmentInput = document.getElementById('expenseModal_AttachmentInput');
+
             var checkedCostCenters = [];
             checkboxes.forEach((checkbox) => {
                 if (checkbox.checked) {
@@ -1066,11 +1086,32 @@ class Dashboard {
                 }
             });
 
-            checkedCostCenters.forEach(costCenter => {
-                var percentage = Number(percentages.find(p => p.getAttribute('cost-center-id') == costCenter.id).input.value);
-                var costCenterExpense = modalTotalExpense.value * percentage / 100;
-                costCenter.submitExpense(modalTitle.value, costCenterExpense);
-            });
+
+            let file = attachmentInput.files[0];
+            if (file) {
+                const fileReader = new FileReader();
+                const canvas = document.querySelector('canvas');
+                var image = new Image();
+                fileReader.onload = function (e) {
+                    image.src = fileReader.result;
+                }
+                image.onload = () => {
+                    compressImage(canvas, image, 0.5, (blob) => {
+                        var attachmentId = generateUUID();
+                        firebase.storage().ref('expenses-attachments/' + attachmentId + '.jpg').put(blob);
+                        checkedCostCenters.forEach((costCenter, i) => {
+                            var costCenterExpense = shares[i].input.value;
+                            costCenter.submitExpense(modalTitle.value, costCenterExpense, attachmentId);
+                        });
+                    });
+                }
+                fileReader.readAsDataURL(file);
+            } else {
+                checkedCostCenters.forEach((costCenter, i) => {
+                    var costCenterExpense = shares[i].input.value;
+                    costCenter.submitExpense(modalTitle.value, costCenterExpense);
+                });
+            }
         }
         modalTotalExpense.oninput = inputFunction;
         modalTitle.oninput = inputFunction;
@@ -1089,18 +1130,17 @@ class Dashboard {
 
 }
 Dashboard.loadOwners();
-{
-    let ownersLoadWaitTimes = 0;
-    let ownersLoadWaitInterval = setInterval(() => {
-        if (Dashboard.allOwners) {
-            Dashboard.loadCostCenters(document.getElementById('costCentersContainer'));
-            clearInterval(ownersLoadWaitInterval);
-            return;
-        }
-        if (ownersLoadWaitTimes++ >= 100) {
-            console.error('owners load timeout');
-            clearInterval(ownersLoadWaitInterval);
-        }
-    }, 100);
-}
+
+let ownersLoadWaitTimes = 0;
+let ownersLoadWaitInterval = setInterval(() => {
+    if (Dashboard.allOwners) {
+        Dashboard.loadCostCenters(document.getElementById('costCentersContainer'));
+        clearInterval(ownersLoadWaitInterval);
+        return;
+    }
+    if (ownersLoadWaitTimes++ >= 100) {
+        console.error('owners load timeout');
+        clearInterval(ownersLoadWaitInterval);
+    }
+}, 100);
 

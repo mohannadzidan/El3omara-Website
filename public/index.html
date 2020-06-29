@@ -87,8 +87,8 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid" style="max-width: 20cm;" id="costCentersContainer">
-          <a href="#" class="btn btn-primary btn-icon-split my-2" data-toggle="modal" data-target="#expenseModal"
-            onclick="Dashboard.onButton_AddExpense()">
+          <a href="#" class="btn btn-primary btn-icon-split my-2 hidden" data-toggle="modal" data-target="#expenseModal"
+            onclick="Dashboard.onButton_AddExpense()" id="addExpenseButton">
             <span class="icon text-white-50">
               <i class="fas fa-file-invoice-dollar text-white-50"></i>
             </span>
@@ -127,53 +127,6 @@
     aria-hidden="true">
   </div>
 
-  <!-- Logs Modal -->
-  <div class="modal fade" id="logsModal" tabindex="-1" role="dialog" aria-labelledby="logsModalTitle" aria-modal="true"
-    style="display: none;">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="logsModalTitle"></h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="p-4">
-          <table class="small-table datatable" id="logsTable">
-            <thead>
-              <tr role="row">
-                <th>Type</th>
-
-                <th>Reason</th>
-                <th>Owner</th>
-                <th>Timestamp</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tr role="row">
-              <th>
-                <i class="fas fa-arrow-left text-danger"></i>
-              </th>
-              <th>Owner</th>
-              <th>Amount</th>
-            </tr>
-            <tr role="row">
-              <th>
-                <i class="fas fa-arrow-right text-success"></i>
-              </th>
-              <th>Owner</th>
-              <th>Mohannad Zidan - 101</th>
-              <th>28-7-2020 12:32PM</th>
-              <th>150</th>
-            </tr>
-          </table>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
   <!-- Add Announcement Modal -->
   <div class="modal fade" id="announcementModal" tabindex="-1" role="dialog" aria-labelledby="announcementModalTitle"
     aria-modal="true" style="display: none;">
@@ -243,18 +196,48 @@
                 id="expenseModal_TotalExpense">
             </div>
           </div>
+          <div class="form-group row mb-0">
+            <div class="col-sm-3 p-1">
+              <h6>Image Attachment:</h6>
+            </div>
+            <div class="col p-1">
+              <input type="file" id="expenseModal_AttachmentInput" accept="image/png, image/jpeg">
+              <img id="expenseModal_AttachmentPreview" width="100" height="100" src="img/no_image_available.jpg">
+              <canvas hidden></canvas>
+              <script type="text/javascript">
+                {
+                  let attachmentInput = document.getElementById('expenseModal_AttachmentInput');
+                  let attachmentPreview = document.getElementById('expenseModal_AttachmentPreview');
+                  attachmentInput.addEventListener('change', () => {
+                    let file = attachmentInput.files[0];
+                    if (file) {
+                      const fileReader = new FileReader();
+                      fileReader.onload = function (e) {
+                        attachmentPreview.src = fileReader.result;
+                      }
+                      fileReader.readAsDataURL(file);
+                    }
+                  }, false);
+                }
+              </script>
+            </div>
+          </div>
+
           <div class="p-1 d-flex flex-row align-items-center justify-content-between text-primary">
             <h6 class="m-0 font-weight-bold">Cost-Centers</h6>
             <i class="fas fa-pen"></i>
           </div>
-          <hr class="m-1">
           <div class="card border-primary px-0">
             <ul class="simple-list my-1 py-1 px-2" id="expenseModal_CostCentersList" style="height: 3cm;"></ul>
           </div>
           <hr class="m-1">
-          <div class="px-1" id="expenseModal_PercentagesContainer">
+          <div class="p-1 d-flex flex-row align-items-center justify-content-between text-primary">
+            <h6 class="m-0 font-weight-bold">Share</h6>
+            <i class="fas fa-pen"></i>
           </div>
           <hr class="m-1">
+          <div class="px-1" id="expenseModal_ShareValuesContainer">
+          </div>
           <ul class="simple-list card p-1 auto-hide" id="expenseModal_DetailsList"></ul>
           </ul>
 
@@ -341,8 +324,7 @@
                   <h6>Title:</h6>
                 </div>
                 <div class="col p-1">
-                  <input class="form-control" placeholder="Enter title.." id="editCostCenterDetailsModal_Title"
-                    oninput="onTitleChange()">
+                  <input class="form-control" placeholder="Enter title.." id="editCostCenterDetailsModal_Title">
                 </div>
               </div>
               <!-- Description -->
@@ -401,9 +383,9 @@
   <script src="/__/firebase/7.15.1/firebase-app.js"></script>
   <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="/__/firebase/7.15.1/firebase-analytics.js"></script>
   <script src="/__/firebase/7.15.1/firebase-auth.js"></script>
   <script src="/__/firebase/7.15.1/firebase-database.js"></script>
+  <script src="/__/firebase/7.15.1/firebase-storage.js"></script>
   <!-- Initialize Firebase -->
   <script src="/__/firebase/init.js"></script>
 
@@ -421,6 +403,8 @@
 
   <script src="js/uuid-generator.js"></script>
   <script src="js/demo/datatables-demo.js"></script>
+  <script src="js/images-utils.js"></script>
+  <script src="js/actions-log.js"></script>
   <script src="js/dashboard.js"></script>
 
 

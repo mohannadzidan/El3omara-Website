@@ -64,6 +64,13 @@
         ".read": "auth.uid != null",
         ".write": "(newData.parent().parent().child('roles').child(auth.uid).val() == 'admin' || newData.parent().parent().child('roles').child(auth.uid).val() == 'editor')"
       }
+    },
+    "actions": {
+      ".read": "(root.child('roles').child(auth.uid).val() == 'admin' || root.child('roles').child(auth.uid).val() == 'editor')",
+      "$uid": {
+        ".read": "(root.child('roles').child(auth.uid).val() == 'admin' || root.child('roles').child(auth.uid).val() == 'editor')",
+        ".write": "(newData.parent().parent().child('roles').child(auth.uid).val() == 'admin' || newData.parent().parent().child('roles').child(auth.uid).val() == 'editor')"
+      }
     }
   }
 }

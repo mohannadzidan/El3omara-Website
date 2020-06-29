@@ -65,6 +65,14 @@ path /announcements/{uid} {
     read() { isAuthenticatedAccess(auth) }
     write() { roleCheck(auth, "admin") || roleCheck(auth, "editor")}
 }
+
+path /actions {
+    read() { roleCheck(auth, "admin") || roleCheck(auth, "editor") }
+}
+path /actions/{uid} {`
+    read() { roleCheck(auth, "admin") || roleCheck(auth, "editor") }
+    write() { roleCheck(auth, "admin") || roleCheck(auth, "editor")}
+}
 type User {
   email: String,
   displayName: String,

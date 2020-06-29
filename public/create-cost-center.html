@@ -201,8 +201,9 @@
 
 
     <!-- role & authentication based content -->
-    <script src="js/pagecontent-auth-role.js"></script>
+    <script require-role="admin|editor" src="js/pagecontent-auth-role.js"></script>
     <script src="js/uuid-generator.js"></script>
+    <script src="js/actions-log.js"></script>
 
 
     <script>
@@ -284,6 +285,7 @@
         var uid = generateUUID();
         // push to database
         firebase.database().ref('costCenters/' + uid).set(costCenter).then((result) => {
+          logAction(ActionCode.CREATE_COST_CENTER, {id : uid});
           window.location = "index.html";
         }).catch((e) => {
           console.error(e);

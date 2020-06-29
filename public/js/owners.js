@@ -1,16 +1,9 @@
 var owners = [];
-// load owners table 
-roleFetchCallback.push(function (role) {
-    if (role != "admin" && role != "editor") {
-        window.location = "permission_denied.html";
-    }
-});
-
-
 firebase.database().ref('owners').on('value', function (snapshot) {
     owners = [];
     snapshot.forEach(function (childSnapshot) {
         var e = childSnapshot.val();
+        e.id = childSnapshot.key;
         owners.push(e);
     });
     table = $('#ownersTable').DataTable({
@@ -34,7 +27,11 @@ firebase.database().ref('owners').on('value', function (snapshot) {
 function removeOwner(id) {
     owner = owners.find((o) => o.id == id);
     if (confirm("Are you sure to remove " + owner.name + "? (this cannot be undone)")) {
-        firebase.database().ref("owners/" + id).remove()
+        firebase.database().ref("owners/" + id).remove();
+        logAction(ActionCode.DELETE_OWNER, {
+            id: id,
+            archivedVersion: owner
+        });
     }
 }
 
@@ -66,12 +63,14 @@ function addOwner(formData) {
         }
     }
 
-    if (isSafe)
+    if (isSafe) {
         database.ref('owners/' + id).set({
             name: formData.name,
             flatNumber: formData.flatNumber,
             phoneNumber: formData.phoneNumber,
         });
+        logAction(ActionCode.ADD_OWNER, { id: id });
+    }
 }
 function showAddOwnerForm() {
     // load the form
@@ -90,11 +89,24 @@ function showEditOwnerForm(id) {
     document.getElementById("ownerModalDoneBtn").onclick = () => {
         var formData = fetchOwnerFormData();
         var database = firebase.database();
-        database.ref('owners/' + id).set({
+        var args = {
+            id: id,
+            edits: {},
+        }
+        if (currentOwnerData.name != formData.name) {
+            args.edits.name = { old: currentOwnerData.name, new: formData.name };
+        }
+        if (currentOwnerData.flatNumber != formData.flatNumber) {
+            args.edits.flatNumber = { old: currentOwnerData.flatNumber, new: formData.flatNumber };
+        }
+        if (currentOwnerData.phoneNumber != formData.phoneNumber) {
+            args.edits.phoneNumber = { old: currentOwnerData.phoneNumber, new: formData.phoneNumber };
+        }
+        database.ref('owners/' + id).update({
             name: formData.name,
             flatNumber: formData.flatNumber,
             phoneNumber: formData.phoneNumber,
-        });
+        }).then(() => logAction(ActionCode.EDIT_OWNER, args));
     }
 
 }
@@ -113,7 +125,13 @@ function fillOwnerFormData(ownerData) {
 }
 
 function generateRowButtons(id) {
-    var editBtn = "<a style=\"color:white\" class=\"white btn-primary btn-circle btn-sm m-1\" onclick=\"showEditOwnerForm(" + id + ")\" data-toggle=\"modal\" data-target=\"#ownerModal\"><i class=\"fas fa-pen\"></i></a>"
-    var removeBtn = "<a style=\"color:white\" class=\"white btn-danger btn-circle btn-sm m-1\" onclick=\"removeOwner(" + id + ")\"><i class=\"fas fa-trash\"></i></a>"
+    var editBtn = `
+    <a class="btn btn-light p-1 m-0" onclick="showEditOwnerForm('${id}')" data-toggle="modal" data-target="#ownerModal">
+        <i class="fas fa-pen text-primary"></i>
+    </a>`
+    var removeBtn = `
+    <a class="btn btn-light p-1 m-0" onclick="removeOwner('${id}')">
+        <i class="fas fa-trash text-danger"></i>
+    </a>`
     return editBtn + removeBtn;
 }
