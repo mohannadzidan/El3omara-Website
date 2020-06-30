@@ -1,0 +1,10 @@
+{
+    "display_name": "اسم الظهور",
+    "register_account": "تسجيل حساب",
+    "password": "كلمة المرور",
+    "repeat_password": "تاكيد كلمة المرور",
+    "email_address": "البريد الالكتروني",
+    "forgot_password": "نسيت كلمة السر؟",
+    "create_an_account": "انشاء حساب!",
+    "have_an_account":"مسجل بالفعل؟ سجل الدخول!"
+}

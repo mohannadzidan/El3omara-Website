@@ -1,0 +1,31 @@
+{
+    "dashboard": "لوحة التحكم",
+    "create_cost_center": "انشاء مركز تسعير",
+    "transactions": "التحويلات",
+    "actions": "العمليات",
+    "manage_roles": "ادارة الادوار",
+    "manage_owners": "ادارة الملاك",
+    "editor_tools": "ادوات المحرر",
+    "admin_tools": "ادوات المشرف",
+    "logout": "تسجيل الخروج",
+
+    "owners": "الملاك",
+    "add_owner": "اضافة مالك",
+    "empty_fields_msg": "تلك الحقول لا يمكن ان تترك فارغة",
+    "dublicated_name_msg": "يوجد مالك بنفس الاسم!",
+    "dublicated_flat_number_msg": "يوجد مالك بنفس رقم الشقة!",
+    "dublicated_phone_number_msg": "يوجد مالك بنفس رقم الهاتف!",
+    "remove_owner_msg": "هل انت متاكد من حذف {0}؟ (هذه عملية لا يمكن استرجاعها)",
+    "enter_name": "ادخل الاسم",
+    "enter_flat_number": "ادخل رقم الشقة",
+    "enter_phone_number": "ادخل رقم الهاتف",
+    "cancel" : "الغاء",
+    "submit" : "ارسال",
+    "name": "الاسم",
+    "flat_number": "رقم الشقة",
+    "phone_number": "رقم الهاتف"
+
+   
+}
+
+

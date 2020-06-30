@@ -1,6 +1,5 @@
 function roundCurrency(n) {
-    var decimalPlaces = Math.round((n % 1) * 100);
-    return Math.floor(n) + '.' + (decimalPlaces == 0 ? '00' : decimalPlaces);
+    return LocaleStrings.replaceLocaleNumbers(Number(n).toFixed(2).toString());
 }
 function isArrayIdentical(a, b) {
     if (a.length != b.length) return false;
@@ -149,8 +148,8 @@ class Announcement {
         this.htmlElements.title.innerHTML = this.title;
         this.htmlElements.totalCost.innerHTML = roundCurrency(this.totalCost);
         this.htmlElements.totalPayments.innerHTML = roundCurrency(this.totalPayments);
-        this.htmlElements.pendingPayments.innerHTML = this.pendingPayments;
-        this.htmlElements.date.innerHTML = Dashboard.formatDate(this.timestamp);
+        this.htmlElements.pendingPayments.innerHTML = LocaleStrings.replaceLocaleNumbers(this.pendingPayments.toString());
+        this.htmlElements.date.innerHTML = LocaleStrings.formatDate(this.timestamp);
         this.htmlElements.paymentsList.innerHTML = this.allPaymentsToListElements();
         this.htmlElements.pendingPaymentsList.innerHTML = this.payersStatusToListElements();
         this.htmlElements.dropdownDrop.onclick = () => {
@@ -163,7 +162,7 @@ class Announcement {
                         totalCost: this.totalCost
                     }
                 });
-            } else if (confirm("this announcment has pending payments, are you sure to delete it?")) {
+            } else if (confirm(LocaleStrings.getLocaleString('pending_payments_msg'))) {
                 firebase.database().ref('announcements/' + this.id).remove().then(() => this.removeFromContainer()).then(() => {
                     logAction(ActionCode.DROP_ANNOUNCEMENT, {
                         id: this.id,
@@ -185,7 +184,7 @@ class Announcement {
             var owner = Dashboard.allOwners.find((o) => o.id == p.ownerId);
             var element = `
             <li class="li-separator small">
-            <a>${owner.name} - ${owner.flatNumber} - ${Dashboard.formatDate(p.timestamp)}</a>
+            <a>${owner.name} - ${owner.flatNumber} - ${LocaleStrings.formatDate(p.timestamp)}</a>
             </li>
             `;
             list += element;
@@ -223,32 +222,32 @@ class Announcement {
                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-142px, 18px, 0px);">
-                    <div class="dropdown-header">Edit</div>
-                    <a class="dropdown-item" disabled id="${this.id}_dropdownSchedule">Schedule</a>
-                    <a class="dropdown-item text-danger" id="${this.id}_dropdownDrop">Drop</a>
+                    <div class="dropdown-header">${LocaleStrings.getLocaleString('edit')}</div>
+                    <a class="dropdown-item" disabled id="${this.id}_dropdownSchedule">${LocaleStrings.getLocaleString('schedule')}</a>
+                    <a class="dropdown-item text-danger" id="${this.id}_dropdownDrop">${LocaleStrings.getLocaleString('drop')}</a>
                 </div>
             </div>
         </div>
         <div class="card-body">
             <div class="row no-gutters align-items-center">
                 <div class="col mr-5 mb-1">
-                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Cost</div>
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">${LocaleStrings.getLocaleString('total_cost')}</div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                         <a id="${this.id}_totalCost"></a>
-                        <a class="small">EGP</a>
+                        <a class="small">${LocaleStrings.getLocaleString('egp')}</a>
                     </div>
                 </div>
                 <input  style="display: none;" type="checkbox" id="${this.id}_paymentsCheckbox" name="${this.id}_tabCheckbox" label-id="${this.id}_paymentsLabel" tab-id="${this.id}_paymentsList">
                 <label class="col mr-5 mb-1" for="${this.id}_paymentsCheckbox" id="${this.id}_paymentsLabel" name="${this.id}_tabLabel">
-                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Payments</div>
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">${LocaleStrings.getLocaleString('payments')}</div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                         <a id="${this.id}_totalPayments"></a>
-                        <a class="small">EGP</a>
+                        <a class="small">${LocaleStrings.getLocaleString('egp')}</a>
                     </div>
                 </label>
                 <input style="display: none;" type="checkbox" id="${this.id}_pendingPaymentsCheckbox" name="${this.id}_tabCheckbox" label-id="${this.id}_pendingPaymentsLabel" tab-id="${this.id}_pendingPaymentsList">
                 <label class="col mr-5 mb-1" for="${this.id}_pendingPaymentsCheckbox" id="${this.id}_pendingPaymentsLabel" name="${this.id}_tabLabel">
-                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Pending</div>
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">${LocaleStrings.getLocaleString('pending')}</div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800" id="${this.id}_pendingPayments"></div>
                 </label>
                 
@@ -484,14 +483,14 @@ class CostCenter {
         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink"
             x-placement="bottom-end"
             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(17px, 19px, 0px);">
-            <div class="dropdown-header">Add</div>
+            <div class="dropdown-header">${LocaleStrings.getLocaleString('add')}</div>
             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#announcementModal"
-                id="${this.id}_dropdownAddAnnouncement">Announcement</a>
+                id="${this.id}_dropdownAddAnnouncement">${LocaleStrings.getLocaleString('announcement')}</a>
             <a class="dropdown-item" href="#costCenterId" data-toggle="modal" data-target="#paymentModal"
-                id="${this.id}_dropdownAddPayment">Payment</a>
-            <div class="dropdown-header">Edit</div>
+                id="${this.id}_dropdownAddPayment">${LocaleStrings.getLocaleString('payment')}</a>
+            <div class="dropdown-header">${LocaleStrings.getLocaleString('edit')}</div>
             <a class="dropdown-item" href="#costCenterId" data-toggle="modal" data-target="#editCostCenterDetailsModal"
-                id="${this.id}_dropdownEditDetails">Edit Details</a>
+                id="${this.id}_dropdownEditDetails">${LocaleStrings.getLocaleString('edit_details')}</a>
         </div>
     </div>
 </div>
@@ -507,10 +506,10 @@ class CostCenter {
                         </div>
                     </div>
                     <div class="col-auto">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Savings</div>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">${LocaleStrings.getLocaleString('savings')}</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <a id="${this.id}_totalSavings"></a>
-                            <a class="small">EGP</a>
+                            <a class="small">${LocaleStrings.getLocaleString('egp')}</a>
                         </div>
                     </div>
                 </div>
@@ -521,10 +520,10 @@ class CostCenter {
                         </div>
                     </div>
                     <div class="col-auto">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Children Savings</div>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">${LocaleStrings.getLocaleString('children_savings')}</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <a id="${this.id}_totalChildrenSavings"></a>
-                            <a class="small">EGP</a>
+                            <a class="small">${LocaleStrings.getLocaleString('egp')}</a>
                         </div>
                     </div>
                 </div>
@@ -781,7 +780,7 @@ class CostCenter {
         modalDescription.value = this.description;
         modalCostCentersList.innerHTML = '';
         modalSaveBtn.disabled = true;
-        var independentRadiobutton = Generator.generateRadiobutton('li', 'Independent', 'independent_editDetailsModalRadiobutton', 'EditDetailsModalOwnerRadiobutton');
+        var independentRadiobutton = Generator.generateRadiobutton('li', LocaleStrings.getLocaleString('independent'), 'independent_editDetailsModalRadiobutton', 'EditDetailsModalOwnerRadiobutton');
         independentRadiobutton.classList.add('li-separator');
         independentRadiobutton.getElementsByTagName('input')[0].checked = this.parentId == '' ? true : false;
         independentRadiobutton.setAttribute('costCenter-id', 'independent');
@@ -972,13 +971,7 @@ class Dashboard {
             });
     }
 
-    static formatDate(timestamp) {
-        const monthNames = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ];
-        var date = new Date(timestamp);
-        return `${monthNames[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
-    }
+    
     /**
      * 
      * @param {string} id 
@@ -1040,7 +1033,7 @@ class Dashboard {
             }
             if (shares.length != checkedCostCenters.length) {
                 while (shares.length < checkedCostCenters.length) {
-                    let e = Generator.generateField("", 0, 'EGP');
+                    let e = Generator.generateField("", 0, LocaleStrings.getLocaleString('egp'));
                     e.input.oninput = inputFunction;
                     shares.push(e);
                 }

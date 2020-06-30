@@ -82,12 +82,12 @@
             <table class="table dataTable no-footer small" id="transactionsTable">
               <thead>
                 <tr role="row">
-                  <th>Timestamp</th>
-                  <th>Amount</th>
-                  <th>Reason</th>
-                  <th>Owner</th>
-                  <th>Cost-Center</th>
-                  <th>Attachment</th>
+                  <th>$localeString{timestamp}</th>
+                  <th>$localeString{amount}</th>
+                  <th>$localeString{reason}</th>
+                  <th>$localeString{owner}</th>
+                  <th>$localeString{cost_center}</th>
+                  <th>$localeString{attachment}</th>
                 </tr>
               </thead>
             </table>
@@ -203,6 +203,7 @@
 
   <!-- Load Shared Content -->
   <script src="js/shared-content.js"></script>
+  <script src="locale/locale-common.js" context="transactions"></script>
 
   <!-- PhotoSwipe -->
   <link rel="stylesheet" href="photoswipe/photoswipe.css"> 

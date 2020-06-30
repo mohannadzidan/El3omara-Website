@@ -23,8 +23,8 @@
 </head>
 
 <body class="bg-gradient-primary">
-  <script src="locale/multilang.js"></script>
-
+  <script src="locale/locale-common.js" context="register"></script>
+  <link href="css/max-dim.css" rel="stylesheet">
   <link href="css/splash-screen.css" rel="stylesheet">
   <div class="splash-screen" id="splashScreen">
     <div class="splash-screen-content">
@@ -35,52 +35,52 @@
 
   <div class="container">
 
-    <div class="card o-hidden border-0 shadow-lg my-5">
-      <div class="card-body p-0">
+    <div class="card shadow-lg my-5">
+      <div class="card-body">
         <!-- Nested Row within Card Body -->
-        <div class="row">
-          <div class="col-lg-7">
-            <div class="p-5">
-              <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
-              </div>
-              <form class="user">
-                <div class=" mb-4" id="errorMessageCardContainer" style="display: none;">
-                  <div class="card bg-warning text-white shadow">
-                    <div class="card-body" id="errorMessageCard"></div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control form-control-user" id="registerDisplayName"
-                    placeholder="Display Name">
-                </div>
-                <div class="form-group">
-                  <input type="email" class="form-control form-control-user" id="registerEmail"
-                    placeholder="Email Address">
-                </div>
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" class="form-control form-control-user" id="registerPassword"
-                      placeholder="Password">
-                  </div>
-                  <div class="col-sm-6">
-                    <input type="password" class="form-control form-control-user" id="registerRepeatPassword"
-                      placeholder="Repeat Password">
-                  </div>
-                </div>
-                <a class="btn btn-primary btn-user btn-block" style="color: white;"
-                  onclick="validateAndRegisterAccount()">
-                  Register Account
-                </a>
-              </form>
-              <hr>
-              <div class="text-center">
-                <a class="small" href="forgot-password.html">Forgot Password?</a>
-              </div>
-              <div class="text-center">
-                <a class="small" href="login.html">Already have an account? Login!</a>
+        <div class="p-5">
+          <div class="text-center">
+            <h1 class="h4 text-gray-900 mb-4">$localeString{create_an_account}</h1>
+          </div>
+          <form class="user">
+            <div class=" mb-4" id="errorMessageCardContainer" style="display: none;">
+              <div class="card bg-warning text-white shadow">
+                <div class="card-body" id="errorMessageCard"></div>
               </div>
             </div>
+            <div class="form-group">
+              <input type="text" class="form-control form-control-user" id="registerDisplayName"
+                placeholder="$localeString{display_name}">
+            </div>
+            <div class="form-group">
+              <input type="email" class="form-control form-control-user" id="registerEmail"
+                placeholder="$localeString{email_address}">
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-6 mb-3 mb-sm-0">
+                <input type="password" class="form-control form-control-user" id="registerPassword"
+                  placeholder="$localeString{password}">
+              </div>
+              <div class="col-sm-6">
+                <input type="password" class="form-control form-control-user" id="registerRepeatPassword"
+                  placeholder="$localeString{repeat_password}">
+              </div>
+            </div>
+            <a class="btn btn-primary btn-user btn-block" style="color: white;" onclick="validateAndRegisterAccount()">
+              $localeString{register_account}
+            </a>
+          </form>
+          <hr>
+          <div class="text-center">
+            <a class="small" href="forgot-password.html">$localeString{forgot_password}</a>
+          </div>
+          <div class="text-center">
+            <a class="small" href="login.html">$localeString{have_an_account}</a>
+          </div>
+          <div class="text-center">
+            <a class="small" href="#" onclick="LocaleStrings.setLanguage('en')">English</a>
+            <a class="small">|</a>
+            <a class="small" href="#" onclick="LocaleStrings.setLanguage('ar')">عربي</a>
           </div>
         </div>
       </div>

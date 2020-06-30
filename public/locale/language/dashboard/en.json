@@ -1,0 +1,46 @@
+{
+    "dashboard": "Dashboard",
+    "create_cost_center": "Create Cost-Center",
+    "transactions": "Transactions",
+    "actions": "Actions",
+    "manage_roles": "Manage Roles",
+    "manage_owners": "Manage Owners",
+    "editor_tools": "Editor Tools",
+    "admin_tools": "Admin Tools",
+    "logout": "Logout",
+
+    "add_expense": "Add Expense",
+    "savings": "Savings",
+    "children_savings": "Children Savings",
+    "announcement": "Announcement",
+    "pending_payments_msg": "this announcment has pending payments, are you sure to delete it?",
+    "payment": "Payment",
+    "edit_details": "Edit Detials",
+    "add": "Add",
+    "edit": "Edit",
+    "schedule": "Schedule",
+    "drop": "Drop",
+    "payments": "Payements",
+    "pending": "Pending",
+    "egp" : "EGP",
+    "title" : "Title",
+    "cost_centers" : "Cost-Centers",
+    "expense" : "Expense",
+    "image_attachment" : "Image Attachment",
+    "share" : "Share",
+    "cancel" : "Cancel",
+    "submit" : "Submit",
+    "total_expense" :  "Total Expense",
+    "total_cost": "Total Cost",
+    "total_payments": "Total Payments",
+    "announcements": "Announcements",
+    "description": "Description",
+    "parent": "Parent",
+    "details": "Details",
+    "owners": "Owners",
+    "independent": "independent"
+
+
+}
+
+

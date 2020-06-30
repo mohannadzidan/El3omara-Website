@@ -7,8 +7,21 @@ var currentUserRole;
             // fetch user data
             firebase.database().ref("users/" + user.uid).once('value', function (snapshot) {
                 userData = snapshot.val();
-                document.getElementById("topbar").style.visibility = "visible";
-                document.getElementById("statusbarUserDisplayName").innerHTML = userData.displayName;
+                let timeout = 30;
+                let interval = setInterval(() => {
+                    try {
+                        document.getElementById("topbar").style.visibility = "visible";
+                        document.getElementById("statusbarUserDisplayName").innerHTML = userData.displayName;
+                        clearInterval(interval);
+                    } catch (e) {
+                        if (timeout-- <= 0) {
+                            console.error('async wait for shared content timed out!');
+                            console.error(e);
+                            clearInterval(interval);
+                        }
+                    }
+                }, 1000);
+
             });
 
             // fetch user role
@@ -27,15 +40,28 @@ var currentUserRole;
                 roleFetchCallback(snapshot ? snapshot.val() : 'none');
                 if (snapshot.exists()) {
                     var role = snapshot.val();
-                    switch (role) {
-                        case "admin":
-                            document.getElementById("editorToolsCollapseMenu").style.display = "block";
-                            document.getElementById("adminToolsCollapseMenu").style.display = "block";
-                            break;
-                        case "editor":
-                            document.getElementById("editorToolsCollapseMenu").style.display = "block";
-                            break;
-                    }
+                    let timeout = 30;
+                    let interval = setInterval(() => {
+                        try {
+                            switch (role) {
+                                case "admin":
+                                    document.getElementById("editorToolsCollapseMenu").style.display = "block";
+                                    document.getElementById("adminToolsCollapseMenu").style.display = "block";
+                                    break;
+                                case "editor":
+                                    document.getElementById("editorToolsCollapseMenu").style.display = "block";
+                                    break;
+                            }
+                            clearInterval(interval);
+                        } catch (e) {
+                            if (timeout-- <= 0) {
+                                console.error('async wait for shared content timed out!');
+                                console.error(e);
+                                clearInterval(interval);
+                            }
+                        }
+                    }, 1000);
+
                 }
             }).catch(function (error) {
                 console.error(error.code + ": " + error.message);
@@ -47,7 +73,7 @@ var currentUserRole;
         }
     });
 
-    function addRoleCallbackListener(listener){
+    function addRoleCallbackListener(listener) {
         allRoleCallbackListeners.push(listener);
     }
 }

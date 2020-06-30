@@ -25,13 +25,13 @@
 
 <body class="bg-gradient-primary">
   <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="locale/multilang.js"></script>
-
+  <script src="locale/locale-common.js" context="login"></script>
   <link href="css/splash-screen.css" rel="stylesheet">
   <div class="splash-screen" id="splashScreen">
     <div class="splash-screen-content">
       <div class="splash-spinner"></div>
-    <div class="splash-text">El3OMARA</div></div>
+      <div class="splash-text">El3OMARA</div>
+    </div>
   </div>
   <div class="container">
 
@@ -43,52 +43,53 @@
         <div class="card o-hidden border-0 shadow-lg my-5">
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="p-5">
-                  <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
-                  </div>
-                  <form class="user">
-                    <div class=" mb-4" id="errorMessageCardContainer" style="display: none;">
-                      <div class="card bg-warning text-white shadow">
-                        <div class="card-body" id="errorMessageCard"></div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <input type="email" class="form-control form-control-user" id="emailField"
-                        aria-describedby="emailHelp" placeholder="Enter Email Address...">
-                    </div>
-
-                    <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="passwordField"
-                        placeholder="Password">
-                    </div>
-
-                    <div class="form-group">
-                      <div class="custom-control custom-checkbox small">
-                        <input type="checkbox" class="custom-control-input" id="customCheck">
-                        <label class="custom-control-label" for="customCheck">Remember Me</label>
-                      </div>
-                    </div>
-
-                    <a class="btn btn-primary btn-user btn-block" style="color: white;" onclick="emailPasswordLogin()"
-                      id="loginBtn">Login</a>
-                    <hr>
-                    <a class="btn btn-google btn-user btn-block" style="color: white;" id="signInWithGoogleBtn"
-                      onclick="signInWithGoogle()">
-                      <i class="fab fa-google fa-fw"></i> Login with Google
-                    </a>
-
-                  </form>
-                  <hr>
-                  <div class="text-center">
-                    <a class="small" href="forgot-password.html">Forgot Password?</a>
-                  </div>
-                  <div class="text-center">
-                    <a class="small" href="register.html">Create an Account!</a>
+            <div class="p-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">$localeString{welcome_back}</h1>
+              </div>
+              <form class="user">
+                <div class=" mb-4" id="errorMessageCardContainer" style="display: none;">
+                  <div class="card bg-warning text-white shadow">
+                    <div class="card-body" id="errorMessageCard"></div>
                   </div>
                 </div>
+                <div class="form-group">
+                  <input type="email" class="form-control form-control-user" id="emailField"
+                    aria-describedby="emailHelp" placeholder="$localeString{enter_email_address}...">
+                </div>
+
+                <div class="form-group">
+                  <input type="password" class="form-control form-control-user" id="passwordField"
+                    placeholder="$localeString{password}">
+                </div>
+
+                <div class="form-group">
+                  <div class="custom-control custom-checkbox small">
+                    <input type="checkbox" class="custom-control-input" id="customCheck">
+                    <label class="custom-control-label" for="customCheck">$localeString{remember_me}</label>
+                  </div>
+                </div>
+
+                <a class="btn btn-primary btn-user btn-block" style="color: white;" onclick="emailPasswordLogin()"
+                  id="loginBtn">$localeString{login}</a>
+                <hr>
+                <a class="btn btn-google btn-user btn-block" style="color: white;" id="signInWithGoogleBtn"
+                  onclick="signInWithGoogle()">
+                  <i class="fab fa-google fa-fw"></i> $localeString{login_with_google}
+                </a>
+
+              </form>
+              <hr>
+              <div class="text-center">
+                <a class="small" href="forgot-password.html">$localeString{forgot_password}</a>
+              </div>
+              <div class="text-center">
+                <a class="small" href="register.html">$localeString{create_an_account}</a>
+              </div>
+              <div class="text-center">
+                <a class="small" href="#" onclick="LocaleStrings.setLanguage('en')">English</a>
+                <a class="small">|</a>
+                <a class="small" href="#" onclick="LocaleStrings.setLanguage('ar')">عربي</a>
               </div>
             </div>
           </div>
@@ -134,7 +135,7 @@
             }).then((res) => {
               window.location = "index.html";
             });
-          }else{
+          } else {
             window.location = "index.html";
           }
         });

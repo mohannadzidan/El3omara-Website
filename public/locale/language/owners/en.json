@@ -1,0 +1,32 @@
+{
+    "dashboard": "Dashboard",
+    "create_cost_center": "Create Cost-Center",
+    "transactions": "Transactions",
+    "actions": "Actions",
+    "manage_roles": "Manage Roles",
+    "manage_owners": "Manage Owners",
+    "editor_tools": "Editor Tools",
+    "admin_tools": "Admin Tools",
+    "logout": "Logout",
+
+    "owners": "Owners",
+    "add_owner": "Add Owner",
+    "empty_fields_msg": "these fields cannot be empty",
+    "dublicated_name_msg": "An owner of same name exists!",
+    "dublicated_flat_number_msg": "An owner of same flat number exists!",
+    "dublicated_phone_number_msg": "An owner of same phone number exists!",
+    "remove_owner_msg": "Are you sure to remove {0}? (this cannot be undone)",
+    "enter_name": "Enter Name",
+    "enter_flat_number": "Enter Flat Number",
+    "enter_phone_number": "Enter Phone Number",
+    "cancel" : "Cancel",
+    "submit" : "Submit",
+    "name": "Name",
+    "flat_number": "Flat Number",
+    "phone_number": "Phone Number"
+   
+
+
+}
+
+

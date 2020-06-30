@@ -26,7 +26,7 @@ firebase.database().ref('owners').on('value', function (snapshot) {
 
 function removeOwner(id) {
     owner = owners.find((o) => o.id == id);
-    if (confirm("Are you sure to remove " + owner.name + "? (this cannot be undone)")) {
+    if (confirm(LocaleStrings.getLocaleString('remove_owner_msg' ,owner.name))) {
         firebase.database().ref("owners/" + id).remove();
         logAction(ActionCode.DELETE_OWNER, {
             id: id,
@@ -42,22 +42,22 @@ function addOwner(formData) {
     if (formData.name == null || formData.name == "" ||
         formData.flatNumber == null || formData.flatNumber == "" ||
         formData.phoneNumber == null || formData.phoneNumber == "") {
-        alert(getLocaleString("embty_fields"));
+        alert(LocaleStrings.getLocaleString("empty_fields_msg"));
         return;
     }
     for (const o of owners) {
         if (formData.name == o.name) {
-            alert("An owner of same name exists!");
+            alert(LocaleStrings.getLocaleString('dublicated_name_msg'));
             isSafe = false;
             break;
         }
         else if (formData.flatNumber == o.flatNumber) {
-            alert("An owner of same flat number exists!");
+            alert(LocaleStrings.getLocaleString('dublicated_flat_number_msg'));
             isSafe = false;
             break;
         }
         else if (formData.phoneNumber == o.phoneNumber) {
-            alert("An owner of same phone number exists!");
+            alert(LocaleStrings.getLocaleString('dublicated_phone_number_msg'));
             isSafe = false;
             break;
         }

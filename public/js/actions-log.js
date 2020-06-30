@@ -11,27 +11,33 @@ const ActionCode = {
     DELETE_OWNER: 8, //
     EDIT_OWNER: 9, //
 }
-const ActionCodesSynonyms = {
-    0: 'Submitted expense',
-    1: 'Submitted payment', 
-    2: 'Created cost-center',
-    3: 'Edited cost-center', 
-    4: 'Deleted cost-center', 
-    5: 'Added announcmenet',
-    6: 'Dropped announcment', 
-    7: 'Added owner', 
-    8: 'Deleted owner', 
-    9: 'Edited owner', 
-}
+var ActionCodesSynonyms = {};
+LocaleStrings.addOnReadyListener(() => {
+    if (LocaleStrings.context == 'actions') {
+        ActionCodesSynonyms = {
+            0: LocaleStrings.getLocaleString('submitted_expense'),
+            1: LocaleStrings.getLocaleString('submitted_payment'),
+            2: LocaleStrings.getLocaleString('created_cost_center'),
+            3: LocaleStrings.getLocaleString('edited_cost_center'),
+            4: LocaleStrings.getLocaleString('deleted_cost_center'),
+            5: LocaleStrings.getLocaleString('added_announcement'),
+            6: LocaleStrings.getLocaleString('dropped_announcement'),
+            7: LocaleStrings.getLocaleString('added_owner'),
+            8: LocaleStrings.getLocaleString('deleted_owner'),
+            9: LocaleStrings.getLocaleString('edited_owner'),
+        }
+    }
+});
+
 function logAction(actionCode, args) {
 
-    var timestamp = new Date().getTime();
-    var actionId = generateUUID();
-    var userId = firebase.auth().currentUser.uid;
-    return firebase.database().ref('actions/' + actionId).set({
-        code: actionCode,
-        timestamp: timestamp,
-        userId: userId,
-        args: args
-    });
-}
+        var timestamp = new Date().getTime();
+        var actionId = generateUUID();
+        var userId = firebase.auth().currentUser.uid;
+        return firebase.database().ref('actions/' + actionId).set({
+            code: actionCode,
+            timestamp: timestamp,
+            userId: userId,
+            args: args
+        });
+    }

@@ -3,12 +3,6 @@ var allCostCenters = [];
 var allPayments = [];
 var allExpenses = [];
 
-function formatDate(timestamp) {
-    var date = new Date(timestamp);
-    var hours = date.getUTCHours();
-    var PMoAM = hours % 12 == 0 ? 'AM' : 'PM';
-    return `${date.getUTCDate()}/${date.getUTCMonth()}/${date.getUTCFullYear()} ${hours % 12}:${date.getUTCMinutes()}${PMoAM}`;
-}
 
 function findCostCenterById(id) {
     return allCostCenters.find((cc) => cc.id == id);
@@ -98,10 +92,10 @@ Promise.all(allPromises).then(() => {
         transactions.push({
             id: p.id,
             ownerDetails: owner.name + " - " + owner.flatNumber,
-            amount: Number(p.amount).toFixed(2),
+            amount: LocaleStrings.replaceLocaleNumbers(Number(p.amount).toFixed(2)),
             reason: p.reason,
             costCenterTitle: costCenter.title,
-            timestamp: formatDate(p.timestamp)
+            timestamp: LocaleStrings.formatDate(p.timestamp)
         });
     });
     allExpenses.forEach(e => {
@@ -113,7 +107,7 @@ Promise.all(allPromises).then(() => {
             attachmentId: e.attachmentId,
             reason: e.reason,
             costCenterTitle: costCenter.title,
-            timestamp: formatDate(e.timestamp)
+            timestamp: LocaleStrings.formatDate(e.timestamp)
         });
     });
     table = $('#transactionsTable').DataTable({

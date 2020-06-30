@@ -1,0 +1,11 @@
+{
+    "display_name": "Display Name",
+    "register_account": "Register Account",
+    "password": "Password",
+    "repeat_password": "Repeat Password",
+    "email_address": "Email Address",
+    "forgot_password": "Forgot Password?",
+    "create_an_account": "Create an Account!",
+    "have_an_account":"Already have an account? Login!"
+
+}

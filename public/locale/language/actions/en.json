@@ -1,0 +1,39 @@
+{
+    "dashboard": "Dashboard",
+    "create_cost_center": "Create Cost-Center",
+    "transactions": "Transactions",
+    "actions": "Actions",
+    "manage_roles": "Manage Roles",
+    "manage_owners": "Manage Owners",
+    "editor_tools": "Editor Tools",
+    "admin_tools": "Admin Tools",
+    "logout": "Logout",
+
+    "user": "User",
+    "owner": "Owner",
+    "action": "Action",
+    "details": "Details",
+    "attachment": "Attachment",
+    "timestamp": "Timestamp",
+    "amount": "Amount",
+    "reason": "Reason",
+    "cost_center": "Cost-Center",
+    "total_cost" : "Total Cost",
+    "title" : "Title",
+    "unknown_owner" : "Unknown Owner",
+    "parent" : "parent",
+    "independent" : "Independent",
+   
+    "submitted_expense": "Submitted expense",
+    "submitted_payment": "Submitted payment", 
+    "created_cost_center": "Created cost-center",
+    "edited_cost_center": "Edited cost-center", 
+    "deleted_cost_center": "Deleted cost-center", 
+    "added_announcement": "Added announcement",
+    "dropped_announcement": "Dropped announcment", 
+    "added_owner": "Added owner", 
+    "deleted_owner": "Deleted owner", 
+    "edited_owner": "Edited owner"
+}
+
+

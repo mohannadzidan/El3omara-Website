@@ -1,0 +1,11 @@
+{
+    "login": "Login",
+    "password": "Password",
+    "enter_email_address": "Enter Email Address",
+    "remember_me": "Remember Me",
+    "login_with_google": "Login with Google",
+    "welcome_back": "Welcome Back!",
+    "forgot_password": "Forgot Password?",
+    "create_an_account": "Create an Account!"
+
+}

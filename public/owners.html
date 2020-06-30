@@ -77,20 +77,16 @@
               text-align: center;
             }
           </style>
-          <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Owners</h1>
-
-          <p class="mb-4">Here you can moderate all the owners.</p>
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Owners</h6>
+              <h6 class="m-0 font-weight-bold text-primary">$localeString{owners}</h6>
               <a class="btn btn-primary btn-icon-split" style="color:white" data-toggle="modal"
                 data-target="#ownerModal" onclick="showAddOwnerForm()">
                 <span class="icon text-white-50">
                   <i class="fas fa-user"></i>
                 </span>
-                <span class="text">Add Owner</span>
+                <span class="text">$localeString{add_owner}</span>
               </a>
             </div>
             <div class="card-body">
@@ -98,9 +94,9 @@
                 <table class="table dataTable no-footer small" id="ownersTable">
                   <thead>
                     <tr role="row">
-                      <th>Name</th>
-                      <th>Flat Number</th>
-                      <th>Phone Number</th>
+                      <th>$localeString{name}</th>
+                      <th>$localeString{flat_number}</th>
+                      <th>$localeString{phone_number}</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -145,7 +141,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="ownerModalLabel">Add Owner</h5>
+          <h5 class="modal-title" id="ownerModalLabel">$localeString{add_owner}</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
@@ -153,26 +149,26 @@
         <div class="p-5">
           <form class="user">
             <div class="form-group">
-              <input type="text" class="form-control form-control-user" id="ownerModalName" placeholder="Enter Name...">
+              <input type="text" class="form-control form-control-user" id="ownerModalName" 
+              placeholder="$localeString{enter_name}...">
             </div>
             <div class="form-group">
               <input type="text" class="form-control form-control-user" id="ownerModalFlatNumber"
-                placeholder="Enter Flat Number...">
+                placeholder="$localeString{enter_flat_number}...">
             </div>
             <div class="form-group">
               <input type="text" class="form-control form-control-user" id="ownerModalPhoneNumber"
-                placeholder="Enter Phone Number...">
+                placeholder="$localeString{enter_phone_number}...">
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <button class="btn btn-primary" type="button" data-dismiss="modal" id="ownerModalDoneBtn">Done</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">$localeString{cancel}</button>
+          <button class="btn btn-primary" type="button" data-dismiss="modal" id="ownerModalDoneBtn">$localeString{submit}</button>
         </div>
       </div>
     </div>
   </div>
-
 
 
 
@@ -187,6 +183,8 @@
   <script src="/__/firebase/init.js"></script>
 
   <script src="vendor/jquery/jquery.min.js"></script>
+  
+
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
@@ -199,15 +197,9 @@
   <script src="vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-  <!-- Locale Script -->
-  <script type="text/javascript" src="locale/multilang.js"> </script>
-
-  <!-- page acess validation -->
-  <!-- ......... -->
-
   <!-- Load Shared Contnet -->
   <script src="js/shared-content.js"></script>
-
+  <script src="locale/locale-common.js" context="owners"></script>
 
   <!-- role & authentication based content -->
   <script require-role="admin|editor" src="js/pagecontent-auth-role.js"></script>

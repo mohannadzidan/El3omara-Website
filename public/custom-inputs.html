@@ -31,7 +31,7 @@
   <script src="js/sb-admin-2.min.js"></script>
 </head>
 
-<body id="page-top" style="display: none">
+<body id="page-top">
   <link href="css/custom-checkbox.css" rel="stylesheet">
 
   <!-- Page Wrapper -->
@@ -53,27 +53,8 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-          
-          <div class="card shadow-lg h-100 my-2">
-            <div class="card-body" id="checkboxesContainer">
-              
-              <script>
-                var cardContainer = document.getElementById('checkboxesContainer');
-                for (let i = 0; i < 12; i++) {
-                  var e = `
-                    <div class="inputGroup">
-                      <input id="option${i}" name="option" type="radio">
-                      <label for="option${i}">Option ${i}</label>
-                    </div>
-                  `;
-                  cardContainer.innerHTML += e;
-                }
-              </script>
 
-            </div>
-            <!-- Page Heading -->
 
-          </div>
           <!-- /.container-fluid -->
 
         </div>

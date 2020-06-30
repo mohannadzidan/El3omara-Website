@@ -1,0 +1,23 @@
+{
+    "dashboard": "Dashboard",
+    "create_cost_center": "Create Cost-Center",
+    "transactions": "Transactions",
+    "actions": "Actions",
+    "manage_roles": "Manage Roles",
+    "manage_owners": "Manage Owners",
+    "editor_tools": "Editor Tools",
+    "admin_tools": "Admin Tools",
+    "logout": "Logout",
+
+    "title" : "Title",
+    "finish" : "Finish",
+    "submit" : "Submit",
+    "description": "Description",
+    "parent": "Parent",
+    "details": "Details",
+    "owners": "Owners",
+    "independent": "independent"
+
+}
+
+

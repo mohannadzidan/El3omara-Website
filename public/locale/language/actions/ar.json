@@ -1,0 +1,39 @@
+{
+    "dashboard": "لوحة التحكم",
+    "create_cost_center": "انشاء مركز تسعير",
+    "transactions": "التحويلات",
+    "actions": "العمليات",
+    "manage_roles": "ادارة الادوار",
+    "manage_owners": "ادارة الملاك",
+    "editor_tools": "ادوات المحرر",
+    "admin_tools": "ادوات المشرف",
+    "logout": "تسجيل الخروج",
+
+    "user": "المستخدم",
+    "owner": "المالك",
+    "action": "العملية",
+    "details": "التفاصيل",
+    "attachment": "المرفق",
+    "timestamp": "التوقيت",
+    "amount": "المبلغ",
+    "reason": "السبب",
+    "cost_center": "مركز التسعير",
+    "total_cost" : "اجمالي التكلفة",
+    "title" : "العنوان",
+    "unknown_owner" : "مالك غير معروف",
+    "parent" : "المصدر",
+    "independent" : "مستقل",
+   
+    "submitted_expense": "سجل تكلفة",
+    "submitted_payment": "سجل دفعة", 
+    "created_cost_center": "انشأ مركز تسعير",
+    "edited_cost_center": "عدل مركز تسعير", 
+    "deleted_cost_center": "حذف مركز تسعير", 
+    "added_announcement": "اضاف اعلان",
+    "dropped_announcement": "حذف اعلان", 
+    "added_owner": "اضاف مالك", 
+    "deleted_owner": "حذف مالك", 
+    "edited_owner": "عدل مالك"
+}
+
+

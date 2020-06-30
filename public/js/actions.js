@@ -102,9 +102,9 @@ var DetailsListGenerator = {
             let ul = document.createElement('ul');
             ul.style.textAlign = 'left';
             ul.innerHTML = `
-            <li>Amount: ${Number(payment.amount).toFixed(2)}</li>
-            <li>Owner: ${owner ? owner.name + ' - ' + owner.flatNumber : this.generateNoDetails('id: ' + payment.ownerId).outerHTML}</li>
-            <li>Reason: ${payment.reason}</li>
+            <li>${LocaleStrings.getLocaleString('amount')}: ${LocaleStrings.replaceLocaleNumbers(Number(payment.amount).toFixed(2))}</li>
+            <li>${LocaleStrings.getLocaleString('owner')}: ${owner ? owner.name + ' - ' + owner.flatNumber : this.generateNoDetails('id: ' + payment.ownerId).outerHTML}</li>
+            <li>${LocaleStrings.getLocaleString('reason')}: ${payment.reason}</li>
             `;
             return ul;
         } else {
@@ -118,9 +118,9 @@ var DetailsListGenerator = {
             let ul = document.createElement('ul');
             ul.style.textAlign = 'left';
             ul.innerHTML = `
-            <li>Amount: ${Number(expense.amount).toFixed(2)}</li>
-            <li>Cost-Center: ${costCenter ? costCenter.title : this.generateNoDetails('id: ' + expense.costCenterId).outerHTML}</li>
-            <li>Reason: ${expense.reason}</li>
+            <li>${LocaleStrings.getLocaleString('amount')}: ${LocaleStrings.replaceLocaleNumbers(Number(expense.amount).toFixed(2))}</li>
+            <li>${LocaleStrings.getLocaleString('cost_center')}: ${costCenter ? costCenter.title : this.generateNoDetails('id: ' + expense.costCenterId).outerHTML}</li>
+            <li>${LocaleStrings.getLocaleString('reason')}: ${expense.reason}</li>
             `;
             return ul;
         } else {
@@ -133,8 +133,8 @@ var DetailsListGenerator = {
             let ul = document.createElement('ul');
             ul.style.textAlign = 'left';
             ul.innerHTML = `
-            <li>Title: ${announcement.title}</li>
-            <li>Total Cost: ${Number(announcement.totalCost).toFixed(2)}</li>
+            <li>${LocaleStrings.getLocaleString('title')}: ${announcement.title}</li>
+            <li>${LocaleStrings.getLocaleString('total_cost')}: ${LocaleStrings.replaceLocaleNumbers(Number(announcement.totalCost).toFixed(2))}</li>
             `;
             return ul;
         } else {
@@ -147,7 +147,7 @@ var DetailsListGenerator = {
             let ul = document.createElement('ul');
             ul.style.textAlign = 'left';
             ul.innerHTML = `
-            <li>Title: ${announcement.title}</li>
+            <li>${LocaleStrings.getLocaleString('title')}: ${announcement.title}</li>
             <li>Id: ${action.args.id}</li>
             `;
             return ul;
@@ -161,7 +161,7 @@ var DetailsListGenerator = {
             let ul = document.createElement('ul');
             ul.style.textAlign = 'left';
             ul.innerHTML = `
-            <li>Title: ${costCenter.title}</li>
+            <li>${LocaleStrings.getLocaleString('title')}: ${costCenter.title}</li>
             `;
             return ul;
         } else {
@@ -174,7 +174,7 @@ var DetailsListGenerator = {
             let ul = document.createElement('ul');
             ul.style.textAlign = 'left';
             ul.innerHTML = `
-            <li>Title: ${costCenter.title}</li>
+            <li>${LocaleStrings.getLocaleString('title')}: ${costCenter.title}</li>
             `;
             return ul;
         } else {
@@ -202,7 +202,7 @@ var DetailsListGenerator = {
                                 <a>${owner.name} - ${owner.flatNumber}</a>
                             </div>`;
                         } else {
-                            htmlContent += `<div class="text-warning">unknown owner</div>`;
+                            htmlContent += `<div class="text-warning">${LocaleStrings.getLocaleString('unkown_owner')}</div>`;
                         }
                     });
                     added.forEach(id => {
@@ -214,7 +214,7 @@ var DetailsListGenerator = {
                                 <a>${owner.name} - ${owner.flatNumber}</a>
                             </div>`;
                         } else {
-                            htmlContent += `<div class="text-warning">unknown owner</div>`;
+                            htmlContent += `<div class="text-warning">${LocaleStrings.getLocaleString('unkown_owner')}</div>`;
                         }
                     });
                     ul.innerHTML += `
@@ -226,7 +226,7 @@ var DetailsListGenerator = {
 
                     ul.innerHTML += `
                     <li>
-                    <a class="font-weight-bold">Parent: </a><a>${oldParent ? oldParent.title : 'Independent'} </a><i class="fas fa-long-arrow-alt-right></i><a> ${newParent ? newParent.title : 'Independent'}</a>
+                    <a class="font-weight-bold">${LocaleStrings.getLocaleString('parent')}: </a><a>${oldParent ? oldParent.title : LocaleStrings.getLocaleString('independent')} </a><i class="fas fa-long-arrow-alt-right></i><a> ${newParent ? newParent.title : LocaleStrings.getLocaleString('independent')}</a>
                     </li>
                     `;
                 } else {
@@ -272,7 +272,7 @@ var DetailsListGenerator = {
     },
     generateEditOwnerDetails: function (action) {
         let owner = allOwners.find(o => o.id == action.args.id);
-        if (owner) {
+        if (owner && action.args.edits) {
             let ul = document.createElement('ul');
             ul.style.textAlign = 'left';
             ul.innerHTML = `<div class="font-weight-light text-center">${owner.name}</div>`
@@ -314,46 +314,38 @@ var DetailsListGenerator = {
         }
     }
 };
-
-Promise.all(allPromises).then(() => {
-    let formatDate = (timestamp) => {
-        var date = new Date(timestamp);
-        var hours = date.getUTCHours();
-        var minutes = date.getUTCMinutes().toString();
-        if (minutes.length == 1) minutes = '0' + minutes;
-        var PMoAM = hours % 12 == 0 ? 'AM' : 'PM';
-        hours = (hours % 12).toString();
-        if(hours.length == 1) hours = '0'+hours;
-        return `${date.getUTCDate()}/${date.getUTCMonth()}/${date.getUTCFullYear()} ${hours}:${minutes}${PMoAM}`;
-    }
-
-    let logs = [];
-    allActions.forEach(action => {
-        user = allUsers.find(u => u.id == action.userId);
-        logs.push({
-            timestamp: formatDate(action.timestamp),
-            user: user ? user.displayName : 'user not found',
-            actionCodeSynonym: ActionCodesSynonyms[action.code],
-            details: DetailsListGenerator.generateDetails(action),
+LocaleStrings.addOnReadyListener(() => {
+    Promise.all(allPromises).then(() => {
+        let logs = [];
+        allActions.forEach(action => {
+            user = allUsers.find(u => u.id == action.userId);
+            logs.push({
+                timestamp: LocaleStrings.formatDate(action.timestamp) + ' | ' + LocaleStrings.formatTime(action.timestamp),
+                user: user ? user.displayName : 'user not found',
+                actionCodeSynonym: ActionCodesSynonyms[action.code],
+                details: DetailsListGenerator.generateDetails(action),
+            });
+        });
+        $('#actionsTable').DataTable({
+            destroy: true,
+            data: logs,
+            columns: [
+                { data: 'timestamp' },
+                { data: 'user' },
+                { data: 'actionCodeSynonym' },
+                {
+                    "mData": 'details',
+                    "bSortable": false,
+                    "mRender": function (data, type, row) {
+                        return data.outerHTML ? data.outerHTML : '<a class="text-warning">' + data + '</a>';
+                    }
+                }
+            ]
         });
     });
-    $('#actionsTable').DataTable({
-        destroy: true,
-        data: logs,
-        columns: [
-            { data: 'timestamp' },
-            { data: 'user' },
-            { data: 'actionCodeSynonym' },
-            {
-                "mData": 'details',
-                "bSortable": false,
-                "mRender": function (data, type, row) {
-                    return data.outerHTML ? data.outerHTML : '<a class="text-warning">' + data + '</a>';
-                }
-            }
-        ]
-    });
+
 });
+
 
 
 

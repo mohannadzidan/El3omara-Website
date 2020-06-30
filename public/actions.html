@@ -31,7 +31,6 @@
 </head>
 
 <body id="page-top">
-
   <link href="css/splash-screen.css" rel="stylesheet">
   <div class="splash-screen" id="splashScreen">
     <div class="splash-screen-content">
@@ -82,10 +81,10 @@
             <table class="table dataTable no-footer small" id="actionsTable">
               <thead>
                 <tr role="row">
-                  <th>Timestamp</th>
-                  <th>User</th>
-                  <th>Action</th>
-                  <th>Details</th>
+                  <th>$localeString{timestamp}</th>
+                  <th>$localeString{user}</th>
+                  <th>$localeString{action}</th>
+                  <th>$localeString{details}</th>
                 </tr>
               </thead>
             </table>
@@ -201,6 +200,7 @@
 
   <!-- Load Shared Content -->
   <script src="js/shared-content.js"></script>
+  <script src="locale/locale-common.js" context="actions"></script>
 
   <!-- PhotoSwipe -->
   <link rel="stylesheet" href="photoswipe/photoswipe.css"> 

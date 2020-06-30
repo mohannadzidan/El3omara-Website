@@ -1,0 +1,22 @@
+{
+    "dashboard": "Dashboard",
+    "create_cost_center": "Create Cost-Center",
+    "transactions": "Transactions",
+    "actions": "Actions",
+    "manage_roles": "Manage Roles",
+    "manage_owners": "Manage Owners",
+    "editor_tools": "Editor Tools",
+    "admin_tools": "Admin Tools",
+    "logout": "Logout",
+
+    "owner": "Owner",
+    "attachment": "Attachment",
+    "timestamp": "Timestamp",
+    "amount": "Amount",
+    "reason": "Reason",
+    "cost_center": "Cost-Center"
+
+
+}
+
+

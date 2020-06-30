@@ -6,8 +6,31 @@ function __toggleSidebar() {
         sidebar.classList.add('toggled');
     }
 }
-$(function () {
-    $("#topbar").load("sharedhtml/topbar.html");
-    $("#accordionSidebar").load("sharedhtml/sidebar.html");
-    $("#logoutModal").load("sharedhtml/logoutmodal.html");
-});
+var SharedContent = {
+    addOnLoadListner: (callback) => {
+        if (!SharedContent.loadCallbacks) SharedContent.loadCallbacks = [];
+        SharedContent.loadCallbacks.push(callback);
+    }
+}
+{
+    let loadSharedContent = (loadRequests) => {
+        let remainingRequests = loadRequests.length;
+        loadRequests.forEach(clr => {
+            let request = new XMLHttpRequest();
+            request.open('GET', clr.path, true);
+            request.onreadystatechange = function () {
+                if (this.status !== 200) throw "couldn't find shared content!";
+                document.getElementById(clr.containerId).innerHTML = this.responseText;
+                if (--remainingRequests == 0 && SharedContent.loadCallbacks)
+                    SharedContent.loadCallbacks.forEach(callback => callback());
+            };
+            request.send();
+        });
+    }
+    loadSharedContent([
+        {path: 'sharedhtml/sidebar.html', containerId: 'accordionSidebar'},
+        {path: 'sharedhtml/logoutmodal.html', containerId: 'logoutModal'},
+        {path: 'sharedhtml/topbar.html', containerId: 'topbar'}
+    ]);
+
+}
