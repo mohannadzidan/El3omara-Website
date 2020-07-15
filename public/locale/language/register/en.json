@@ -11,6 +11,6 @@
     "invalid_email": "the email you entered is invalid!",
     "email_already_in_use": "the email you entered is already in use!",
     "logout": "Logout",
-    "next": "Next"
-
+    "next": "Next",
+    "save": "Save"
 }
