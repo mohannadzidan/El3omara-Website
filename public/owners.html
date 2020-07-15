@@ -41,7 +41,7 @@
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"></ul>
+    <ul class="navbar-nav bg-primary sidebar sidebar-dark accordion px-0 toggled" id="accordionSidebar"></ul>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -51,9 +51,7 @@
       <div id="content">
 
         <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" id="topbar"
-          style="visibility:hidden;">
-        </nav>
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top d-flex justify-content-between bg-white shadow" id="topbar"></nav>
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -80,13 +78,13 @@
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">$localeString{owners}</h6>
+              <h6 class="m-0 font-weight-bold text-primary" locale-inner="owners"></h6>
               <a class="btn btn-primary btn-icon-split" style="color:white" data-toggle="modal"
                 data-target="#ownerModal" onclick="showAddOwnerForm()">
                 <span class="icon text-white-50">
                   <i class="fas fa-user"></i>
                 </span>
-                <span class="text">$localeString{add_owner}</span>
+                <span class="text" locale-inner="add_owner"></span>
               </a>
             </div>
             <div class="card-body">
@@ -94,9 +92,9 @@
                 <table class="table dataTable no-footer small" id="ownersTable">
                   <thead>
                     <tr role="row">
-                      <th>$localeString{name}</th>
-                      <th>$localeString{flat_number}</th>
-                      <th>$localeString{phone_number}</th>
+                      <th locale-inner="name"></th>
+                      <th locale-inner="flat_number"></th>
+                      <th locale-inner="phone_number"></th>
                       <th></th>
                     </tr>
                   </thead>
@@ -141,7 +139,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="ownerModalLabel">$localeString{add_owner}</h5>
+          <h5 class="modal-title" id="ownerModalLabel" locale-inner="add_owner"></h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
@@ -149,22 +147,19 @@
         <div class="p-5">
           <form class="user">
             <div class="form-group">
-              <input type="text" class="form-control form-control-user" id="ownerModalName" 
-              placeholder="$localeString{enter_name}...">
+              <input type="text" class="form-control form-control-user" id="ownerModalName" locale-placeholder="enter_name">
             </div>
             <div class="form-group">
-              <input type="text" class="form-control form-control-user" id="ownerModalFlatNumber"
-                placeholder="$localeString{enter_flat_number}...">
+              <input type="text" class="form-control form-control-user" id="ownerModalFlatNumber" locale-placeholder="enter_flat_number">
             </div>
             <div class="form-group">
-              <input type="text" class="form-control form-control-user" id="ownerModalPhoneNumber"
-                placeholder="$localeString{enter_phone_number}...">
+              <input type="text" class="form-control form-control-user" id="ownerModalPhoneNumber" locale-placeholder="enter_phone_number">
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">$localeString{cancel}</button>
-          <button class="btn btn-primary" type="button" data-dismiss="modal" id="ownerModalDoneBtn">$localeString{submit}</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal"  locale-inner="cancel" ></button>
+          <button class="btn btn-primary" type="button" data-dismiss="modal" id="ownerModalDoneBtn" locale-inner="submit"></button>
         </div>
       </div>
     </div>

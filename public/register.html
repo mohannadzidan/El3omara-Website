@@ -19,13 +19,83 @@
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
-</head>
-
-<body class="bg-gradient-primary">
-  <script src="locale/locale-common.js" context="register"></script>
   <link href="css/max-dim.css" rel="stylesheet">
   <link href="css/splash-screen.css" rel="stylesheet">
+  <link href="css/steps-progress-bar.css" rel="stylesheet">
+  <link href="css/fragments.css" rel="stylesheet">
+</head>
+<style>
+  .display-image img {
+    border-radius: 100%;
+    width: 7rem;
+    height: 7rem;
+    object-fit: contain;
+    margin: 0.5rem;
+  }
+
+  .display-image {
+    position: relative;
+    padding: 0.5rem;
+    transition: all 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .display-image :nth-child(2),
+  .display-image :nth-child(3) {
+    position: absolute;
+    font-family: "Font Awesome 5 Free";
+    color: white;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 5.5rem;
+    left: 1rem;
+    box-shadow: 0 0 0 2pt white;
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.3s;
+  }
+
+  .display-image :nth-child(2) {
+    background-color: #4e73df;
+  }
+
+  .display-image :nth-child(3) {
+    background-color: #e74a3b;
+  }
+
+  .display-image.remove :nth-child(2) {
+    display: none;
+  }
+
+  .display-image:not(.remove) :nth-child(3) {
+    display: none;
+  }
+
+  .display-image :nth-child(2)::after {
+    color: white;
+    content: "\f03e";
+  }
+
+  .display-image :nth-child(3)::after {
+    color: white;
+    content: "\f2ed";
+  }
+
+  .display-image :nth-child(2):hover,
+  .display-image :nth-child(3):hover {
+    opacity: 0.75;
+    transform: scale(1.1);
+  }
+</style>
+
+<body class="bg-gradient-primary">
+
   <div class="splash-screen" id="splashScreen">
     <div class="splash-screen-content">
       <div class="splash-spinner"></div>
@@ -33,55 +103,81 @@
     </div>
   </div>
 
-  <div class="container">
+  <div class="container max-w-15">
 
     <div class="card shadow-lg my-5">
       <div class="card-body">
         <!-- Nested Row within Card Body -->
-        <div class="p-5">
-          <div class="text-center">
-            <h1 class="h4 text-gray-900 mb-4">$localeString{create_an_account}</h1>
+        <div class="text-center">
+          <h1 class="h4 text-gray-900 mb-4" locale-inner="create_an_account"></h1>
+        </div>
+        <!-- Progress Bar -->
+        <div progress-bar-id="mainProgressBar" class="d-flex align-items-center mb-4">
+          <div class="p-0 steps-progress-bar-item done" fragment-id="registerationDataForm">
+            <i class="fas fa-key"></i>
           </div>
-          <form class="user">
-            <div class=" mb-4" id="errorMessageCardContainer" style="display: none;">
-              <div class="card bg-warning text-white shadow">
-                <div class="card-body" id="errorMessageCard"></div>
-              </div>
+          <div class="p-0 steps-link"></div>
+          <div class="p-0 steps-progress-bar-item" fragment-id="emailAndPasswordForm">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="p-0 steps-link"></div>
+          <div class="p-0 steps-progress-bar-item " fragment-id="presonalInfoForm">
+            <i class="fas fa-user-cog"></i>
+          </div>
+          <div class="p-0 steps-link"></div>
+          <div class="p-0 steps-progress-bar-item">
+            <i class="fas fa-check"></i>
+          </div>
+        </div>
+        <!-- Registeration Data Form -->
+        <form id="registerationDataForm" progress-item-index="0" class="fragment" onsubmit="registerAccount()">
+          <div class="form-group">
+            <input type="email" class="form-control" id="email" locale-placeholder="email_address" minlength="8"
+              maxlength="30" required>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <input type="password" class="form-control" id="password" locale-placeholder="password" minlength="8"
+                maxlength="14" required>
             </div>
-            <div class="form-group">
-              <input type="text" class="form-control form-control-user" id="registerDisplayName"
-                placeholder="$localeString{display_name}">
+            <div class="col-sm-6">
+              <input type="password" class="form-control" id="repeatPassword" locale-placeholder="repeat_password"
+                minlength="8" maxlength="14" required>
             </div>
-            <div class="form-group">
-              <input type="email" class="form-control form-control-user" id="registerEmail"
-                placeholder="$localeString{email_address}">
+          </div>
+          <input type="submit" class="btn btn-primary btn-block" style="color: white;" locale-placeholder="next"
+            value="Next">
+        </form>
+        <!-- Personal Info form -->
+        <form id="personalInfoForm" progress-item-index="2" class="fragment" onsubmit="completeRegisteration()" hidden>
+          <canvas hidden></canvas>
+          <div class="d-flex justify-content-center">
+            <input id="fileInput" type="file" accept="image/jpg, image/png" hidden>
+            <div class="display-image">
+              <img id="displayImage" src="img/no-user-image.jpg" draggable="false">
+              <label for="fileInput"></label>
+              <a></a>
             </div>
-            <div class="form-group row">
-              <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="password" class="form-control form-control-user" id="registerPassword"
-                  placeholder="$localeString{password}">
-              </div>
-              <div class="col-sm-6">
-                <input type="password" class="form-control form-control-user" id="registerRepeatPassword"
-                  placeholder="$localeString{repeat_password}">
-              </div>
-            </div>
-            <a class="btn btn-primary btn-user btn-block" style="color: white;" onclick="validateAndRegisterAccount()">
-              $localeString{register_account}
-            </a>
-          </form>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control form-control-user" id="displayName" locale-placeholder="display_name"
+              maxlength="30" minlength="8" required>
+          </div>
+          <input type="submit" class="btn btn-primary btn-block" style="color: white;" locale-placeholder="save"
+            value="Save" id="savePersonalInfoBtn">
           <hr>
           <div class="text-center">
-            <a class="small" href="forgot-password.html">$localeString{forgot_password}</a>
+            <a class="small" href="#login.html" locale-inner="logout" onclick="firebase.auth().signOut()">Logout</a>
           </div>
-          <div class="text-center">
-            <a class="small" href="login.html">$localeString{have_an_account}</a>
-          </div>
-          <div class="text-center">
-            <a class="small" href="#" onclick="LocaleStrings.setLanguage('en')">English</a>
-            <a class="small">|</a>
-            <a class="small" href="#" onclick="LocaleStrings.setLanguage('ar')">عربي</a>
-          </div>
+        </form>
+
+
+        <hr>
+        <div class="text-center">
+
+          <a class="small" href="#" onclick="LocaleStrings.setLanguage('en')">English</a>
+          <a class="small">|</a>
+          <a class="small" href="#" onclick="LocaleStrings.setLanguage('ar')">عربي</a>
         </div>
       </div>
     </div>
@@ -95,7 +191,7 @@
   <script src="/__/firebase/7.15.1/firebase-app.js"></script>
   <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="/__/firebase/7.15.1/firebase-analytics.js"></script>
+  <script src="/__/firebase/7.15.1/firebase-storage.js"></script>
   <script src="/__/firebase/7.15.1/firebase-auth.js"></script>
   <script src="/__/firebase/7.15.1/firebase-database.js"></script>
   <!-- Initialize Firebase -->
@@ -108,17 +204,10 @@
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
+  <script src="locale/locale-common.js" context="register"></script>
+  <script src="js/elements/steps-progress-bar.js"></script>
+  <script src="js/images-utils.js"></script>
   <script src="js/register.js"></script>
-
-  <script>
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user && !justRegistered) {
-        window.location = "index.html";
-      } else {
-        document.getElementById('splashScreen').style.display = "none";
-      }
-    });
-  </script>
 </body>
 
 </html>

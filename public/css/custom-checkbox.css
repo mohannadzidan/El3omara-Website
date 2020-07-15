@@ -1,82 +1,63 @@
-.inputGroup {
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   background-color: #fff;
-  display: block;
-  position: relative;
-  padding: 0;
+  color: #858796;
+
+}
+
+.custom-checkbox input {
+  display: none;
+}
+
+.custom-checkbox label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  width: 100%;
+  padding: 0.1rem 0.2rem 0.1rem 0.2rem;
+  cursor: pointer;
+  background-color: #fff;
+  transition: all 0.3s;
+  padding-left: 0.5rem;
   margin: 0;
 }
 
-.inputGroup label {
-  padding: 5px 10px;
-  width: 100%;
-  display: block;
-  text-align: left;
-  color: #3C454C;
-  cursor: pointer;
-  position: relative;
-  z-index: 2;
-  transition: color 200ms ease-in;
-  overflow: hidden;
-
+.custom-checkbox label::after {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f057";
+  width: 2rem;
+  height: 2rem;
 }
 
-.inputGroup label:before {
-  width: 100%;
-  height: 100%;
-  left: 100%;
-  content: '';
-  background-color: #4e73df;
-  position: absolute;
-  transition: all 500ms;
-  opacity: 0;
-  z-index: -1;
-}
-
-.inputGroup label:after {
-  width: 25px;
-  height: 25px;
-  content: '';
-  border: 2px solid #D1D7DC;
-  background-color: #fff;
-  background-repeat: no-repeat;
-  background-position: 0px 2px;
-  background-image: url("data:image/svg+xml,%3Csvg width='25' height='25' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.414 11L4 12.414l5.414 5.414L20.828 6.414 19.414 5l-10 10z' fill='%23fff' fill-rule='nonzero'/%3E%3C/svg%3E ");
-  border-radius: 50%;
-  z-index: 2;
-  position: absolute;
-  right: 10px;
-  top: 55%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  transition: all 200ms ease-in-out;
-}
-
-.inputGroup input:checked ~ label {
-  color: #fff;
-}
-.inputGroup input:checked ~ label:before {
-  left: 0;
-  opacity: 1;
-}
-
-.inputGroup input:checked ~ label:after {
+.custom-checkbox input:checked+label {
+  color: white;
   background-color: #4e73df;
 }
 
-.inputGroup input:disabled ~ label:before {
-  background-color: #d1d3e2;
+.custom-checkbox input:checked+label::after {
+  content: "\f058";
+  animation: 0.8s check-animation;
 }
 
-.inputGroup input:disabled ~ label:after{
-  background-color: #eaecf4;
-  background-image: none;
-}
+@keyframes check-animation {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(0.5);
+  }
+  60% {
+    transform: scale(1.2);
 
-.inputGroup input:disabled ~ label{
-  background-color: #d4d6de;
-  color: black;
-}
-
-.inputGroup input {
-  display: none;
+  }
+  100% {
+    transform: scale(1);
+  }
 }

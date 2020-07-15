@@ -43,7 +43,7 @@
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"></ul>
+    <ul class="navbar-nav bg-primary sidebar sidebar-dark accordion px-0 toggled" id="accordionSidebar"></ul>
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -52,7 +52,7 @@
       <div id="content">
 
         <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" id="topbar">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top d-flex justify-content-between bg-white shadow" id="topbar"></nav>
         </nav>
         <!-- End of Topbar -->
 
@@ -82,12 +82,12 @@
             <table class="table dataTable no-footer small" id="transactionsTable">
               <thead>
                 <tr role="row">
-                  <th>$localeString{timestamp}</th>
-                  <th>$localeString{amount}</th>
-                  <th>$localeString{reason}</th>
-                  <th>$localeString{owner}</th>
-                  <th>$localeString{cost_center}</th>
-                  <th>$localeString{attachment}</th>
+                  <th locale-inner="timestamp"></th>
+                  <th locale-inner="amount"></th>
+                  <th locale-inner="reason"></th>
+                  <th locale-inner="owner"></th>
+                  <th locale-inner="cost_center"></th>
+                  <th locale-inner="attachment"></th>
                 </tr>
               </thead>
             </table>

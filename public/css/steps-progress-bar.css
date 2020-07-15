@@ -1,0 +1,48 @@
+.steps-progress-bar-item * {
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: #dbdbdb;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.5s;
+
+}
+
+.steps-progress-bar-item.done * {
+    background-color: #4e73df;
+    animation: 0.5s pop;
+
+}
+
+.steps-link {
+    width: 100%;
+    background-color: #dbdbdb;
+    height: 0.2rem;
+    transform: translateY(-0.1rem);
+    transition: background-color 0.5s;
+}
+
+.steps-link.done {
+    background-color: #4e73df;
+}
+
+
+
+@keyframes pop {
+    0% {
+    transform: scale(1);
+
+    }
+
+    50% {
+    box-shadow: 0 0 0 2pt #4e72df7a;
+    }
+
+    100% {
+    transform: scale(1);
+    }
+}

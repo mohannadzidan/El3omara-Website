@@ -1,22 +1,22 @@
 {
     "dashboard": "لوحة التحكم",
-    "create_cost_center": "انشاء مركز تسعير",
+    "create_cost_center": "إنشاء صندوق",
     "transactions": "التحويلات",
     "actions": "العمليات",
-    "manage_roles": "ادارة الادوار",
+    "manage_roles": "إدارة صلاحيات المستخدمين",
     "manage_owners": "ادارة الملاك",
-    "editor_tools": "ادوات المحرر",
+    "editor_tools": "ادوات مسئولين النظام",
     "admin_tools": "ادوات المشرف",
     "logout": "تسجيل الخروج",
     
     "title" : "العنوان",
     "finish" : "انهاء",
-    "submit" : "ارسال",
+    "submit" : "حفظ",
     "description": "الوصف",
-    "parent": "المصدر",
+    "parent" : "الصندوق الأساسي",
     "details": "التفاصيل",
     "owners": "الملاك",
-    "independent": "مستقل"
+    "independent": "أساسي"
 
 }
 

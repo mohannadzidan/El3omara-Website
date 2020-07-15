@@ -25,76 +25,52 @@
   <link href="css/floating-button.css" rel="stylesheet">
   <link href="css/small-table.css" rel="stylesheet">
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="css/steps-progress-bar.css" rel="stylesheet">
+  <link href="css/fragments.css" rel="stylesheet">
+  <link href="css/dashboard-all.css" rel="stylesheet">
 
 
-  <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin-2.min.js"></script>
 </head>
 
 <body id="page-top">
   <link href="css/splash-screen.css" rel="stylesheet">
 
-  <div class="splash-screen" id="splashScreen">
+  <div class="splash-screen" id="splashScreen" hidden>
     <div class="splash-screen-content">
       <div class="splash-spinner"></div>
       <div class="splash-text">El3OMARA</div>
     </div>
   </div>
-  <style>
-    .auto-hide {
-      display: block;
-    }
-
-    .auto-hide:empty {
-      display: none;
-    }
-
-    .show-if-only-child {
-      display: none;
-    }
-
-    .show-if-only-child:only-child {
-      display: block;
-    }
-
-    .hidden {
-      display: none;
-    }
-  </style>
   <!-- Page Wrapper -->
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar"></ul>
+    <ul class="navbar-nav bg-primary sidebar sidebar-dark accordion px-0 toggled" id="accordionSidebar"></ul>
 
     <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content-wrapper">
 
       <!-- Main Content -->
       <div id="content">
 
         <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" id="topbar">
-        </nav>
+        <nav
+          class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top d-flex justify-content-between bg-white shadow"
+          id="topbar"></nav>
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid" style="max-width: 20cm;" id="costCentersContainer">
+        <div class="container-fluid">
           <a href="#" class="btn btn-primary btn-icon-split my-2 hidden" data-toggle="modal" data-target="#expenseModal"
             onclick="Dashboard.onButton_AddExpense()" id="addExpenseButton">
             <span class="icon text-white-50">
               <i class="fas fa-file-invoice-dollar text-white-50"></i>
             </span>
-            <span class="text">$localeString{add_expense}</span>
+            <span class="text" locale-inner="add_expense"></span>
           </a>
         </div>
+        <div id="costCentersContainer"></div>
         <!-- /.container-fluid -->
 
       </div>
@@ -123,7 +99,7 @@
 
 
   <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  <div class="modal" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
   </div>
 
@@ -142,7 +118,7 @@
           <!-- Title -->
           <div class="form-group row">
             <div class="col-sm-3 p-1">
-              <h6>$localeString{title}:</h6>
+              <h6 locale-before="title">:</h6>
             </div>
             <div class="col p-1">
               <input class="form-control" placeholder="Enter title.." id="announcementModal_Title">
@@ -151,7 +127,7 @@
           <!-- Description -->
           <div class="form-group row mb-0">
             <div class="col-sm-3 p-1">
-              <h6>$localeString{total_cost}:</h6>
+              <h6 locale-before="total_cost">:</h6>
             </div>
             <div class="col p-1">
               <input class="form-control" type="number" min="0" placeholder="Enter total cost.."
@@ -160,140 +136,247 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">$localeString{cancel}</button>
-          <button class="btn btn-primary" id="announcementModal_SubmitBtn" data-dismiss="modal">$localeString{submit}</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" locale-inner="cancel"></button>
+          <button class="btn btn-primary" id="announcementModal_SubmitBtn" data-dismiss="modal"
+            locale-inner="submit"></button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Expense Modal -->
-  <div class="modal fade" id="expenseModal" tabindex="-1" role="dialog" aria-labelledby="expenseModalTitle"
-    aria-modal="true" style="display: none;">
+
+  <!-- New Expense Modal -->
+  <div class="modal fade" id="expenseModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+    aria-labelledby="expenseModalTitle" aria-modal="true" style="display: none;">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="expenseModalTitle">$localeString{expense}</h5>
+          <h5 class="modal-title" id="expenseModalTitle" locale-inner="expense"></h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
         <div class="p-4">
-          <div class="form-group row">
-            <div class="col-sm-3 p-1">
-              <h6>$localeString{title}:</h6>
+          <!-- Progress Bar -->
+          <div progress-bar-id="expenseProgressBar" class="d-flex align-items-center mb-4">
+            <div class="p-0 steps-progress-bar-item done" fragment-id="expenseDetailsForm">
+              <i class="fas fa-file-invoice-dollar"></i>
             </div>
-            <div class="col p-1">
-              <input class="form-control" placeholder="Enter title.." id="expenseModal_Title">
+            <div class="p-0 steps-link"></div>
+            <div class="p-0 steps-progress-bar-item" fragment-id="emailAndPasswordForm">
+              <i class="fas fa-boxes"></i>
             </div>
-          </div>
-          <div class="form-group row mb-0">
-            <div class="col-sm-3 p-1">
-              <h6>$localeString{total_expense}:</h6>
+            <div class="p-0 steps-link"></div>
+            <div class="p-0 steps-progress-bar-item " fragment-id="presonalInfoForm">
+              <i class="fas fa-chart-pie"></i>
             </div>
-            <div class="col p-1">
-              <input class="form-control" type="number" min="0" placeholder="Enter total expesnse.."
-                id="expenseModal_TotalExpense">
-            </div>
-          </div>
-          <div class="form-group row mb-0">
-            <div class="col-sm-3 p-1">
-              <h6>$localeString{image_attachment}:</h6>
-            </div>
-            <div class="col p-1">
-              <input type="file" id="expenseModal_AttachmentInput" accept="image/png, image/jpeg">
-              <img id="expenseModal_AttachmentPreview" width="100" height="100" src="img/no_image_available.jpg">
-              <canvas hidden></canvas>
-              <script type="text/javascript">
-                {
-                  let attachmentInput = document.getElementById('expenseModal_AttachmentInput');
-                  let attachmentPreview = document.getElementById('expenseModal_AttachmentPreview');
-                  attachmentInput.addEventListener('change', () => {
-                    let file = attachmentInput.files[0];
-                    if (file) {
-                      const fileReader = new FileReader();
-                      fileReader.onload = function (e) {
-                        attachmentPreview.src = fileReader.result;
-                      }
-                      fileReader.readAsDataURL(file);
-                    }
-                  }, false);
-                }
-              </script>
+            <div class="p-0 steps-link"></div>
+            <div class="p-0 steps-progress-bar-item">
+              <i class="fas fa-check"></i>
             </div>
           </div>
+          <hr>
+          <!-- Details Fragment -->
+          <form class="fragment" id="expenseDetailsFragment"
+            onsubmit="Fragments.selectFragment('expenseCostCentersFragment'); StepsProgressBar.select('expenseProgressBar', 1);">
+            <h5 class="text-center" locale-inner="expense_details"></h5>
+            <!-- Reason -->
+            <div class="row">
+              <div class="col-sm p-1">
+                <h6 locale-before="title" locale-before="reason">:</h6>
+              </div>
+              <div class="col-sm-9 p-1">
+                <input type="text" class="form-control" placeholder="Enter reason.." id="expenseReason" maxlength="30"
+                  required>
+              </div>
+            </div>
+            <!-- Total Amount -->
+            <div class="row">
+              <div class="col-sm p-1">
+                <h6 locale-before="total_amount">:</h6>
+              </div>
+              <div class="col-sm-9 p-1">
+                <input type="number" class="form-control" placeholder="Enter total amount.." id="expenseTotalAmount"
+                  min="1" required>
+              </div>
+            </div>
+            <!-- Date & Time -->
+            <div class="row">
+              <div class="col-sm p-1">
+                <h6 locale-before="date_and_time">:</h6>
+              </div>
+              <div class="col-sm-9 p-1">
+                <input type="datetime-local" class="form-control" id="expenseDateAndTime" required>
+              </div>
+            </div>
+            <!-- Attachment -->
+            <div class="row">
+              <div class="col-sm p-1">
+                <h6 locale-before="attachment">:</h6>
+              </div>
+              <input type="file" accept="image/*" id="expenseAttachmentInput" hidden>
+              <div class="col-sm-9 p-1">
+                <div class="image-input">
+                  <img src="img/no_image_available.jpg" id="expenseAttachmentPreview">
+                  <label for="expenseAttachmentInput"></label>
+                  <a onclick="$('#expenseAttachmentPreview').attr('src', 'img/no_image_available.jpg');
+                $(this).parent().removeClass('remove');
+                $('#expenseAttachmentInput').val('');"></a>
+                </div>
+              </div>
 
-          <div class="p-1 d-flex flex-row align-items-center justify-content-between text-primary">
-            <h6 class="m-0 font-weight-bold">$localeString{cost_centers}</h6>
-            <i class="fas fa-pen"></i>
-          </div>
-          <div class="card border-primary px-0">
-            <ul class="simple-list my-1 py-1 px-2" id="expenseModal_CostCentersList" style="height: 3cm;"></ul>
-          </div>
-          <hr class="m-1">
-          <div class="p-1 d-flex flex-row align-items-center justify-content-between text-primary">
-            <h6 class="m-0 font-weight-bold">$localeString{share}</h6>
-            <i class="fas fa-pen"></i>
-          </div>
-          <hr class="m-1">
-          <div class="px-1" id="expenseModal_ShareValuesContainer">
-          </div>
-          <ul class="simple-list card p-1 auto-hide" id="expenseModal_DetailsList"></ul>
-          </ul>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-end align-items-center">
+              <button type="submit" class="btn bg-primary icon-circle">
+                <i class="fas fa-arrow-right text-white"></i>
+              </button>
+            </div>
+          </form>
 
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">$localeString{cancel}</button>
-          <button class="btn btn-primary" id="expenseModal_SubmitBtn" data-dismiss="modal">$localeString{submit}</button>
+          <!-- Cost-Centers Fragment -->
+          <form class="fragment" id="expenseCostCentersFragment"
+            onsubmit="Fragments.selectFragment('expenseSharesFragment')" hidden>
+            <!-- Header -->
+            <h5 class="text-center" locale-inner="cost_centers">Cost-centers</h5>
+            <!-- Content -->
+            <ul class="simple-list p-0 m-0 rounded border bg-light" id="expenseCostCentersList" style="height: 5cm;">
+              <div class="show-if-only-child d-flex flex-column justify-content-center align-items-center h-100">
+                <i class="fa fa-exclamation-triangle"></i>
+                <h5 locale-inner="no_cost_centers">No Cost-centers found</h5>
+                <a class="small w-50 text-center" locale-inner="no_cost_centers_extended">Create a cost-center before
+                  submitting an expense</a>
+              </div>
+            </ul>
+            <!-- Footer -->
+            <hr>
+            <div class="d-flex justify-content-between align-items-center">
+              <button type="button" class="btn btn-light p-0 text-primary" locale-inner="previous"
+                onclick="Fragments.selectFragment('expenseDetailsFragment'); StepsProgressBar.select('expenseProgressBar', 0);"></button>
+              <button type="submit" class="btn bg-primary icon-circle"
+                onclick="ExpenseFragmentForms.costCentersValidation(this)">
+                <i class="fas fa-arrow-right text-white"></i>
+              </button>
+            </div>
+          </form>
+
+
+          <!-- Shares Fragment -->
+          <form class="fragment" id="expenseSharesFragment" onsubmit="Dashboard.submitExpenseFromModal()" hidden>
+            <!-- Header -->
+            <h5 class="text-center" locale-inner="shares">Shares</h5>
+            <!-- Content -->
+            <ul class="simple-list p-0 m-0 rounded border bg-light" id="expenseSharesList" style="height: 5cm;"></ul>
+            <!-- Footer -->
+            <hr>
+            <div class="d-flex justify-content-between align-items-center">
+              <button type="button" class="btn btn-light p-0 text-primary" locale-inner="previous"
+                onclick="Fragments.selectFragment('expenseCostCentersFragment'); StepsProgressBar.select('expenseProgressBar', 1);"></button>
+              <button type="submit" class="btn bg-primary icon-circle"
+                onclick="ExpenseFragmentForms.sharesValidation(this)">
+                <i class="fas fa-check text-white"></i>
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
 
 
+
   <!-- Add Payment Modal -->
-  <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalTitle"
-    aria-modal="true" style="display: none;">
+  <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" data-backdrop="static"
+    aria-labelledby="paymentModalTitle" aria-modal="true" style="display: none;">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="p-4 d-flex justify-content-between">
           <h5 class="modal-title" id="paymentModalTitle"></h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
         <div class="p-4">
-          <div class="p-1 d-flex flex-row align-items-center justify-content-between text-primary">
-            <h6 class="m-0 font-weight-bold">$localeString{owners}</h6>
-            <i class="fas fa-user"></i>
-          </div>
-          <hr class="m-1">
-          <div class="card border-primary px-0">
-            <ul class="simple-list my-1 py-1 px-2" id="paymentModalOwnersList" style="height: 3cm;"></ul>
-          </div>
-          <br>
-          <div class="p-1 d-flex flex-row align-items-center justify-content-between text-primary">
-            <h6 class="m-0 font-weight-bold">$localeString{announcements}</h6>
-            <i class="fas fa-pen"></i>
-          </div>
-          <hr class="m-1">
-          <div class="card border-primary px-0">
-            <ul class="simple-list my-1 py-1 px-2" id="paymentModalAnnouncementsList" style="height: 3cm;"></ul>
-          </div>
-          <hr class="m-1">
-          <ul class="simple-list card border-left-warning p-1 auto-hide" id="paymentModalDetailsList"></ul>
-          </ul>
-          <div class="text-center my-2">
-            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">$localeString{total_payments}</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">
-              <a id="paymentModalTotalPayments">0.00</a>
-              <a class="small">$localeString{egp}</a>
+          <!-- Progress Bar -->
+          <div progress-bar-id="paymentProgressBar" class="d-flex align-items-center mb-4">
+            <div class="p-0 steps-progress-bar-item done">
+              <i class="fas fa-bullhorn"></i>
+            </div>
+            <div class="p-0 steps-link"></div>
+            <div class="p-0 steps-progress-bar-item">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="p-0 steps-link"></div>
+            <div class="p-0 steps-progress-bar-item">
+              <i class="fas fa-money-check-alt"></i>
+            </div>
+            <div class="p-0 steps-link"></div>
+            <div class="p-0 steps-progress-bar-item">
+              <i class="fas fa-check"></i>
             </div>
           </div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">$localeString{cancel}</button>
-            <button class="btn btn-primary" id="paymentModalSubmitBtn" data-dismiss="modal">$localeString{submit}</button>
-          </div>
+
+          <form class="fragment" id="paymentAnnouncementsFragment" fragments-group="paymentFragments">
+            <h5 class="text-center" locale-inner="announcements"></h5>
+            <div class="card border-primary px-0">
+              <ul class="simple-list my-1 py-1 px-2" id="paymentModalAnnouncementsList" style="height: 5cm;"></ul>
+            </div>
+            <!-- Footer -->
+            <hr>
+            <div class="d-flex justify-content-end align-items-center">
+              <button type="submit" class="btn bg-primary icon-circle"
+                onclick="PaymentModalFragments.selectionValidation(this, 'atleast_one_announcement')">
+                <i class="fas text-white" locale-class="class_next"></i>
+              </button>
+            </div>
+          </form>
+
+          <form hidden class="fragment" id="paymentOwnersFragment" fragments-group="paymentFragments">
+            <h5 class="text-center" locale-inner="owners"></h5>
+            <button type="button" class="btn btn-light p-0 text-primary" locale-inner="previous" onclick="Fragments.selectFragment('paymentAnnouncementsFragment', 'paymentFragments');
+            StepsProgressBar.select('paymentProgressBar', 0);"></button>
+            <div class="card border-primary px-0">
+              <ul class="simple-list my-1 py-1 px-2" id="paymentModalOwnersList" style="height: 5cm;"></ul>
+            </div>
+            <!-- Footer -->
+            <hr>
+            <div class="d-flex justify-content-between align-items-center">
+              <button type="button" class="btn btn-light p-0 text-primary" locale-inner="previous"
+                onclick="Fragments.selectFragment('paymentAnnouncementsFragment', 'paymentFragments'); StepsProgressBar.select('paymentProgressBar', 0);"></button>
+              <button type="submit" class="btn bg-primary icon-circle"
+                onclick="PaymentModalFragments.selectionValidation(this, 'atleast_one_owner')">
+                <i class="fas text-white" locale-class="class_next"></i>
+              </button>
+            </div>
+          </form>
+
+          <form hidden class="fragment" id="paymentAmountsFragment" fragments-group="paymentFragments">
+            <h5 class="text-center" locale-inner="amounts"></h5>
+            <div class="card border-primary px-0">
+              <ul class="simple-list my-1 py-1 px-2" id="paymentAmountsList" style="height: 5cm; position: relative;">
+              </ul>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm p-1">
+                <h6 locale-before="date_and_time"></h6>
+              </div>
+              <div class="col-sm-9 p-1">
+                <input type="datetime-local" class="form-control" id="paymentDateAndTime" required="">
+              </div>
+            </div>
+            <!-- Footer -->
+            <hr>
+            <div class="d-flex justify-content-between align-items-center">
+              <button type="button" class="btn btn-light p-0 text-primary" locale-inner="previous"
+                onclick="Fragments.selectFragment('paymentOwnersFragment', 'paymentFragments'); StepsProgressBar.select('paymentProgressBar', 1);"></button>
+              <button type="submit" class="btn bg-primary icon-circle"
+                onclick="PaymentModalFragments.amountsValidation(this)">
+                <i class="fas fa-check text-white"></i>
+              </button>
+            </div>
+          </form>
+
         </div>
       </div>
     </div>
@@ -305,7 +388,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editCostCenterDetailsModalTitle">$localeString{edit_details}</h5>
+          <h5 class="modal-title" id="editCostCenterDetailsModalTitle" locale-inner="edit_details"></h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
@@ -314,14 +397,14 @@
           <!-- Details -->
           <div class="card">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
-              <h6 class="m-0 font-weight-bold">$localeString{details}</h6>
+              <h6 class="m-0 font-weight-bold" locale-inner="details"></h6>
               <i class="fas fa-pen"></i>
             </div>
             <div class="card-body">
               <!-- Title -->
               <div class="form-group row">
                 <div class="col-sm-3 p-1">
-                  <h6>$localeString{title}:</h6>
+                  <h6 locale-before="title">:</h6>
                 </div>
                 <div class="col p-1">
                   <input class="form-control" placeholder="Enter title.." id="editCostCenterDetailsModal_Title">
@@ -330,7 +413,7 @@
               <!-- Description -->
               <div class="form-group row mb-0">
                 <div class="col-sm-3 p-1">
-                  <h6>$localeString{description}:</h6>
+                  <h6 locale-before="description">:</h6>
                 </div>
                 <div class="col p-1">
                   <textarea class="form-control" placeholder="Enter description.."
@@ -344,7 +427,7 @@
           <div class="card">
 
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
-              <h6 class="m-0 font-weight-bold">$localeString{parent}</h6>
+              <h6 class="m-0 font-weight-bold" locale-inner="parent"></h6>
               <i class="fas fa-user"></i>
             </div>
             <div class="max-h-5">
@@ -355,7 +438,7 @@
           <!-- Owners -->
           <div class="card">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
-              <h6 class="m-0 font-weight-bold">$localeString{owners}</h6>
+              <h6 class="m-0 font-weight-bold" locale-inner="owners"></h6>
               <i class="fas fa-user"></i>
             </div>
             <!-- Card Body-->
@@ -364,20 +447,33 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-danger" style="position: absolute; left: 12px;"
-            id="editCostCenterDetailsModalDeleteBtn">
-            <i class="fas fa-trash-alt mr-1"></i>
-            <a>Delete</a>
-          </button> <button class="btn btn-secondary" type="button" data-dismiss="modal">$localeString{cancel}</button>
-          <button class="btn btn-primary" id="editCostCenterDetailsModalSaveBtn" data-dismiss="modal">$localeString{submit}</button>
+        <div class="modal-footer row justify-content-between p-4">
+          <div class="col-0">
+            <button class="btn btn-danger" id="editCostCenterDetailsModalDeleteBtn">
+              <i class="fas fa-trash-alt mr-1"></i>
+              <a>Delete</a>
+            </button>
+          </div>
+          <div class="col-0">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal" locale-inner="cancel"></button>
+            <button class="btn btn-primary" id="editCostCenterDetailsModalSaveBtn" data-dismiss="modal"
+              locale-inner="submit"></button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
 
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
   <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="/__/firebase/7.15.1/firebase-app.js"></script>
@@ -389,7 +485,6 @@
   <!-- Initialize Firebase -->
   <script src="/__/firebase/init.js"></script>
 
-  <script src="vendor/jquery/jquery.min.js"></script>
 
   <!-- Load Shared Content -->
   <script src="js/shared-content.js"></script>
@@ -406,11 +501,91 @@
   <script src="js/demo/datatables-demo.js"></script>
   <script src="js/images-utils.js"></script>
   <script src="js/actions-log.js"></script>
+  <script src="js/elements/steps-progress-bar.js"></script>
+  <script src="js/elements/fragments.js"></script>
   <script src="js/dashboard.js"></script>
 
+  <script type="text/javascript">
+    function getParentForm(element) {
+      var lookup = element;
+      while (lookup && lookup.nodeName != "FORM") lookup = lookup.parentNode;
+      return lookup;
+    }
+
+    // events
+    {
+      let attachmentInput = document.getElementById('expenseAttachmentInput');
+      let attachmentPreview = document.getElementById('expenseAttachmentPreview');
+      let attachmentPreviewWrapper = attachmentPreview.parentElement;
+      attachmentPreview.onclick = () => attachmentInput.value = null;
+      attachmentInput.addEventListener('change', () => {
+        let file = attachmentInput.files[0];
+        if (file) {
+          const fileReader = new FileReader();
+          fileReader.onload = function (e) {
+            attachmentPreview.src = fileReader.result;
+            attachmentPreviewWrapper.classList.add('remove');
+          }
+          fileReader.readAsDataURL(file);
+        } else {
+          attachmentPreviewWrapper.classList.remove('remove');
+        }
+      }, false);
+      // remove attachment previes upon reset
+      document.querySelector('form').onreset = () => {
+        attachmentPreviewWrapper.classList.remove('remove');
+        attachmentPreview.src = 'img/no_image_available.jpg';
+      };
+    }
 
 
 
+    var ExpenseFragmentForms = {
+      costCentersValidation: (element) => {
+        let form = getParentForm(element);
+        checkedCostCenters = form.querySelectorAll('.custom-checkbox input:checked');
+
+        if (checkedCostCenters.length == 0) {
+          element.setCustomValidity(LocaleStrings.getLocaleString('atleast_one_cost_center'));
+        } else {
+          element.setCustomValidity('');
+          // Fragments.selectFragment('expenseCostCentersFragment');
+        }
+      }, sharesValidation: (element) => {
+        let totalAmount = document.getElementById('expenseTotalAmount').valueAsNumber;
+        let form = getParentForm(element);
+        let shares = Array.from(form.querySelectorAll('[name="shareAmount"]')).map(e => e.valueAsNumber);
+        let totalShares = 0;
+        shares.forEach(s => totalShares += s);
+        if (Math.round(totalShares) != Math.round(totalAmount)) {
+          element.setCustomValidity(LocaleStrings.getLocaleString('invalid_shares'));
+          console.log('totalShares:' + totalShares);
+        } else {
+          element.setCustomValidity('');
+        }
+      }
+    }
+
+    var PaymentModalFragments = {
+      selectionValidation: (element, localeMessage) => {
+        let form = getParentForm(element);
+        checked = form.querySelectorAll('.custom-checkbox input:checked');
+        if (checked.length == 0) {
+          element.setCustomValidity(LocaleStrings.getLocaleString(localeMessage));
+        } else {
+          element.setCustomValidity('');
+        }
+      },
+      amountsValidation: (element) => {
+        let form = getParentForm(element);
+        amounts = Array.from(form.querySelectorAll('input[name="amount"]'));
+        amounts.forEach(a => {
+          if(a.value < 0) a.setCustomValidity(LocaleStrings.getLocaleString('minimum_is_zero'));
+        });
+      } 
+    }
+
+  </script>
 
 </body>
 

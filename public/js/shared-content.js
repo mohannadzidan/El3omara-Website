@@ -8,8 +8,12 @@ function __toggleSidebar() {
 }
 var SharedContent = {
     addOnLoadListner: (callback) => {
-        if (!SharedContent.loadCallbacks) SharedContent.loadCallbacks = [];
-        SharedContent.loadCallbacks.push(callback);
+        if (SharedContent.isReady) {
+            callback();
+        } else {
+            if (!SharedContent.loadCallbacks) SharedContent.loadCallbacks = [];
+            SharedContent.loadCallbacks.push(callback);
+        }
     }
 }
 {
@@ -21,16 +25,19 @@ var SharedContent = {
             request.onreadystatechange = function () {
                 if (this.status !== 200) throw "couldn't find shared content!";
                 document.getElementById(clr.containerId).innerHTML = this.responseText;
-                if (--remainingRequests == 0 && SharedContent.loadCallbacks)
+                if (--remainingRequests == 0 && SharedContent.loadCallbacks) {
+                    SharedContent.isReady = true;
                     SharedContent.loadCallbacks.forEach(callback => callback());
+                }
+
             };
             request.send();
         });
     }
     loadSharedContent([
-        {path: 'sharedhtml/sidebar.html', containerId: 'accordionSidebar'},
-        {path: 'sharedhtml/logoutmodal.html', containerId: 'logoutModal'},
-        {path: 'sharedhtml/topbar.html', containerId: 'topbar'}
+        { path: 'sharedhtml/sidebar.html', containerId: 'accordionSidebar' },
+        { path: 'sharedhtml/logoutmodal.html', containerId: 'logoutModal' },
+        { path: 'sharedhtml/topbar.html', containerId: 'topbar' }
     ]);
 
 }

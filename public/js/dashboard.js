@@ -15,20 +15,24 @@ function isWhiteSpace(str) {
 }
 
 class Generator {
+    static radiobuttonsCounter = 0;
+    static checkboxesCounter = 0;
     /**
      * @param {*} containerType 
      * @param {*} label 
      * @param {*} id 
      * @returns {HTMLElement}
      */
-    static generateCheckbox(containerType, label, id, name) {
+    static generateCheckbox(containerType, label, name) {
+        var n = this.checkboxesCounter++;
         var htmlTemplate = `
-            <input id="${id}" type="checkbox" name="${name ? name : 'checkbox'}"/>
-            <label for="${id}">${label}</label>
+            <input id="checkbox${n}" type="checkbox" ${name ? 'name="' + name + '"' : ''}/>
+            <label for="checkbox${n}">${label}</label>
         `;
         var htmlElement = document.createElement(containerType);
-        htmlElement.classList.add('inputGroup');
+        htmlElement.classList.add('custom-checkbox');
         htmlElement.innerHTML = htmlTemplate;
+        htmlElement.setAttribute('name', name);
         return htmlElement;
     }
 
@@ -38,14 +42,16 @@ class Generator {
      * @param {*} id 
      * @returns {HTMLElement}
      */
-    static generateRadiobutton(containerType, label, id, name) {
+    static generateRadiobutton(containerType, label, name) {
+        let n = this.radiobuttonsCounter++;
         var htmlTemplate = `
-            <input id="${id}" type="radio" name="${name ? name : 'radiobutton'}"/>
-            <label for="${id}">${label}</label>
+            <input id="radio${n}" type="radio" name="${name}"/>
+            <label for="radio${n}">${label}</label>
         `;
         var htmlElement = document.createElement(containerType);
-        htmlElement.classList.add('inputGroup');
+        htmlElement.classList.add('custom-checkbox');
         htmlElement.innerHTML = htmlTemplate;
+        htmlElement.setAttribute('name', name);
         return htmlElement;
     }
 
@@ -96,7 +102,70 @@ class Generator {
         row.label = label;
         return row;
     }
+    static generateShareInput(containerType, title, totalAmount) {
+        let htmlTemplate = ` 
+            <a name="costCenterName">${title}</a>
+            <div class="shares-input-group">
+            <input class="w-50" name="shareAmount" type="number" min="0" step="0.01" required>
+            <label class="mx-1 my-0">${LocaleStrings.getLocaleString('egp')}</label>
+            <input class="w-50" name="sharePercentage" type="number" min="0" max="100" step="0.1" required>
+            <label class="mx-1 my-0">%</label>
+            </div>
+         `;
+        const shareInput = function (element) {
+            if (element.name === 'shareAmount') {
+                let sharePercentage = element.parentNode.querySelector('[name="sharePercentage"]')
+                sharePercentage.value = (element.value / totalAmount * 100).toFixed(1);
+            } else { // sharePercentage
+                let shareAmount = element.parentNode.querySelector('[name="shareAmount"]')
+                shareAmount.value = (element.value / 100 * totalAmount).toFixed(2);
+            }
+        };
+        let htmlElement = document.createElement(containerType);
+        htmlElement.classList.add('d-flex', 'justify-content-between', 'p-2');
+        htmlElement.innerHTML = htmlTemplate;
+        // set oninput callbacks
+        let inputs = htmlElement.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.oninput = () => shareInput(input);
+        });
+        return htmlElement;
+    }
+    static generateAmountInput(containerType, title, amount) {
+        let htmlTemplate = ` 
+            <a name="ownerName">${title}</a>
+            <div class="amounts-input-group">
+            <i name="deviation" data-toggle="tooltip" class="text-warning fas fa-exclamation-triangle" data-placement="top" hidden></i>
+            <input name="amount" type="number" step="0.01" required>
+            <label class="mx-1 my-0">${LocaleStrings.getLocaleString('egp')}</label>
+            </div>
+            `;
+        let htmlElement = document.createElement(containerType);
+        htmlElement.classList.add('d-flex', 'justify-content-between', 'p-2');
+        htmlElement.innerHTML = htmlTemplate;
+        var input = htmlElement.querySelector('input');
+        var deviation = htmlElement.querySelector('[name="deviation"]');
+        input.value = amount;
+        input.oninput = () => {
+            var val = input.value;
+            var dev = val - amount;
+            if (dev == 0) {
+                deviation.hidden = true;
+            } else if (dev > 0) {
+                deviation.hidden = false;
+                $(deviation).tooltip('dispose');
+                $(deviation).tooltip({ title: LocaleStrings.getLocaleString('above_amount_warning', roundCurrency(dev)) });
+            }
+            else {
+                deviation.hidden = false;
+                $(deviation).tooltip('dispose');
+                $(deviation).tooltip({ title: LocaleStrings.getLocaleString('below_amount_warning', roundCurrency(-dev)) });
 
+            }
+        };
+        deviation.onclick = () => $(deviation).tooltip('toggle');
+        return htmlElement;
+    }
 }
 
 class Owner {
@@ -137,7 +206,7 @@ class Announcement {
         }
         this.payments = this.plainPayments ? this.toFullPayments(this.plainPayments) : [];
         this.totalPayments = 0;
-        this.payments.forEach((p) => this.totalPayments += p.amount);
+        this.payments.forEach((p) => this.totalPayments += Number(Number(p.amount)));
         let costCenter = Dashboard.findCostCenterById(this.costCenterId);
         this.pendingPayments = costCenter.owners.length - this.payments.length;
         // update html elements
@@ -212,7 +281,7 @@ class Announcement {
         var htmlTemplate = `
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">
-                <i class="fas fa-flag text-primary mr-3" ></i>
+                <i class="fas fa-flag text-primary" ></i>
                 <a id="${this.id}_title"></a>
                 <a class="text-secondary small">-</a>
                 <a class="text-secondary small" id="${this.id}_date"></a>
@@ -230,7 +299,7 @@ class Announcement {
         </div>
         <div class="card-body">
             <div class="row no-gutters align-items-center">
-                <div class="col mr-5 mb-1">
+                <div class="col-sm mb-1">
                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">${LocaleStrings.getLocaleString('total_cost')}</div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                         <a id="${this.id}_totalCost"></a>
@@ -238,7 +307,7 @@ class Announcement {
                     </div>
                 </div>
                 <input  style="display: none;" type="checkbox" id="${this.id}_paymentsCheckbox" name="${this.id}_tabCheckbox" label-id="${this.id}_paymentsLabel" tab-id="${this.id}_paymentsList">
-                <label class="col mr-5 mb-1" for="${this.id}_paymentsCheckbox" id="${this.id}_paymentsLabel" name="${this.id}_tabLabel">
+                <label class="col-sm mb-1" for="${this.id}_paymentsCheckbox" id="${this.id}_paymentsLabel" name="${this.id}_tabLabel">
                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">${LocaleStrings.getLocaleString('payments')}</div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                         <a id="${this.id}_totalPayments"></a>
@@ -246,7 +315,7 @@ class Announcement {
                     </div>
                 </label>
                 <input style="display: none;" type="checkbox" id="${this.id}_pendingPaymentsCheckbox" name="${this.id}_tabCheckbox" label-id="${this.id}_pendingPaymentsLabel" tab-id="${this.id}_pendingPaymentsList">
-                <label class="col mr-5 mb-1" for="${this.id}_pendingPaymentsCheckbox" id="${this.id}_pendingPaymentsLabel" name="${this.id}_tabLabel">
+                <label class="col-sm mb-1" for="${this.id}_pendingPaymentsCheckbox" id="${this.id}_pendingPaymentsLabel" name="${this.id}_tabLabel">
                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">${LocaleStrings.getLocaleString('pending')}</div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800" id="${this.id}_pendingPayments"></div>
                 </label>
@@ -263,7 +332,7 @@ class Announcement {
         </div>
             `
         var body = document.createElement('div');
-        body.classList.add('card', 'shadow', 'h-100', 'my-1', 'border-primary');
+        body.classList.add('card', 'shadow', 'my-1', 'border-primary');
         body.id = this.id + '_body';
         body.innerHTML = htmlTemplate;
         let costCenter = Dashboard.findCostCenterById(this.costCenterId);
@@ -353,6 +422,7 @@ class Announcement {
 }
 
 class CostCenter {
+    static rowContainer = null;
     /**
      * 
      * @param {*} plainObject 
@@ -471,62 +541,67 @@ class CostCenter {
     appendToContainer() {
         var htmlTemplate = `
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-    <div>
-        <a class="m-0 font-weight-bold text-primary" id="${this.id}_title"></a>
-        <a class="text-secondary small" id="${this.id}_parentTitle"></a>
-    </div>
-    <div class="dropdown no-arrow" ${currentUserRole != 'admin' && currentUserRole != 'editor' ? 'hidden' : ''}>
-        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink"
-            x-placement="bottom-end"
-            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(17px, 19px, 0px);">
-            <div class="dropdown-header">${LocaleStrings.getLocaleString('add')}</div>
-            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#announcementModal"
-                id="${this.id}_dropdownAddAnnouncement">${LocaleStrings.getLocaleString('announcement')}</a>
-            <a class="dropdown-item" href="#costCenterId" data-toggle="modal" data-target="#paymentModal"
-                id="${this.id}_dropdownAddPayment">${LocaleStrings.getLocaleString('payment')}</a>
-            <div class="dropdown-header">${LocaleStrings.getLocaleString('edit')}</div>
-            <a class="dropdown-item" href="#costCenterId" data-toggle="modal" data-target="#editCostCenterDetailsModal"
-                id="${this.id}_dropdownEditDetails">${LocaleStrings.getLocaleString('edit_details')}</a>
+        <div>
+            <a class="m-0 font-weight-bold text-primary" id="${this.id}_title"></a>
+            <a class="text-secondary small" id="${this.id}_parentTitle"></a>
+        </div>
+        <div class="dropdown no-arrow" ${currentUserRole != 'admin' && currentUserRole != 'editor' ? 'hidden' : ''}>
+            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink"
+                x-placement="bottom-end"
+                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(17px, 19px, 0px);">
+                <div class="dropdown-header">${LocaleStrings.getLocaleString('add')}</div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#announcementModal"
+                    id="${this.id}_dropdownAddAnnouncement">${LocaleStrings.getLocaleString('announcement')}</a>
+                <a class="dropdown-item" href="#costCenterId" data-toggle="modal" data-target="#paymentModal"
+                    id="${this.id}_dropdownAddPayment">${LocaleStrings.getLocaleString('payment')}</a>
+                <div class="dropdown-header">${LocaleStrings.getLocaleString('edit')}</div>
+                <a class="dropdown-item" href="#costCenterId" data-toggle="modal" data-target="#editCostCenterDetailsModal"
+                    id="${this.id}_dropdownEditDetails">${LocaleStrings.getLocaleString('edit_details')}</a>
+            </div>
         </div>
     </div>
-</div>
-<!-- Card Body -->
-<div class="card-body">
-    <div class="card shadow-lg h-100 my-2">
-        <div class="card-body">
-            <div type="text" class="mb-3" id="${this.id}_description"></div>
-            <div class="row no-gutters align-items-center my-2">
-                    <div class="col-auto mr-2">
+    <!-- Card Body -->
+    <div class="card-body shadow my-2">
+        <div type=" text" class="mb-3" id="${this.id}_description"></div>
+        <div class="row no-gutters align-items-center my-2">
+            <div class="col-sm">
+                <div class="row no-gutters align-items-center my-2">
+                    <div class="col-auto mx-2">
                         <div class="icon-circle bg-primary">
                             <i class="fas fa-donate text-white"></i>
                         </div>
                     </div>
                     <div class="col-auto">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">${LocaleStrings.getLocaleString('savings')}</div>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            ${LocaleStrings.getLocaleString('savings')}</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <a id="${this.id}_totalSavings"></a>
                             <a class="small">${LocaleStrings.getLocaleString('egp')}</a>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-sm">
                 <div class="row no-gutters align-items-center my-2">
-                    <div class="col-auto mr-2">
+                    <div class="col-auto mx-2">
                         <div class="icon-circle bg-warning">
                             <i class="fas fa-donate text-white"></i>
                         </div>
                     </div>
                     <div class="col-auto">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">${LocaleStrings.getLocaleString('children_savings')}</div>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            ${LocaleStrings.getLocaleString('children_savings')}</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <a id="${this.id}_totalChildrenSavings"></a>
                             <a class="small">${LocaleStrings.getLocaleString('egp')}</a>
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
     <div id="${this.id}_announcementsContainer">
@@ -542,13 +617,20 @@ class CostCenter {
             <h6 class="col">Loading Announcements...</h6>
         </div>
     </div>
-</div>
         `;
         var htmlElement = document.createElement('div');
-        htmlElement.classList.add('card', 'shadow', 'mb-4');
+        htmlElement.classList.add('col-lg-5', 'h-100', 'card', 'shadow', 'm-2', 'p-3');
         htmlElement.innerHTML = htmlTemplate;
         htmlElement.id = this.id + '_body';
-        this.container.appendChild(htmlElement);
+        if (CostCenter.rowContainer == null) {
+            CostCenter.rowContainer = document.createElement('div');
+            CostCenter.rowContainer.classList.add('row', 'justify-content-center');
+            CostCenter.rowContainer.appendChild(htmlElement);
+            this.container.appendChild(CostCenter.rowContainer);
+        } else {
+            CostCenter.rowContainer.appendChild(htmlElement);
+            CostCenter.rowContainer = null;
+        }
         Object.keys(this.htmlElements).forEach((key) => {
             this.htmlElements[key] = document.getElementById(this.id + '_' + key);
         });
@@ -644,18 +726,17 @@ class CostCenter {
 
     calculateTotalSavings() {
         var totalSavings = 0;
-        this.payments.forEach((p) => totalSavings += p.amount);
-        this.expenses.forEach(e => totalSavings -= e.amount)
+        this.payments.forEach((p) => totalSavings += Number(p.amount));
+        this.expenses.forEach(e => totalSavings -= Number(e.amount))
         return totalSavings;
     }
-    submitPayment(announcementId, ownerId, amount) {
+    submitPayment(announcementId, ownerId, amount, timestamp = new Date().getTime()) {
         var owner = this.findOwnerById(ownerId);
         var announcement = this.findAnnouncementById(announcementId);
         if (announcement == null || owner == null || amount == null || amount <= 0) {
-            throw "Invalid Payment!";
+            throw `Invalid Payment! args-> ${announcementId}=${announcement} ${ownerId}=${owner} ${amount}`;
         }
         var paymentId = generateUUID();
-        var timestamp = new Date().getTime();
         firebase.database().ref('payments/' + paymentId).set({
             costCenterId: this.id,
             ownerId: ownerId,
@@ -670,14 +751,13 @@ class CostCenter {
         });
     }
 
-    submitExpense(reason, amount, attachmentId = '') {
-        var timestamp = new Date().getTime();
+    submitExpense(reason, amount, attachmentUrl = '', timestamp = new Date().getTime()) {
         var expenseId = generateUUID();
         firebase.database().ref('expenses/' + expenseId).set({
             reason: reason,
             amount: amount,
             costCenterId: this.id,
-            attachmentId: attachmentId,
+            attachmentUrl: attachmentUrl,
             timestamp: timestamp
         }).then(() => logAction(ActionCode.SUBMIT_EXPENSE, {
             id: expenseId
@@ -686,77 +766,70 @@ class CostCenter {
 
     onDropdown_AddPayment() {
         document.getElementById('paymentModalTitle').innerHTML = 'Payment - ' + this.title;
-        document.getElementById('paymentModalTitle').innerHTML = 'Payment - ' + this.title;
-        document.getElementById('paymentModalSubmitBtn').onclick = () => this.onSubmit_Payment();
         var modalOwnersList = document.getElementById('paymentModalOwnersList');
-        var modalAannouncementsList = document.getElementById('paymentModalAnnouncementsList');
-        var modalDetailsList = document.getElementById('paymentModalDetailsList');
-        modalDetailsList.innerHTML = '';
-        var modalTotalPayments = document.getElementById('paymentModalTotalPayments');
-        modalTotalPayments.innerHTML = '0.00';
-        // load owners list
-        modalOwnersList.innerHTML = '';
-        this.owners.forEach((o) => {
-            var checkbox = Generator.generateCheckbox('li', o.name, o.id + '_paymentModalCheckbox');
-            modalOwnersList.appendChild(checkbox);
-            checkbox.oninput = () => this.paymentModal_ValidatePaymentSelections();
-        });
-        modalAannouncementsList.innerHTML = '';
+        var modalAnnouncementsList = document.getElementById('paymentModalAnnouncementsList');
+        var modalAmountsList = document.getElementById('paymentAmountsList');
+        // reset all forms
+        Fragments.selectFragment('paymentAnnouncementsFragment', 'paymentFragments');
+        StepsProgressBar.select('paymentProgressBar', 0);
+        document.querySelectorAll('[fragment-group="paymentFragments"]').forEach(f => f.reset());
+
+        // load announcement of cost-center
+        modalAnnouncementsList.innerHTML = '';
         this.announcements.forEach((a) => {
-            var checkbox = Generator.generateCheckbox('li', a.title, a.id + '_paymentModalCheckbox');
-            modalAannouncementsList.appendChild(checkbox);
-            checkbox.oninput = () => this.paymentModal_ValidatePaymentSelections();
+            var checkbox = Generator.generateRadiobutton('li', a.title, "paymentAnnouncementRadio");
+            checkbox.querySelector('input').setAttribute('announcement-id', a.id);
+            modalAnnouncementsList.appendChild(checkbox);
         });
-
-    }
-
-    paymentModal_ValidatePaymentSelections() {
-        var modalDetailsList = document.getElementById('paymentModalDetailsList');
-        var modalTotalPayments = document.getElementById('paymentModalTotalPayments');
-
-        modalDetailsList.innerHTML = '';
-        var selections = this.paymentModal_getSelections();
-        var validPayments = [];
-        var totalPayments = 0;
-        selections.checkedAnnouncements.forEach((announcement) => {
-            const paymentPerOwner = announcement.totalCost / this.owners.length;
-            selections.checkedOwners.forEach((owner) => {
-                if (announcement.findPaymentByOwnerId(owner.id)) {
-                    var msg = 'A payment form \'' + owner.name + '\' has been ignored, since this owner already paid for -' + announcement.title + '-';
-                    modalDetailsList.appendChild(Generator.generateWarningListItem(msg));
-                } else {
-                    validPayments.push({
-                        announcementId: announcement.id,
-                        ownerId: owner.id,
-                        amount: paymentPerOwner
-                    });
-                    totalPayments += paymentPerOwner;
-                }
+        var announcementsFragment = document.getElementById('paymentAnnouncementsFragment');
+        var ownersFragment = document.getElementById('paymentOwnersFragment');
+        var amountsFragment = document.getElementById('paymentAmountsFragment');
+        var announcement = null;
+        // form submittion events
+        announcementsFragment.onsubmit = () => {
+            // get selected announcement
+            var announcementId = announcementsFragment.querySelector('[name="paymentAnnouncementRadio"] input:checked').getAttribute('announcement-id');
+            announcement = this.announcements.find(a => a.id == announcementId);
+            // get owners who didn't pay yet
+            var payers = this.owners.filter(o => announcement.payments.find(p => p.ownerId == o.id) == null)
+            // construct owners list
+            // load owners list
+            modalOwnersList.innerHTML = '';
+            payers.forEach((o) => {
+                var checkbox = Generator.generateCheckbox('li', o.name, 'paymentOwnerCheckbox');
+                modalOwnersList.appendChild(checkbox);
+                checkbox.querySelector('input').setAttribute('owner-id', o.id);
             });
-        });
-        modalTotalPayments.innerHTML = roundCurrency(totalPayments);
-        return validPayments;
-    }
-
-    paymentModal_getSelections() {
-        /**
-         * @type {Owner[]}
-         */
-        var checkedOwners = [];
-        /**
-       * @type {Announcement[]}
-       */
-        var checkedAnnouncements = [];
-        this.owners.forEach((o) => {
-            var checkbox = document.getElementById(o.id + '_paymentModalCheckbox');
-            if (checkbox.checked) checkedOwners.push(o);
-        });
-
-        this.announcements.forEach((a) => {
-            var checkbox = document.getElementById(a.id + '_paymentModalCheckbox');
-            if (checkbox.checked) checkedAnnouncements.push(a);
-        });
-        return { checkedOwners: checkedOwners, checkedAnnouncements: checkedAnnouncements };
+            // move to next fragment
+            Fragments.selectFragment('paymentOwnersFragment', 'paymentFragments');
+            StepsProgressBar.select('paymentProgressBar', 1);
+        }
+        ownersFragment.onsubmit = () => {
+            var checkedOwnersIds = Array.from(ownersFragment.querySelectorAll('[name="paymentOwnerCheckbox"] input:checked')).map(a => a.getAttribute('owner-id'));
+            // get checked owners
+            var owners = this.owners.filter(o => checkedOwnersIds.includes(o.id));
+            // generate amounts fields
+            modalAmountsList.innerHTML = '';
+            var paymentPerOwner = announcement.totalCost / this.owners.length;
+            owners.forEach(o => {
+                var field = Generator.generateAmountInput('li', o.name, paymentPerOwner);
+                field.querySelector('input').setAttribute('owner-id', o.id);
+                modalAmountsList.appendChild(field);
+            });
+            // move to next fragment
+            Fragments.selectFragment('paymentAmountsFragment', 'paymentFragments');
+            StepsProgressBar.select('paymentProgressBar', 2);
+        }
+        amountsFragment.onsubmit = () => {
+            var announcementId = announcementsFragment.querySelector('[name="paymentAnnouncementRadio"] input:checked').getAttribute('announcement-id');
+            var amounts = amountsFragment.querySelectorAll('input[name="amount"]');
+            var timestamp = document.getElementById('paymentDateAndTime').valueAsNumber;
+            // submit payments
+            amounts.forEach(a => {
+                this.submitPayment(announcementId, a.getAttribute('owner-id'), a.value, timestamp);
+            });
+            $('#paymentModal').modal('hide');
+        }
     }
 
     onDropdown_AddAnnouncement() {
@@ -859,7 +932,7 @@ class CostCenter {
         modalOwnersList.innerHTML = '';
         modalSaveBtn.onclick = submitFunction;
         Dashboard.allOwners.forEach(owner => {
-            var checkbox = Generator.generateCheckbox('li', owner.name + ' - ' + owner.flatNumber, owner.id + '_editDetailsModalCheckbox', 'EditDetailsModalOwnerCheckbox');
+            var checkbox = Generator.generateCheckbox('li', owner.name + ' - ' + owner.flatNumber, 'EditDetailsModalOwnerCheckbox');
             checkbox.classList.add('li-separator');
             checkbox.getElementsByTagName('input')[0].checked = this.findOwnerById(owner.id) ? true : false;
             checkbox.setAttribute('owner-id', owner.id);
@@ -900,15 +973,6 @@ class CostCenter {
         Announcement.createAnnouncement(this.id, title, totalCost);
 
     }
-
-    onSubmit_Payment() {
-        var validPayments = this.paymentModal_ValidatePaymentSelections();
-        validPayments.forEach((vp) => {
-            this.submitPayment(vp.announcementId, vp.ownerId, vp.amount)
-        });
-    }
-
-
 
 }
 
@@ -971,7 +1035,7 @@ class Dashboard {
             });
     }
 
-    
+
     /**
      * 
      * @param {string} id 
@@ -986,138 +1050,90 @@ class Dashboard {
     }
 
     static onButton_AddExpense() {
-        var modalCostCentersList = document.getElementById('expenseModal_CostCentersList');
-        var modalDetailsList = document.getElementById('expenseModal_DetailsList');
-        var modalTotalExpense = document.getElementById('expenseModal_TotalExpense');
-        var modalTitle = document.getElementById('expenseModal_Title');
-        var modalSubmitBtn = document.getElementById('expenseModal_SubmitBtn');
-        var modalAttachmentInput = document.getElementById('expenseModal_AttachmentInput');
-        var modalAttachmentPreview = document.getElementById('expenseModal_AttachmentPreview');
-        var modalShareValuesContainer = document.getElementById('expenseModal_ShareValuesContainer');
-        modalDetailsList.innerHTML = '';
-        modalTotalExpense.value = '';
-        modalTitle.value = '';
-        modalAttachmentInput.value = null;
-        modalAttachmentPreview.src = "img/no_image_available.jpg";
-        var shares = [];
-        // load cost-centers list
-        const inputFunction = () => {
-            var isOk = true;
-            modalDetailsList.innerHTML = '';
-            // check title
-            var title = modalTitle.value;
-            var totalExpense = modalTotalExpense.value;
-            if (title.length == 0 || title.length > 30 || isWhiteSpace(title)) {
-                isOk = false;
-                modalDetailsList.appendChild(Generator.generateErrorListItem('expense title is invalid'));
-            }
-            if (totalExpense <= 0) {
-                modalDetailsList.appendChild(Generator.generateErrorListItem('total expense is very small'));
-            }
-            var checkedCostCenters = [];
-            var checkboxes = document.getElementsByName('ExpenseCostCenterCheckbox');
-            checkboxes.forEach((checkbox) => {
-                if (checkbox.checked) {
-                    var costCenterId = checkbox.parentElement.getAttribute('cost-center-id');
-                    checkedCostCenters.push(Dashboard.findCostCenterById(costCenterId));
-                }
-            });
-            if (checkedCostCenters.length == 0) isOk = false;
-            const sumArray = (array, length) => {
-                var s = 0;
-                for (let i = 0; i < length; i++) {
-                    const e = Number(array[i].input.value);
-                    s += e;
-                }
-                return s;
-            }
-            if (shares.length != checkedCostCenters.length) {
-                while (shares.length < checkedCostCenters.length) {
-                    let e = Generator.generateField("", 0, LocaleStrings.getLocaleString('egp'));
-                    e.input.oninput = inputFunction;
-                    shares.push(e);
-                }
-                while (shares.length > checkedCostCenters.length) shares.pop();
-                modalShareValuesContainer.innerHTML = '';
-                shares.forEach((e, i) => {
-                    e.label.innerHTML = checkedCostCenters[i].title;
-                    shares[i].input.disabled = false;
-                    shares[i].setAttribute('cost-center-id', checkedCostCenters[i].id);
-                    modalShareValuesContainer.appendChild(e);
-                });
-                shares[shares.length - 1].input.disabled = true;
-                shares[shares.length - 1].input.value = 100 - sumArray(shares, shares.length - 1);
-            }
-            if (shares.length > 0) {
-                var lastPercentageValue = totalExpense - sumArray(shares, shares.length - 1);
-                if (lastPercentageValue < 0) {
-                    isOk = false;
-                    modalDetailsList.appendChild(Generator.generateErrorListItem('incorrect shares'));
-                }
-                shares[shares.length - 1].input.value = lastPercentageValue;
-                checkedCostCenters.forEach((costCenter, i) => {
-                    var share = Number(shares.find(p => p.getAttribute('cost-center-id') == costCenter.id).input.value);
-                    var costCenterExpense = share[i];
-                    if (costCenterExpense > costCenter.calculateTotalSavings()) {
-                        isOk = false;
-                        modalDetailsList.appendChild(Generator.generateErrorListItem(costCenter.title + ': savings do not cover the expense'));
-                    }
-                });
-            }
-            modalSubmitBtn.disabled = !isOk;
-        }
-
-        const submitFuntion = () => {
-            var checkboxes = document.getElementsByName('ExpenseCostCenterCheckbox');
-            var attachmentInput = document.getElementById('expenseModal_AttachmentInput');
-
-            var checkedCostCenters = [];
-            checkboxes.forEach((checkbox) => {
-                if (checkbox.checked) {
-                    var costCenterId = checkbox.parentElement.getAttribute('cost-center-id');
-                    checkedCostCenters.push(Dashboard.findCostCenterById(costCenterId));
-                }
-            });
-
-
-            let file = attachmentInput.files[0];
-            if (file) {
-                const fileReader = new FileReader();
-                const canvas = document.querySelector('canvas');
-                var image = new Image();
-                fileReader.onload = function (e) {
-                    image.src = fileReader.result;
-                }
-                image.onload = () => {
-                    compressImage(canvas, image, 0.5, (blob) => {
-                        var attachmentId = generateUUID();
-                        firebase.storage().ref('expenses-attachments/' + attachmentId + '.jpg').put(blob);
-                        checkedCostCenters.forEach((costCenter, i) => {
-                            var costCenterExpense = shares[i].input.value;
-                            costCenter.submitExpense(modalTitle.value, costCenterExpense, attachmentId);
-                        });
-                    });
-                }
-                fileReader.readAsDataURL(file);
-            } else {
-                checkedCostCenters.forEach((costCenter, i) => {
-                    var costCenterExpense = shares[i].input.value;
-                    costCenter.submitExpense(modalTitle.value, costCenterExpense);
-                });
-            }
-        }
-        modalTotalExpense.oninput = inputFunction;
-        modalTitle.oninput = inputFunction;
-        modalCostCentersList.innerHTML = '';
-        modalSubmitBtn.disabled = true;
-        modalSubmitBtn.onclick = submitFuntion;
-        Dashboard.allCostCenters.forEach((costCenter) => {
-            var checkbox = Generator.generateCheckbox('li', costCenter.title, costCenter.id + '_expenseCostCenter', 'ExpenseCostCenterCheckbox');
-            checkbox.setAttribute('cost-center-id', costCenter.id);
-            checkbox.oninput = inputFunction;
-            modalCostCentersList.appendChild(checkbox);
-
+        //reset all forms
+        let modal = document.getElementById('expenseModal');
+        let forms = modal.querySelectorAll('form');
+        forms.forEach(f => f.reset());
+        // go to first fragment
+        Fragments.selectFragment('expenseDetailsFragment');
+        StepsProgressBar.select('expenseProgressBar', 0);
+        // generate and add cost-centers checkboxes
+        let costCentersList = document.getElementById('expenseCostCentersList');
+        costCentersList.innerHTML = '';
+        Dashboard.allCostCenters.forEach((cc, i) => {
+            let checkbox = Generator.generateCheckbox('li', cc.title, 'expenseCostCenterCheckbox')
+            checkbox.classList.add('li-separator');
+            checkbox.querySelector('input').setAttribute('cost-center-id', cc.id);
+            costCentersList.appendChild(checkbox);
         });
+        // set events of shares modal
+        let expenseCostCentersFragment = document.getElementById('expenseCostCentersFragment');
+        expenseCostCentersFragment.onsubmit = () => {
+            Fragments.selectFragment('expenseSharesFragment');
+            StepsProgressBar.select('expenseProgressBar', 2);
+            // prepare shares list
+            let sharesList = document.getElementById('expenseSharesList');
+            let checkedBoxes = expenseCostCentersFragment.querySelectorAll('.custom-checkbox input:checked');
+            let totalAmount = document.getElementById('expenseTotalAmount').value;
+            sharesList.innerHTML = '';
+            checkedBoxes.forEach(cb => {
+                // fetch cost center
+                let costCenterId = cb.getAttribute('cost-center-id');
+                let costCenter = Dashboard.findCostCenterById(costCenterId);
+                //generate element
+                let shareElement = Generator.generateShareInput('li', costCenter.title, totalAmount);
+                shareElement.classList.add('li-separator');
+                // put cost center id attribute for inputs
+                let inputs = shareElement.querySelectorAll('input');
+                inputs.forEach(i => i.setAttribute('cost-center-id', costCenterId));
+                // finally append the share element into the list
+                sharesList.appendChild(shareElement);
+            });
+        }
+
+    }
+
+    static submitExpenseFromModal() {
+        let expenseCostCentersFragment = document.getElementById('expenseCostCentersFragment');
+        let expenseSharesFragment = document.getElementById('expenseSharesFragment');
+        // get expense details
+        let reason = document.getElementById("expenseReason").value;
+        var timestamp = document.getElementById("expenseDateAndTime").valueAsNumber;
+        let attachment = document.getElementById('expenseAttachmentInput').files[0];
+
+        // get checked cost centers
+        let costCenters = Array.from(expenseCostCentersFragment.querySelectorAll('.custom-checkbox input:checked'))
+            .map(e => Dashboard.findCostCenterById(e.getAttribute('cost-center-id')));
+        // get share amounts
+        let shareAmounts = Array.from(expenseSharesFragment.querySelectorAll('[name="shareAmount"]')).map(e => e.value);
+
+        // submit expenses
+        if (attachment) {
+            const fileReader = new FileReader();
+            var image = new Image();
+            const canvas = document.querySelector('canvas');
+            fileReader.onload = function (e) {
+                image.src = fileReader.result;
+            }
+            image.onload = () => {
+                // compress image
+                compressImage(canvas, image, 0.5, (blob) => {
+                    firebase.storage().ref('expenses-attachments/' + generateUUID() + '.jpg')
+                        .put(blob).then((res) => res.ref.getDownloadURL().then((url) => {
+                            costCenters.forEach((cc, i) => {
+                                cc.submitExpense(reason, shareAmounts[i], url, timestamp);
+                            });
+                            $("#expenseModal").modal('hide');
+                        }));
+                });
+            }
+            fileReader.readAsDataURL(attachment);
+        } else {
+            costCenters.forEach((cc, i) => {
+                cc.submitExpense(reason, shareAmounts[i], '', timestamp);
+            });
+            $("#expenseModal").modal('hide');
+        }
 
     }
 

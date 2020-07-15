@@ -1,0 +1,115 @@
+.auto-hide {
+    display: block;
+  }
+  
+  .auto-hide:empty {
+    display: none;
+  }
+  
+  .show-if-only-child {
+    display: none;
+  }
+  
+  .show-if-only-child:only-child {
+    display: block;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .image-input img {
+    width: 7rem;
+    height: 7rem;
+    border-radius: 0.3rem;
+    object-fit: contain;
+    margin: 0.5rem;
+  }
+  
+  .image-input {
+    width: 7rem;
+    height: 7rem;
+    position: relative;
+    padding: 0.5rem;
+    transition: all 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+  }
+  
+  .image-input :nth-child(2),
+  .image-input :nth-child(3) {
+    position: absolute;
+    font-family: "Font Awesome 5 Free";
+    color: white;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: -0.5rem;
+    left: -0.5rem;
+    margin: 0;
+    box-shadow: 0 0 0 2pt white;
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.3s;
+  }
+  
+  .image-input :nth-child(2) {
+    background-color: #4e73df;
+  }
+  
+  .image-input :nth-child(3) {
+    background-color: #e74a3b;
+  }
+  
+  .image-input.remove :nth-child(2) {
+    display: none;
+  }
+  
+  .image-input:not(.remove) :nth-child(3) {
+    display: none;
+  }
+  
+  .image-input :nth-child(2)::after {
+    color: white;
+    content: "\f03e";
+  }
+  
+  .image-input :nth-child(3)::after {
+    color: white;
+    content: "\f2ed";
+  }
+  
+  .image-input :nth-child(2):hover,
+  .image-input :nth-child(3):hover {
+    opacity: 0.75;
+    transform: scale(1.1);
+  }
+  
+  .shares-input-group,
+  .amounts-input-group {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content:flex-end;
+    font-size: small;
+    align-items: center;
+  }
+  
+  .shares-input-group input,
+  .amounts-input-group input {
+    border: 0;
+    width: 50%;
+  
+    border-bottom: 1px solid grey;
+  }
+  
+  .shares-input-group input:focus,
+  .amounts-input-group input:focus {
+    outline: 0;
+    border-bottom: 1px solid #4e73df;
+  }

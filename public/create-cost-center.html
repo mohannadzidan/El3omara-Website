@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>$localeString{create_cost_center}</title>
+  <title locale-inner="create_cost_center"></title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -44,7 +44,7 @@
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"></ul>
+    <ul class="navbar-nav bg-primary sidebar sidebar-dark accordion px-0 toggled" id="accordionSidebar"></ul>
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -53,7 +53,7 @@
       <div id="content">
 
         <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" id="topbar">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top d-flex justify-content-between bg-white shadow" id="topbar"></nav>
         </nav>
         <!-- End of Topbar -->
 
@@ -61,19 +61,19 @@
         <div class="container-fluid" style="max-width: 20cm;">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-4 text-gray-800">$localeString{create_cost_center}</h1>
+          <h1 class="h3 mb-4 text-gray-800" locale-inner="create_cost_center"></h1>
 
           <!-- Details Card -->
           <div class="card shadow">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
-              <h6 class="m-0 font-weight-bold">$localeString{details}</h6>
+              <h6 class="m-0 font-weight-bold" locale-inner="details"></h6>
               <i class="fas fa-pen"></i>
             </div>
             <div class="card-body">
               <!-- Title -->
               <div class="form-group row">
                 <div class="col-sm-3 p-1">
-                  <h6>$localeString{title}:</h6>
+                  <h6 locale-before="title">:</h6>
                 </div>
                 <div class="col p-1">
                   <input class="form-control" placeholder="Enter title.." id="ccTitle" oninput="onTitleChange()">
@@ -82,7 +82,7 @@
               <!-- Description -->
               <div class="form-group row mb-0">
                 <div class="col-sm-3 p-1">
-                  <h6>$localeString{description}:</h6>
+                  <h6 locale-before="description">:</h6>
                 </div>
                 <div class="col p-1">
                   <textarea class="form-control" placeholder="Enter description.." id="ccDescription"
@@ -105,7 +105,7 @@
           <!-- Parent CC Card -->
           <div class="card shadow">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
-              <h6 class="m-0 font-weight-bold">$localeString{parent}</h6>
+              <h6 class="m-0 font-weight-bold" locale-inner="parent"></h6>
               <i class="fas fa-user"></i>
             </div>
 
@@ -116,7 +116,7 @@
                   <li class="inputGroup li-separator">
                     <input id="independent_radioBtn" name="costCenterRadio" type="radio" checked
                       oninput="onCostCenterRadioBtn()">
-                    <label for="independent_radioBtn">$localeString{independent}</label>
+                    <label for="independent_radioBtn" locale-inner="independent"></label>
                   </li>
                 </ul>
               </div>
@@ -129,7 +129,7 @@
           <!-- Owners Card -->
           <div class="card shadow">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-primary">
-              <h6 class="m-0 font-weight-bold">$localeString{owners}</h6>
+              <h6 class="m-0 font-weight-bold" locale-inner="owners"></h6>
               <i class="fas fa-user"></i>
             </div>
 
@@ -144,12 +144,12 @@
           <div class="card shadow">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between text-white"
               style="background-color: #4e73df;">
-              <h6 class="m-0 font-weight-bold">$localeString{finish}</h6>
+              <h6 class="m-0 font-weight-bold" locale-inner="finish"></h6>
               <i class="fas fa-check"></i>
             </div>
             <div class="p-4">
               <a class="btn btn-primary text-white mt-4" style="width: 100%;" onclick="saveToDatabase()">
-                <span class="text">$localeString{submit}</span>
+                <span class="text" locale-inner="submit"></span>
               </a>
             </div>
           </div>

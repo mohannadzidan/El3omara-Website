@@ -128,19 +128,14 @@
       if (user) {
         var uid = user.uid;
         firebase.database().ref("users/" + uid).once('value', (snapshot) => {
-          if (!snapshot.exists()) {
-            firebase.database().ref("users/" + uid).set({
-              email: user.email,
-              displayName: user.displayName,
-            }).then((res) => {
-              window.location = "index.html";
-            });
-          } else {
+          if (snapshot.exists()) {
             window.location = "index.html";
+          } else {
+            window.location = "register.html";
           }
         });
       } else {
-        document.getElementById('splashScreen').style.display = "none";
+        document.getElementById('splashScreen').hidden = true;
       }
     });
   </script>

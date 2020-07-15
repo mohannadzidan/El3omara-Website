@@ -6,6 +6,8 @@
     "email_address": "Email Address",
     "forgot_password": "Forgot Password?",
     "create_an_account": "Create an Account!",
-    "have_an_account":"Already have an account? Login!"
-
+    "have_an_account": "Already have an account? Login!",
+    "weak-password": "the password you've choosen is very weak!",
+    "invalid_email": "the email you entered is invalid!",
+    "email_already_in_use": "the email you entered is already in use!"
 }

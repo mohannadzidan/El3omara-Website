@@ -27,6 +27,7 @@ var LocaleStrings = {
     numbers: [],
     abbreviations: {},
     getLocaleString: function (key) {
+        if (!LocaleStrings.isReady) throw "LocaleStrings isn't ready!"
         if (!LocaleStrings.phrases[key]) throw `The language pack doesn't define (${key})!.`;
         if (arguments.length > 1) {
             let args = Array.from(arguments);
@@ -35,6 +36,7 @@ var LocaleStrings = {
         return LocaleStrings.phrases[key].value;
     },
     replaceLocaleNumbers: function (str) {
+        if (!LocaleStrings.isReady) throw "LocaleStrings isn't ready!"
 
         for (let i = 0; i < 10; i++) {
             str = str.replace(new RegExp(i.toString(), 'g'), this.numbers[i]);
@@ -42,6 +44,8 @@ var LocaleStrings = {
         return str;
     },
     replaceLocaleStringMatches: (str) => {
+        if (!LocaleStrings.isReady) throw "LocaleStrings isn't ready!"
+
         let matches = str.matchAll(/\$localeString{(?<target>[aA1-zZ9\s,]+)}/g);
         for (const match of matches) {
             let target = match.groups.target.replace(/\s+/g, '');
@@ -55,11 +59,15 @@ var LocaleStrings = {
         window.location = window.location;
     },
     formatDate: (timestamp) => {
+        if (!LocaleStrings.isReady) throw "LocaleStrings isn't ready!"
+
         var date = new Date(timestamp);
         var a = `${LocaleStrings.monthNames[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
         return LocaleStrings.replaceLocaleNumbers(a);
     },
     formatTime: (timestamp) => {
+        if (!LocaleStrings.isReady) throw "LocaleStrings isn't ready!"
+
         var date = new Date(timestamp);
         var hours = date.getUTCHours();
         var minutes = date.getUTCMinutes().toString();
@@ -71,11 +79,19 @@ var LocaleStrings = {
         return LocaleStrings.replaceLocaleNumbers(time);
     },
     addOnReadyListener: (callback) => {
-        if (LocaleStrings.ready) {
+        if (LocaleStrings.isReady) {
             callback();
         } else {
             if (!LocaleStrings.onReadyCallbacks) LocaleStrings.onReadyCallbacks = [];
             LocaleStrings.onReadyCallbacks.push(callback);
+        }
+    },
+    addOnFinishListener: (callback) => {
+        if (LocaleStrings.isFinished) {
+            callback();
+        } else {
+            if (!LocaleStrings.onFinishCallbacks) LocaleStrings.onFinishCallbacks = [];
+            LocaleStrings.onFinishCallbacks.push(callback);
         }
     }
 }
@@ -107,32 +123,68 @@ var LocaleStrings = {
         languagePackRequest.send();
     };
     commonPackRequest.send();
-
     languagePackRequest.open('GET', 'locale/language/' + context + '/' + LocaleStrings.langCode + '.json');
     languagePackRequest.responseType = 'json';
     languagePackRequest.onload = function () {
         let languagePack = languagePackRequest.response;
+        if(languagePack == null){
+            console.warn("no language pack found at "+ 'locale/language/' + context + '/' + LocaleStrings.langCode + '.json');
+            return;
+        }
         Object.keys(languagePack).forEach(key => {
             let phrase = new Phrase(languagePack[key]);
             LocaleStrings.phrases[key] = phrase;
         });
         if (LocaleStrings.onReadyCallbacks) {
+            LocaleStrings.isReady = true;
             LocaleStrings.onReadyCallbacks.forEach(callback => callback());
-            LocaleStrings.ready = true;
+        }
+        if (LocaleStrings.onFinishCallbacks) {
+            LocaleStrings.isFinished = true;
+            LocaleStrings.onFinishCallbacks.forEach(callback => callback());
         }
     };
     // transform document body on load
-    try{
-        SharedContent.addOnLoadListner(() => LocaleStrings.addOnReadyListener(() => {
+    let transformDocument = () => {
+        // old method (stupid)
+        /*
             let body = document.body;
             body.innerHTML = LocaleStrings.replaceLocaleStringMatches(body.innerHTML);
-        }));
-    } catch (e) {
-        LocaleStrings.addOnReadyListener(() => {
-            let body = document.body;
-            body.innerHTML = LocaleStrings.replaceLocaleStringMatches(body.innerHTML);
+         */
+
+        // new method
+        document.querySelectorAll('[locale-inner]').forEach(e => {
+            e.innerHTML = LocaleStrings.getLocaleString(e.getAttribute('locale-inner'));
+        });
+        document.querySelectorAll('[locale-before]').forEach(e => {
+            e.insertAdjacentText('afterbegin', LocaleStrings.getLocaleString(e.getAttribute('locale-before')));
+        });
+        document.querySelectorAll('[locale-placeholder]').forEach(e => {
+            e.placeholder = LocaleStrings.getLocaleString(e.getAttribute('locale-placeholder'));
+        });
+        document.querySelectorAll('[locale-value]').forEach(e => {
+            e.value = LocaleStrings.getLocaleString(e.getAttribute('locale-value'));
+        });
+        document.querySelectorAll('[locale-class]').forEach(e => {
+            e.classList.add(LocaleStrings.getLocaleString(e.getAttribute('locale-class')));
         });
     }
-   
+    try {
+        // try to sync with js/shared-content.js
+        SharedContent.addOnLoadListner(() => LocaleStrings.addOnReadyListener(transformDocument));
+    } catch (e) {
+        LocaleStrings.addOnReadyListener(transformDocument);
+    }
+
+
+    LocaleStrings.addOnReadyListener(() => {
+        if (LocaleStrings.langCode == 'ar') {
+            document.body.style.direction = 'rtl';
+            document.body.style.textAlign = 'right';
+        } else {
+            document.body.style.direction = 'ltr';
+            document.body.style.textAlign = 'left';
+        }
+    });
 
 }
