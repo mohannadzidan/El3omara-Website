@@ -145,8 +145,8 @@
                 minlength="8" maxlength="14" required>
             </div>
           </div>
-          <input type="submit" class="btn btn-primary btn-block" style="color: white;" locale-placeholder="next"
-            value="Next">
+          <input type="submit" class="btn btn-primary btn-block" style="color: white;" locale-value="next"
+            onclick="RegisterFragments.clearValidation('registerationDataForm')">
         </form>
         <!-- Personal Info form -->
         <form id="personalInfoForm" progress-item-index="2" class="fragment" onsubmit="completeRegisteration()" hidden>
@@ -170,11 +170,8 @@
             <a class="small" href="#login.html" locale-inner="logout" onclick="firebase.auth().signOut()">Logout</a>
           </div>
         </form>
-
-
         <hr>
         <div class="text-center">
-
           <a class="small" href="#" onclick="LocaleStrings.setLanguage('en')">English</a>
           <a class="small">|</a>
           <a class="small" href="#" onclick="LocaleStrings.setLanguage('ar')">عربي</a>
@@ -208,6 +205,17 @@
   <script src="js/elements/steps-progress-bar.js"></script>
   <script src="js/images-utils.js"></script>
   <script src="js/register.js"></script>
+  <script>
+    RegisterFragments = {
+      clearValidation: function(formid) {
+        var form = document.getElementById(formid);
+        var inputs = form.querySelectorAll('input');
+        inputs.forEach(i => i.setCustomValidity(''));
+      }
+    }
+
+  </script>
+
 </body>
 
 </html>

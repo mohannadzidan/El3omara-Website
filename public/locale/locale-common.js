@@ -159,6 +159,9 @@ var LocaleStrings = {
         document.querySelectorAll('[locale-before]').forEach(e => {
             e.insertAdjacentText('afterbegin', LocaleStrings.getLocaleString(e.getAttribute('locale-before')));
         });
+        document.querySelectorAll('[locale-after]').forEach(e => {
+            e.insertAdjacentText('beforeend', LocaleStrings.getLocaleString(e.getAttribute('locale-after')));
+        });
         document.querySelectorAll('[locale-placeholder]').forEach(e => {
             e.placeholder = LocaleStrings.getLocaleString(e.getAttribute('locale-placeholder'));
         });

@@ -45,7 +45,7 @@
             <!-- Nested Row within Card Body -->
             <div class="p-5">
               <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">$localeString{welcome_back}</h1>
+                <h1 class="h4 text-gray-900 mb-4" locale-inner="welcome_back"></h1>
               </div>
               <form class="user">
                 <div class=" mb-4" id="errorMessageCardContainer" style="display: none;">
@@ -55,36 +55,36 @@
                 </div>
                 <div class="form-group">
                   <input type="email" class="form-control form-control-user" id="emailField"
-                    aria-describedby="emailHelp" placeholder="$localeString{enter_email_address}...">
+                    aria-describedby="emailHelp" locale-placeholder="enter_email_address">
                 </div>
 
                 <div class="form-group">
                   <input type="password" class="form-control form-control-user" id="passwordField"
-                    placeholder="$localeString{password}">
+                  locale-placeholder="password">
                 </div>
 
                 <div class="form-group">
                   <div class="custom-control custom-checkbox small">
                     <input type="checkbox" class="custom-control-input" id="customCheck">
-                    <label class="custom-control-label" for="customCheck">$localeString{remember_me}</label>
+                    <label class="custom-control-label" for="customCheck" locale-inner="remember_me"></label>
                   </div>
                 </div>
 
                 <a class="btn btn-primary btn-user btn-block" style="color: white;" onclick="emailPasswordLogin()"
-                  id="loginBtn">$localeString{login}</a>
+                  id="loginBtn" locale-inner="login"></a>
                 <hr>
                 <a class="btn btn-google btn-user btn-block" style="color: white;" id="signInWithGoogleBtn"
-                  onclick="signInWithGoogle()">
-                  <i class="fab fa-google fa-fw"></i> $localeString{login_with_google}
+                  onclick="signInWithGoogle()" locale-after="login_with_google">
+                  <i class="fab fa-google fa-fw"></i>
                 </a>
 
               </form>
               <hr>
               <div class="text-center">
-                <a class="small" href="forgot-password.html">$localeString{forgot_password}</a>
+                <a class="small" href="forgot-password.html" locale-inner="forgot_password"></a>
               </div>
               <div class="text-center">
-                <a class="small" href="register.html">$localeString{create_an_account}</a>
+                <a class="small" href="register.html" locale-inner="create_an_account"></a>
               </div>
               <div class="text-center">
                 <a class="small" href="#" onclick="LocaleStrings.setLanguage('en')">English</a>

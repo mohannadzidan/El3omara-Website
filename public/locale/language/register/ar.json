@@ -6,5 +6,10 @@
     "email_address": "البريد الالكتروني",
     "forgot_password": "نسيت كلمة السر؟",
     "create_an_account": "انشاء حساب!",
-    "have_an_account":"مسجل بالفعل؟ سجل الدخول!"
+    "have_an_account":"مسجل بالفعل؟ سجل الدخول!",
+    "weak-password": "كلمة المرور ضعيفة!",
+    "invalid_email": "البريد الالكتروني غير صحيح!",
+    "email_already_in_use": "البريد الالكتروني الذي ادخلته مستخدم بالفعل!",
+    "logout": "تسجيل الخروج",
+    "next": "التالي"
 }
